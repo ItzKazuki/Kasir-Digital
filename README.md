@@ -130,6 +130,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 ---
 
 ## Diagram Database
+![Kasir Digital](https://github.com/user-attachments/assets/8576cabc-eb5c-4222-84d9-cb0559a7ad7a)
 
 
 # Flowchart
