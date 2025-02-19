@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('phone_number');
-            $table->decimal('points');
-            $table->string('email');
-            $table->enum('status', ['active', 'inactive']);
+            $table->string('full_name');
+            $table->string('no_telp')->unique();
+            $table->double('point')->default(0);
+            $table->string('email')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }
