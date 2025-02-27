@@ -12,7 +12,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Reports";
+        return view('dashboard.reports.index', compact('title'));
     }
 
     /**

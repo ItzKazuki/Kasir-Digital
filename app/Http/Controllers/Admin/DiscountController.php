@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Discount;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DiscountController extends Controller
 {
@@ -12,7 +13,9 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Discounts";
+        $discounts = Discount::all();
+        return view('dashboard.discounts.index', compact('title', 'discounts'));
     }
 
     /**

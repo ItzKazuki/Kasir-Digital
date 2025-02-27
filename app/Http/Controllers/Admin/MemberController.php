@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Member;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MemberController extends Controller
 {
@@ -12,7 +13,9 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Members";
+        $members = Member::all();
+        return view('dashboard.members.index', compact('title', 'members'));
     }
 
     /**

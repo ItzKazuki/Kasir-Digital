@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -12,7 +13,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $title = "Transactions";
+        $transactions = Transaction::all();
+        return view('dashboard.transactions.index', compact('title', 'transactions'));
     }
 
     /**
