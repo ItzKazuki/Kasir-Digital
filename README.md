@@ -26,7 +26,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `id` (PK)  | int   | ID pelanggan |
 | `full_name` | varchar | Nama lengkap pelanggan |
 | `no_telp` (UNIQUE) | varchar | Nomor telepon pelanggan |
-| `point` | double | Poin pelanggan hasil transaksi |
+| `point` | decimal | Poin pelanggan hasil transaksi |
 | `email` | varchar | Email pelanggan |
 | `status` | enum(`active`, `inactive`) | Status aktivitas pelanggan |
 
@@ -39,11 +39,12 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `name` | varchar | Nama produk |
 | `category_id` (FK) | int | Jenis produk |
 | `discount_id` (FK, NULLABLE) | int | Diskon dari produk |
-| `price` | double | Harga produk |
+| `price` | decimal | Harga produk |
 | `stock` | int | Jumlah barang yang tersedia |
+| `expired_at` | date | Barang Expired pada tanggal |
 | `image_url` | varchar | Lokasi gambar produk |
 | `description` | text | Deskripsi produk |
-| `estimasi_keuntungan` | double | Perkalian dari stok dan harga produk (otomatis dihitung) |
+| `estimasi_keuntungan` | decimal | Perkalian dari stok dan harga produk (otomatis dihitung) |
 
 ---
 
@@ -56,7 +57,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 
 ---
 
-#### **4. User Role (`admin`, `kasir`)**
+#### **4. User**
 | Field Name  | Type  | Description |
 |------------|-------|-------------|
 | `id` (PK)  | int   | ID user |
@@ -76,7 +77,9 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `id` (PK)  | int   | ID transaksi |
 | `order_id` (FK) | int | Order yang berkaitan |
 | `member_id` (FK, NULLABLE) | int | Member yang memesan |
-| `total_price` | double | Total pembelian |
+| `total_price` | decimal | Total pembelian |
+| `cash` | decimal | Uang masuk dari pelanggan |
+| `cash_change` | decimal | Kembalian dari cash - total_price |
 | `payment_method` | enum(`cash`, `debit`, `credit`, `ewallet`) | Jenis pembayaran |
 | `payment_status` | enum(`paid`, `unpaid`, `pending`) | Status pembayaran |
 
@@ -89,7 +92,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `user_id` (FK) | int | Kasir yang menangani order |
 | `order_date` | date | Tanggal pembelian |
 | `total_items` | int | Total barang |
-| `total_price` | double | Total pembelian |
+| `total_price` | decimal | Total pembelian |
 
 ---
 
@@ -100,7 +103,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `order_id` (FK) | int | ID order |
 | `product_id` (FK) | int | Barang yang dipilih |
 | `quantity` | int | Jumlah barang |
-| `total_price` | double | Total pembelian |
+| `total_price` | decimal | Total pembelian |
 
 ---
 
@@ -110,7 +113,7 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 | `id` (PK)  | int   | ID diskon |
 | `name` | varchar | Nama diskon (contoh: Promo Nampol) |
 | `type` | enum(`percentage`, `fixed`) | Jenis diskon (persen atau nominal) |
-| `value` | double | Besaran diskon dalam persen atau nominal |
+| `value` | decimal | Besaran diskon dalam persen atau nominal |
 | `start_date` | date | Tanggal awal diskon |
 | `end_date` | date | Tanggal akhir diskon |
 | `status` | enum(`active`, `inactive`) | Status diskon |
