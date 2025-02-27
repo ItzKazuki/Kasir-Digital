@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->decimal('price', 15, 2);
             $table->integer('stock');
+            $table->date('expired_at')->nullable();
             $table->string('image_url')->nullable();
             $table->text('description')->nullable();
             $table->decimal('estimasi_keuntungan', 15, 2)->virtualAs('price * stock');
