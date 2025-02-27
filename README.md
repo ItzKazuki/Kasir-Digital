@@ -249,7 +249,11 @@ Sistem ini terdiri dari beberapa bagian utama:
 ---
 
 ## Diagram Database
+v1
 ![Kasir Digital](https://github.com/user-attachments/assets/8576cabc-eb5c-4222-84d9-cb0559a7ad7a)
+v1-rev
+![image](https://github.com/user-attachments/assets/39ca91fd-6840-4b7f-98f8-7e7ebaa21490)
+
 
 
 # Flowchart
