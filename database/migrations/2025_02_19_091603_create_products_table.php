@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
-            $table->double('price');
+            $table->decimal('price', 15, 2);
             $table->integer('stock');
             $table->string('image_url')->nullable();
             $table->text('description')->nullable();
-            $table->double('estimasi_keuntungan')->virtualAs('price * stock');
+            $table->decimal('estimasi_keuntungan', 15, 2)->virtualAs('price * stock');
             $table->timestamps();
         });
     }

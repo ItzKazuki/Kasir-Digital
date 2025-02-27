@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('member_id')->nullable()->constrained('members')->onDelete('set null');
             $table->date('order_date');
             $table->integer('total_items');
-            $table->double('total_price');
+            $table->decimal('total_price', 15, 2);
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
             $table->timestamps();
         });
