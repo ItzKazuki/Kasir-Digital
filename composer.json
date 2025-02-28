@@ -9,6 +9,7 @@
         "php": "^8.2",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "laravolt/avatar": "^6.1",
         "wavey/sweetalert": "^1.2"
     },
     "require-dev": {
