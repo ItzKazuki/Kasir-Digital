@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Discount;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 
 class DiscountController extends Controller
@@ -63,6 +64,9 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
-        //
+        $discount->delete();
+
+        Sweetalert::success('berhasil menghapus discount dengan id: ' . $discount->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.discounts.index');
     }
 }

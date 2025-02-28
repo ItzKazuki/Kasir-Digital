@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
@@ -63,6 +64,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        Sweetalert::success('berhasil menghapus kategori dengan id: ' . $category->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.categories.index');
     }
 }

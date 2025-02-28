@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
+use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
@@ -63,6 +64,9 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+
+        Sweetalert::success('berhasil menghapus transaction dengan id: ' . $transaction->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.transactions.index');
     }
 }

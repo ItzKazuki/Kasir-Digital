@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 
 class MemberController extends Controller
@@ -63,6 +64,9 @@ class MemberController extends Controller
      */
     public function destroy(Member $member)
     {
-        //
+        $member->delete();
+
+        Sweetalert::success('berhasil menghapus member dengan id: ' . $member->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.members.index');
     }
 }

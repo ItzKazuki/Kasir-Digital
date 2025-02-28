@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -63,6 +65,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        Storage::delete('static/images/products/' . $product->image_url);
+        $product->delete();
+
+        Sweetalert::success('berhasil menghapus product dengan id: ' . $product->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.products.index');
     }
 }
