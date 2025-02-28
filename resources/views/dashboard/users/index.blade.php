@@ -39,7 +39,7 @@
                     <div class="p-2 xl:p-5 col-span-2">
                         <div class="flex items-center gap-3 p-2 xl:p-3">
                             <div class="flex-shrink-0">
-                                <img class="rounded-full aspect-square object-cover w-20" src="{{  Storage::url('static/images/profiles/' . $user->profile_img) ?? Avatar::create($user->full_name)->toBase64() }}" alt="Brand" />
+                                <img class="rounded-full aspect-square object-cover w-20" src="{{  $user->profile_img != null ? Storage::url('static/images/profiles/' . $user->profile_img) : Avatar::create($user->full_name)->toBase64() }}" alt="Brand" />
                             </div>
                             <p class="hidden font-medium text-black dark:text-white sm:block">
                                 {{ $user->full_name }}

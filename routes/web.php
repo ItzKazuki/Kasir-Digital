@@ -43,8 +43,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         return view('dashboard.profile', compact('title'));
     })->name('profile');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
-    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update-user');
-    Route::patch('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
+    Route::put('/settings/{user}', [SettingController::class, 'update'])->name('settings.update-user');
+    Route::patch('/settings/profile/{user}', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
+    Route::delete('/settings/profile/{user}', [SettingController::class, 'deleteProfile'])->name('settings.delete-profile');
 
     Route::resource('users', UserController::class)->middleware(AdminMiddleware::class);
     Route::resource('members', MemberController::class)->middleware(AdminMiddleware::class);

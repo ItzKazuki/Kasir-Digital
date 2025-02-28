@@ -253,7 +253,7 @@
                             </span>
 
                             <span class="h-12 w-12 rounded-full">
-                                <img class="rounded-full aspect-square object-cover" src="{{ Storage::url('static/images/profiles/'.auth()->user()->profile_img)  ?? Avatar::create(auth()->user()->full_name)->toBase64() }}"
+                                <img class="rounded-full aspect-square object-cover" src="{{ auth()->user()->profile_img != null ? Storage::url('static/images/profiles/' . auth()->user()->profile_img) : Avatar::create(auth()->user()->full_name)->toBase64() }}"
                                     alt="User" />
                             </span>
 
