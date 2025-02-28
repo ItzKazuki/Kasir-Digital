@@ -12,6 +12,7 @@ class RegisterController extends Controller
     public function register()
     {
         $title = "Register";
+
         return view('auth.register', compact('title'));
     }
 
