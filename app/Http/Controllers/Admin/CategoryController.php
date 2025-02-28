@@ -24,7 +24,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Create Categories";
+        return view('dashboard.categories.create', compact('title'));
     }
 
     /**
@@ -48,7 +49,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $title = "Edit Categories";
+        return view('dashboard.categories.edit', compact('title', 'category'));
     }
 
     /**

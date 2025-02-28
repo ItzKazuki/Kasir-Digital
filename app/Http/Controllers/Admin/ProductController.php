@@ -25,7 +25,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Create Products";
+        return view('dashboard.products.create', compact('title'));
     }
 
     /**
@@ -49,7 +50,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $title = "Edit Products";
+        return view('dashboard.products.edit', compact('title', 'product'));
     }
 
     /**

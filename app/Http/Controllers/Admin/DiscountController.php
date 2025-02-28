@@ -24,7 +24,8 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Create Discounts";
+        return view('dashboard.discounts.create', compact('title'));
     }
 
     /**
@@ -48,7 +49,8 @@ class DiscountController extends Controller
      */
     public function edit(Discount $discount)
     {
-        //
+        $title = "Edit Discount";
+        return view('dashboard.categories.edit', compact('title', 'discount'));
     }
 
     /**

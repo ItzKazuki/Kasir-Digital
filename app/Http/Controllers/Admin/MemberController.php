@@ -24,7 +24,8 @@ class MemberController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Create Members";
+        return view('dashboard.members.create', compact('title'));
     }
 
     /**
@@ -48,7 +49,8 @@ class MemberController extends Controller
      */
     public function edit(Member $member)
     {
-        //
+        $title = "Edit Members";
+        return view('dashboard.members.edit', compact('title', 'member'));
     }
 
     /**

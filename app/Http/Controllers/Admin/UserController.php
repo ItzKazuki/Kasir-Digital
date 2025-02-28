@@ -24,7 +24,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Create Users";
+        return view('dashboard.users.create', compact('title'));
     }
 
     /**
@@ -48,7 +49,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $title = "Edit Users";
+        return view('dashboard.users.edit', compact('title', 'user'));
     }
 
     /**
