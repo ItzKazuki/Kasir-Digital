@@ -29,10 +29,10 @@ return [
     'shape' => 'circle',
 
     // Image width, in pixel
-    'width' => 100,
+    'width' => 350,
 
     // Image height, in pixel
-    'height' => 100,
+    'height' => 350,
 
     // Responsive SVG, height and width attributes are not added when true
     'responsive' => false,
@@ -41,7 +41,7 @@ return [
     'chars' => 2,
 
     // font size
-    'fontSize' => 48,
+    'fontSize' => 120,
 
     // convert initial letter in uppercase
     'uppercase' => false,
