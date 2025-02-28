@@ -1,5 +1,5 @@
 <aside
-    class="absolute left-0 top-0 z-9999 flex h-screen w-72 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-md lg:static lg:translate-x-0">
+    class="absolute left-0 top-0 z-40 flex h-screen w-72 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-2xl lg:static lg:translate-x-0">
     <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6.5">
         <a href="#">
             <img src="{{ asset('static/logo-340x180.png') }}" alt="Logo" />

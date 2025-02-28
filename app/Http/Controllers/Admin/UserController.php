@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Wavey\Sweetalert\Sweetalert;
 
 class UserController extends Controller
 {
@@ -61,8 +62,11 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        Sweetalert::success('berhasil menghapus user dengan id: ' . $user->id, 'Hapus Berhasil');
+        return redirect()->route('dashboard.users.index');
     }
 }

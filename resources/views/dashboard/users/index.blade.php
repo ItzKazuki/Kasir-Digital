@@ -39,7 +39,7 @@
                     <div class="p-2 xl:p-5 col-span-2">
                         <div class="flex items-center gap-3 p-2 xl:p-3">
                             <div class="flex-shrink-0">
-                                <img class="w-20" src="{{  $user->profile_img ?? Avatar::create($user->full_name)->toBase64() }}" alt="Brand" />
+                                <img class="rounded-full aspect-square object-cover w-20" src="{{  Storage::url('static/images/profiles/' . $user->profile_img) ?? Avatar::create($user->full_name)->toBase64() }}" alt="Brand" />
                             </div>
                             <p class="hidden font-medium text-black dark:text-white sm:block">
                                 {{ $user->full_name }}
@@ -75,7 +75,10 @@
                                 </svg>
                             </span>
                         </a>
-                        <a href="#"
+                        <form action="{{ route('dashboard.users.destroy', ['user' => $user->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
                             class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
                             <span>
                                 <svg class="fill-current" width="15" height="15"
@@ -85,11 +88,13 @@
                                         d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                 </svg>
                             </span>
-                        </a>
+                        </button>
+                        </form>
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
 </div>
+
 @endsection

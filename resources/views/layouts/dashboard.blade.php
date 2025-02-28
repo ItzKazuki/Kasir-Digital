@@ -55,14 +55,14 @@
 
                             <!-- Dropdown Start -->
                             <div x-show="dropdownOpen"
-                                class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80">
+                                class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark sm:right-0 sm:w-80">
                                 <div class="px-4.5 py-3">
                                     <h5 class="text-sm font-medium text-bodydark2">Notification</h5>
                                 </div>
 
                                 <ul class="flex h-auto flex-col overflow-y-auto">
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="#">
                                             <p class="text-sm">
                                                 <span class="text-black dark:text-white">Edit your information in a
@@ -75,7 +75,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="#">
                                             <p class="text-sm">
                                                 <span class="text-black dark:text-white">It is a long established
@@ -87,7 +87,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="#">
                                             <p class="text-sm">
                                                 <span class="text-black dark:text-white">There are many
@@ -100,7 +100,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="#">
                                             <p class="text-sm">
                                                 <span class="text-black dark:text-white">There are many
@@ -149,14 +149,14 @@
 
                             <!-- Dropdown Start -->
                             <div x-show="dropdownOpen"
-                                class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80">
+                                class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark sm:right-0 sm:w-80">
                                 <div class="px-4.5 py-3">
                                     <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
                                 </div>
 
                                 <ul class="flex h-auto flex-col overflow-y-auto">
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-02.png" alt="User" />
@@ -172,7 +172,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-01.png" alt="User" />
@@ -188,7 +188,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-03.png" alt="User" />
@@ -204,7 +204,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-04.png" alt="User" />
@@ -220,7 +220,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-02.png" alt="User" />
@@ -253,7 +253,8 @@
                             </span>
 
                             <span class="h-12 w-12 rounded-full">
-                                <img src="{{ auth()->user()->profile_img ?? Avatar::create(auth()->user()->full_name)->toBase64() }}" alt="User" />
+                                <img class="rounded-full aspect-square object-cover" src="{{ Storage::url('static/images/profiles/'.auth()->user()->profile_img)  ?? Avatar::create(auth()->user()->full_name)->toBase64() }}"
+                                    alt="User" />
                             </span>
 
                             <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block"
@@ -267,10 +268,10 @@
 
                         <!-- Dropdown Start -->
                         <div x-show="dropdownOpen"
-                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-red-100 bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                            <ul class="flex flex-col gap-5 border-b border-red-100 px-6 py-7.5 dark:border-strokedark">
+                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-red-100 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
+                            <ul class="flex flex-col gap-5 border-b border-red-100 px-6 py-7.5 dark:border-gray-300dark">
                                 <li>
-                                    <a href="profile.html"
+                                    <a href="{{ route('dashboard.profile') }}"
                                         class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -285,19 +286,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="messages.html"
-                                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
-                                        <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M17.6687 1.44374C17.1187 0.893744 16.4312 0.618744 15.675 0.618744H7.42498C6.25623 0.618744 5.25935 1.58124 5.25935 2.78437V4.12499H4.29685C3.88435 4.12499 3.50623 4.46874 3.50623 4.91562C3.50623 5.36249 3.84998 5.70624 4.29685 5.70624H5.25935V10.2781H4.29685C3.88435 10.2781 3.50623 10.6219 3.50623 11.0687C3.50623 11.4812 3.84998 11.8594 4.29685 11.8594H5.25935V16.4312H4.29685C3.88435 16.4312 3.50623 16.775 3.50623 17.2219C3.50623 17.6687 3.84998 18.0125 4.29685 18.0125H5.25935V19.25C5.25935 20.4187 6.22185 21.4156 7.42498 21.4156H15.675C17.2218 21.4156 18.4937 20.1437 18.5281 18.5969V3.47187C18.4937 2.68124 18.2187 1.95937 17.6687 1.44374ZM16.9469 18.5625C16.9469 19.2844 16.3625 19.8344 15.6406 19.8344H7.3906C7.04685 19.8344 6.77185 19.5594 6.77185 19.2156V17.875H8.6281C9.0406 17.875 9.41873 17.5312 9.41873 17.0844C9.41873 16.6375 9.07498 16.2937 8.6281 16.2937H6.77185V11.7906H8.6281C9.0406 11.7906 9.41873 11.4469 9.41873 11C9.41873 10.5875 9.07498 10.2094 8.6281 10.2094H6.77185V5.63749H8.6281C9.0406 5.63749 9.41873 5.29374 9.41873 4.84687C9.41873 4.39999 9.07498 4.05624 8.6281 4.05624H6.77185V2.74999C6.77185 2.40624 7.04685 2.13124 7.3906 2.13124H15.6406C15.9844 2.13124 16.2937 2.26874 16.5687 2.50937C16.8094 2.74999 16.9469 3.09374 16.9469 3.43749V18.5625Z"
-                                                fill="" />
-                                        </svg>
-                                        My Contacts
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="settings.html"
+                                    <a href="{{ route('dashboard.settings') }}"
                                         class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -341,6 +330,9 @@
 
     </div>
 
+    {{-- script untuk alert atau yang lain --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('sweetalert::sweetalert')
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @stack('scripts')
