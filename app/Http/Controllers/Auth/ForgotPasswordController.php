@@ -21,9 +21,15 @@ class ForgotPasswordController extends Controller
 
     public function sendResetLinkEmail(Request $request)
     {
+        $customMessages = [
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.dns' => 'The email domain must have valid DNS records.',
+        ];
+
         $request->validate([
             'email' => 'required|email:dns',
-        ]);
+        ], $customMessages);
 
         $status = Password::sendResetLink(
             $request->only('email')

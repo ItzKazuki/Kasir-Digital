@@ -20,6 +20,11 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                 </div>
+                @error('email')
+                    <div class="mt-2 text-red-600">
+                        <p class="text-xs">{{ $message }}</p>
+                    </div>
+                @enderror
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-semibold mb-2" for="password">
@@ -33,11 +38,11 @@
                         <i class="fas fa-lock"></i>
                     </div>
                 </div>
-                @if ($errors->has('email'))
+                @error('password')
                     <div class="mt-2 text-red-600">
-                        <p class="text-xs">{{ $errors->first('email') }}</p>
+                        <p class="text-xs">{{ $message }}</p>
                     </div>
-                @endif
+                @enderror
                 <div class="mt-2 text-right">
                     <a href="{{ route('auth.forgot') }}" class="text-sm text-blue-500 hover:underline">Forgot Password?</a>
                 </div>
