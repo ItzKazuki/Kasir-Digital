@@ -36,7 +36,7 @@
           class="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3"
         >
           <div class="relative drop-shadow-2">
-            <img class="rounded-full aspect-square object-cover" src="{{ auth()->user()->profile_img != null ? Storage::url('static/images/profiles/' . auth()->user()->profile_img) Avatar::create(auth()->user()->full_name)->toBase64() }}" alt="profile" />
+            <img class="rounded-full aspect-square object-cover" src="{{ auth()->user()->profile_img != null ? Storage::url('static/images/profiles/' . auth()->user()->profile_img) : Avatar::create(auth()->user()->full_name)->toBase64() }}" alt="profile" />
             <label
               for="profile"
               class="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
