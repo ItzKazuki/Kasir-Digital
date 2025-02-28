@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -37,6 +38,13 @@ Route::post('/auth/logout', [LogoutController::class, 'logout'])->name('logout')
 
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::get('/profile', function () {
+        $title = "Profile";
+        return view('dashboard.profile', compact('title'));
+    })->name('profile');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update-user');
+    Route::patch('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
 
     Route::resource('users', UserController::class)->middleware(AdminMiddleware::class);
     Route::resource('members', MemberController::class)->middleware(AdminMiddleware::class);
