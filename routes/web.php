@@ -19,18 +19,21 @@ Route::get('/', function () {
     return redirect()->route('auth.login');
 })->name('home');
 
+// start authentication
 Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::get('/register', [RegisterController::class, 'register'])->name('register');
-    Route::get('/forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot');
-    Route::get('/reset/{token}', [ResetPasswordController::class, 'reset-password'])->name('reset-password');
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
+    Route::get('login', [LoginController::class, 'login'])->name('login');
+    Route::get('register', [RegisterController::class, 'register'])->name('register');
+    Route::get('forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot');
+    Route::get('reset/{token}', [ResetPasswordController::class, 'resetPassword'])->name('reset-password');
 
-    Route::post('/login', [LoginController::class, 'authenticate'])->name('authenticate');
-    Route::post('/register', [RegisterController::class, 'store'])->name('store');
-    Route::post('/forgot', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('send-reset-link-email');
-    Route::post('/reset/{token}', [ResetPasswordController::class, 'update'])->name('update');
+    // for post method
+    Route::post('login', [LoginController::class, 'authenticate'])->name('authenticate');
+    Route::post('register', [RegisterController::class, 'store'])->name('store');
+    Route::post('forgot', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('send-reset-link-email');
+    Route::post('reset/password', [ResetPasswordController::class, 'update'])->name('update');
 });
+Route::post('/auth/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
+// end authentication
 
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
