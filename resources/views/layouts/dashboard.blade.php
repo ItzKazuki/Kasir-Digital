@@ -253,7 +253,7 @@
                             </span>
 
                             <span class="h-12 w-12 rounded-full">
-                                <img src="{{ asset('img/profile/user-01.png') }}" alt="User" />
+                                <img src="{{ auth()->user()->profile_img ?? Avatar::create(auth()->user()->full_name)->toBase64() }}" alt="User" />
                             </span>
 
                             <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block"
