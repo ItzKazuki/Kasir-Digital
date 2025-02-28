@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "626b9e7ddd47fb7eff9aaa53cce0c9ad",
+    "content-hash": "60c7b680cd483f4693709ca3a2c6e071",
     "packages": [
         {
             "name": "brick/math",
@@ -5739,6 +5739,73 @@
                 }
             ],
             "time": "2024-11-21T01:49:47+00:00"
+        },
+        {
+            "name": "wavey/sweetalert",
+            "version": "v1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/waveygroup/sweetalert.git",
+                "reference": "5816f56d21966f56a60a83ec1072c2cb96f7399d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/waveygroup/sweetalert/zipball/5816f56d21966f56a60a83ec1072c2cb96f7399d",
+                "reference": "5816f56d21966f56a60a83ec1072c2cb96f7399d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Wavey\\Sweetalert\\SweetalertServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Wavey\\Sweetalert\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kieran Heron",
+                    "email": "kieran@wavey.group"
+                }
+            ],
+            "description": "SweetAlert2 implementation for Laravel",
+            "keywords": [
+                "alert",
+                "alerts",
+                "laravel",
+                "sweet",
+                "sweetalert"
+            ],
+            "support": {
+                "issues": "https://github.com/waveygroup/sweetalert/issues",
+                "source": "https://github.com/waveygroup/sweetalert"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/waveygroup",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-11-19T19:41:10+00:00"
         },
         {
             "name": "webmozart/assert",
