@@ -37,9 +37,9 @@
                     </div>
 
                     <div class="p-2 xl:p-5 col-span-2">
-                        <div class="flex items-center gap-3 p-2 xl:p-5">
+                        <div class="flex items-center gap-3 p-2 xl:p-3">
                             <div class="flex-shrink-0">
-                                <img src="src/images/brand/brand-01.svg" alt="Brand" />
+                                <img class="w-20" src="{{  $user->profile_img ?? Avatar::create($user->full_name)->toBase64() }}" alt="Brand" />
                             </div>
                             <p class="hidden font-medium text-black dark:text-white sm:block">
                                 {{ $user->full_name }}

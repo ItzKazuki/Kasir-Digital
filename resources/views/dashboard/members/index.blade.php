@@ -9,34 +9,34 @@
             </h4>
 
             <div class="flex flex-col">
-                <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-6">
+                <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-7">
                     <div class="p-2 xl:p-4">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">#</h5>
+                        <h5 class="text-sm font-medium uppercase sm:text-base">#</h5>
                     </div>
-                    <div class="p-2 xl:p-5">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">Nama Member</h5>
-                    </div>
-                    <div class="p-2 text-center xl:p-5">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">Poin</h5>
+                    <div class="p-2 xl:p-5 col-span-2">
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Nama Member</h5>
                     </div>
                     <div class="p-2 text-center xl:p-5">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">Status</h5>
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Poin</h5>
+                    </div>
+                    <div class="p-2 text-center xl:p-5">
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Status</h5>
                     </div>
                     <div class="hidden p-2 text-center sm:block xl:p-5">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">Terdaftar Pada</h5>
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Terdaftar Pada</h5>
                     </div>
                     <div class="hidden p-2 text-center sm:block xl:p-5">
-                        <h5 class="text-sm font-medium uppercase xsm:text-base">Aksi</h5>
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Aksi</h5>
                     </div>
                 </div>
 
                 @foreach ($members as $member)
-                    <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-6">
+                    <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300 sm:grid-cols-7">
                         <div class="flex items-center p-2 xl:p-4">
                             <p class="font-medium text-black dark:text-white">{{ $member->id }}</p>
                         </div>
 
-                        <div class="flex items-center justify-center p-2 xl:p-5">
+                        <div class="flex items-center p-2 xl:p-5 col-span-2">
                             <p class="font-medium text-black dark:text-white">
                                 {{ $member->full_name }}
                             </p>

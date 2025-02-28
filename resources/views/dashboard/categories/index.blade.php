@@ -29,13 +29,10 @@
 
             @foreach ($categories as $category)
                 <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-5">
-                    <div class="flex items-center p-2 xl:p-4">
+                    <div class="flex items-center p-2 xl:p-2">
                         <p class="font-medium text-black dark:text-white">{{ $category->id }}</p>
                     </div>
                     <div class="flex items-center gap-3 p-2 xl:p-5">
-                        <div class="flex-shrink-0">
-                            <img src="src/images/brand/brand-01.svg" alt="Brand" />
-                        </div>
                         <p class="hidden font-medium text-black dark:text-white sm:block">
                             {{ $category->name }}
                         </p>

@@ -54,7 +54,16 @@
                         </div>
 
                         <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
-                            <p class="font-medium text-green-800">4.8%</p>
+                            @if ($product->expired_at == null)
+                                <p
+                                    class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100">
+                                    produk tidak expired
+                                </p>
+                            @else
+                                <p
+                                    class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ \Carbon\Carbon::parse($product->expired_at)->isPast() ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100' }}">
+                                    {{ $product->expired_at }}</p>
+                            @endif
                         </div>
 
                         <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
