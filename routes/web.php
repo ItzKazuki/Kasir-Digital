@@ -33,7 +33,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('forgot', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('send-reset-link-email');
     Route::post('reset/password', [ResetPasswordController::class, 'update'])->name('update');
 });
-Route::post('/auth/logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
+Route::post('/auth/logout', [LogoutController::class, 'logout'])->name('auth.logout')->middleware('auth');
 // end authentication
 
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
