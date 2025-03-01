@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\StatusDiscount;
+use App\Enums\TypeDiscount;
 use App\Models\Discount;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
 class DiscountController extends Controller
 {
@@ -33,7 +36,19 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'type' => ['required', Rule::enum(TypeDiscount::class)],
+            'value' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => ['required', Rule::enum(StatusDiscount::class)]
+        ]);
+
+        Discount::create($request->all());
+
+        Sweetalert::success('berhasil menabah diskon baru', 'Tambah Diskon Berhasil!');
+        return redirect()->route('dashboard.discounts.index');
     }
 
     /**
@@ -50,7 +65,7 @@ class DiscountController extends Controller
     public function edit(Discount $discount)
     {
         $title = "Edit Discount";
-        return view('dashboard.categories.edit', compact('title', 'discount'));
+        return view('dashboard.discounts.edit', compact('title', 'discount'));
     }
 
     /**
@@ -58,7 +73,19 @@ class DiscountController extends Controller
      */
     public function update(Request $request, Discount $discount)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'type' => ['required', Rule::enum(TypeDiscount::class)],
+            'value' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'status' => ['required', Rule::enum(StatusDiscount::class)]
+        ]);
+
+        $discount->update($request->all());
+
+        Sweetalert::success('berhasil ubah detail diskon', 'Ubah Diskon Berhasil!');
+        return redirect()->route('dashboard.discounts.index');
     }
 
     /**
@@ -68,7 +95,7 @@ class DiscountController extends Controller
     {
         $discount->delete();
 
-        Sweetalert::success('berhasil menghapus discount dengan id: ' . $discount->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus diskon dengan id: ' . $discount->id, 'Hapus Berhasil');
         return redirect()->route('dashboard.discounts.index');
     }
 }
