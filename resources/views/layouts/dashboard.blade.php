@@ -22,7 +22,7 @@
 
     {{-- content --}}
     <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-100">
-        <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow-1">
+        <header class="sticky top-0 z-100 flex w-full bg-white drop-shadow-1">
             <div class="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                 <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
 
@@ -330,11 +330,14 @@
 
     </div>
 
+    @stack('modals')
+
     {{-- script untuk alert atau yang lain --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @include('sweetalert::sweetalert')
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     @stack('scripts')
 
     <script>
