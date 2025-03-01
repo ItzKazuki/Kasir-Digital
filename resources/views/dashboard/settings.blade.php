@@ -149,7 +149,7 @@
                         <div class="mb-4 flex items-center gap-3">
                             <div class="h-14 w-14 rounded-full">
                                 <img class="rounded-full aspect-square object-cover"
-                                    src="{{ $user->profile_img != null ? Storage::url('static/images/profiles/' . $user->profile_img) : Avatar::create($user->full_name)->toBase64() }}"
+                                    src="{{ $user->profile_image ? $user->profile_image : Avatar::create($user->full_name)->toBase64() }}"
                                     alt="User" />
                             </div>
                             <div>

@@ -15,7 +15,7 @@ class UserSedder extends Seeder
     public function run(): void
     {
         $users = [
-            ['username' => 'admin1', 'full_name' => 'Admin One', 'email' => 'admin1@example.com', 'no_telp' => '081234567890', 'role' => 'admin'],
+            ['username' => 'chaa', 'full_name' => 'Chaeza Ibnu Akbar', 'email' => 'chaezaibnuakbar@gmail.com', 'no_telp' => '081234567890', 'role' => 'admin'],
             ['username' => 'admin2', 'full_name' => 'Admin Two', 'email' => 'admin2@example.com', 'no_telp' => '081234567891', 'role' => 'admin'],
             ['username' => 'admin3', 'full_name' => 'Admin Three', 'email' => 'admin3@example.com', 'no_telp' => '081234567892', 'role' => 'admin'],
             ['username' => 'kasir1', 'full_name' => 'Kasir One', 'email' => 'kasir1@example.com', 'no_telp' => '081234567893', 'role' => 'kasir'],
@@ -30,7 +30,7 @@ class UserSedder extends Seeder
         foreach ($users as $userData) {
             User::create(array_merge($userData, [
                 'password' => "password",
-                'created_at' => Carbon::now()->subMonths(rand(1, 5)),
+                'created_at' => Carbon::now()->subMonths(rand(1, 8)),
                 'updated_at' => Carbon::now(),
             ]));
         }
