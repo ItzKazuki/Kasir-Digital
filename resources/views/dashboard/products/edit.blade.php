@@ -8,7 +8,8 @@
                     Buat Produk Baru
                 </h3>
             </div>
-            <form action="{{ route('dashboard.products.update', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('dashboard.products.update', ['product' => $product->id]) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="p-6.5">
@@ -16,7 +17,8 @@
                         <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                             Nama Produk <span class="text-red-600">*</span>
                         </label>
-                        <input type="text" placeholder="contoh: Nasi Padang" name="name_product" required value="{{ $product->name }}"
+                        <input type="text" placeholder="contoh: Nasi Padang" name="name_product" required
+                            value="{{ $product->name }}"
                             class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
                         @error('name_product')
                             <div class="mt-1 text-red-600">
@@ -37,7 +39,10 @@
                                         Pilih kategori produk
                                     </option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" class="text-body">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}"
+                                            {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -69,7 +74,10 @@
                                         Pilih diskon produk
                                     </option>
                                     @foreach ($discounts as $discount)
-                                        <option value="{{ $discount->id }}" class="text-body">{{ $discount->name }}</option>
+                                        <option value="{{ $discount->id }}"
+                                            {{ $product->discount_id == $discount->id ? 'selected' : '' }}>
+                                            {{ $discount->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -96,7 +104,8 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Harga <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" placeholder="Enter your first name" required name="price" value="{{ $product->price }}"
+                            <input type="number" placeholder="Enter your first name" required name="price"
+                                value="{{ $product->price }}"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('price')
                                 <div class="mt-1 text-red-600">
@@ -108,7 +117,8 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Stok <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" placeholder="Enter your first name" required name="stock" value="{{ $product->stock }}"
+                            <input type="number" placeholder="Enter your first name" required name="stock"
+                                value="{{ $product->stock }}"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('stock')
                                 <div class="mt-1 text-red-600">
@@ -120,7 +130,8 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Expired at
                             </label>
-                            <input type="date" placeholder="Enter your first name" name="expired_at" value="{{ $product->expired_at }}"
+                            <input type="date" placeholder="Enter your first name" name="expired_at"
+                                value="{{ $product->expired_at }}"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('product_img')
                                 <div class="mt-1 text-red-600">
