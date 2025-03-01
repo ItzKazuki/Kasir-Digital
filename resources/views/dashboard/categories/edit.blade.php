@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="px-30 flex flex-row gap-5 justify-center items-center">
-                        <a href="{{ back() }}"
+                        <a href="{{ url()->previous() }}"
                             class="flex px-15 justify-center rounded border-black border-2 p-3 font-medium text-gray hover:bg-opacity-90">
                             Back
                         </a>
