@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\MemberStatus;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 
 class MemberController extends Controller
 {
@@ -33,7 +35,20 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $memberDetail = $request->validate([
+            'full_name' => 'required|min:3',
+            'phone_number' => 'required|numeric',
+            'point' => 'required|numeric',
+            'email' => 'required|email:dns',
+            'status' => ['required', Rule::enum(MemberStatus::class)]
+        ]);
+
+        Member::create(array_merge($memberDetail, [
+            'no_telp' => $memberDetail['phone_number']
+        ]));
+
+        Sweetalert::success('berhasil menabah member baru', 'Tambah Member Berhasil!');
+        return redirect()->route('dashboard.members.index');
     }
 
     /**
@@ -58,7 +73,20 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $memberDetail = $request->validate([
+            'full_name' => 'required|min:3',
+            'phone_number' => 'required|numeric',
+            'point' => 'required|numeric',
+            'email' => 'required|email:dns',
+            'status' => ['required', Rule::enum(MemberStatus::class)]
+        ]);
+
+        $member->update(array_merge($memberDetail, [
+            'no_telp' => $memberDetail['phone_number']
+        ]));
+
+        Sweetalert::success('berhasil mengubah detail member', 'Ubah Member Berhasil!');
+        return redirect()->route('dashboard.members.index');
     }
 
     /**

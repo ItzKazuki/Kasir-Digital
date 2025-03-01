@@ -4,9 +4,14 @@
         <!-- ====== Table One Start -->
         <div
             class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
-                Member
-            </h4>
+            <div class="flex justify-between items-center">
+                <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
+                    Member
+                </h4>
+                <a href="{{ route('dashboard.members.create') }}" class="flex font-bold justify-center rounded bg-red-600 px-6 py-2 text-white hover:bg-red-700">
+                    Tambah Member
+                </a>
+            </div>
 
             <div class="flex flex-col">
                 <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-7">
