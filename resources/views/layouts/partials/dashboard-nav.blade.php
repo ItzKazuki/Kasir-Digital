@@ -241,7 +241,7 @@
                                 <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                     <li>
                                         <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions') ? 'text-red-600' : '' }} hover:text-red-600"
-                                            href="">Daftar Transaksi
+                                            href="{{ route('dashboard.transactions.index') }}">Daftar Transaksi
                                         </a>
                                     </li>
                                     <li>
