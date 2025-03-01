@@ -69,6 +69,6 @@ class UserController extends Controller
         $user->delete();
 
         Sweetalert::success('berhasil menghapus user dengan id: ' . $user->id, 'Hapus Berhasil');
-        return redirect()->route('dashboard.users.index');
+        return back();
     }
 }

@@ -71,7 +71,7 @@ class ProductController extends Controller
         Product::create($dataProduk);
 
         Sweetalert::success('berhasil menabah produk baru', 'Tambah Produk Berhasil!');
-        return redirect()->route('dashboard.products.index');
+        return back();
     }
 
     /**
@@ -137,7 +137,7 @@ class ProductController extends Controller
         $product->save();
 
         Sweetalert::success('berhasil menabah produk baru', 'Tambah Produk Berhasil!');
-        return redirect()->route('dashboard.products.index');
+        return back();
     }
 
     /**
@@ -149,6 +149,6 @@ class ProductController extends Controller
         $product->delete();
 
         Sweetalert::success('berhasil menghapus product dengan id: ' . $product->id, 'Hapus Berhasil');
-        return redirect()->route('dashboard.products.index');
+        return back();
     }
 }

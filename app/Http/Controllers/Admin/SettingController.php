@@ -48,7 +48,7 @@ class SettingController extends Controller
         $user->save();
 
         Sweetalert::success('berhasil mengubah detail account', 'Ubah Profile Berhasil!');
-        return redirect()->route('dashboard.settings');
+        return back();
     }
 
     public function updateProfile(Request $request, User $user)
@@ -76,7 +76,7 @@ class SettingController extends Controller
         $user->save();
 
         Sweetalert::success('berhasil mengubah gambar profile', 'Ubah Profile Berhasil!');
-        return redirect()->route('dashboard.settings');
+        return back();
     }
 
     public function deleteProfile(Request $request, User $user)
@@ -87,6 +87,6 @@ class SettingController extends Controller
         $user->save();
 
         Sweetalert::success('berhasil menghapus gambar profile', 'Hapus Profile Berhasil!');
-        return redirect()->route('dashboard.settings');
+        return back();
     }
 }
