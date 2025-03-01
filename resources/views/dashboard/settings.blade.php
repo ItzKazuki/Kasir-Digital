@@ -155,10 +155,10 @@
                             <div>
                                 <span class="mb-1 font-medium text-black dark:text-white">Edit your photo</span>
                                 <span class="flex gap-2">
-                                    <form action="{{ route('dashboard.settings.delete-profile', ['user' => $user->id]) }}" method="POST">
+                                    <form id="update-profile-{{ $user->id }}" action="{{ route('dashboard.settings.delete-profile', ['user' => $user->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-sm text-gray-600 font-medium hover:text-blue-600">
+                                        <button type="button" onclick="showModal('update-profile-{{ $user->id }}')" class="text-sm text-gray-600 font-medium hover:text-blue-600">
                                             Delete
                                         </button>
                                     </form>
@@ -232,3 +232,61 @@
         <!-- ====== Settings Section End -->
     </div>
 @endsection
+
+@push('modals')
+    <!-- Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideModal()"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                            <svg class="size-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Hapus Foto Profile?</h3>
+                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to delete this profile picture? This action
+                                cannot be undone.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                    <button id="confirmDeleteBtn" type="button"
+                        class="w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Hapus</button>
+                    <button onclick="hideModal()"
+                        class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
+@push('scripts')
+    <script>
+        let deleteFormId = '';
+
+        function showModal(formId) {
+            deleteFormId = formId;
+            document.getElementById('deleteConfirmModal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('deleteConfirmModal').classList.add('hidden');
+        }
+
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
+            if (deleteFormId) {
+                document.getElementById(deleteFormId).submit();
+            }
+        });
+    </script>
+@endpush

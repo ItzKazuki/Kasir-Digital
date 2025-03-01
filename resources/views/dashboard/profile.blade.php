@@ -28,8 +28,9 @@
             <div class="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
                 <div
                     class="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-                    <form id="changeProfilePicture" action="{{ route('dashboard.settings.update-profile', ['user' => auth()->user()->id]) }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form id="changeProfilePicture"
+                        action="{{ route('dashboard.settings.update-profile', ['user' => auth()->user()->id]) }}"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
                         <div class="relative drop-shadow-2">
@@ -47,10 +48,11 @@
                                         d="M7.00004 5.83329C6.03354 5.83329 5.25004 6.61679 5.25004 7.58329C5.25004 8.54979 6.03354 9.33329 7.00004 9.33329C7.96654 9.33329 8.75004 8.54979 8.75004 7.58329C8.75004 6.61679 7.96654 5.83329 7.00004 5.83329ZM4.08337 7.58329C4.08337 5.97246 5.38921 4.66663 7.00004 4.66663C8.61087 4.66663 9.91671 5.97246 9.91671 7.58329C9.91671 9.19412 8.61087 10.5 7.00004 10.5C5.38921 10.5 4.08337 9.19412 4.08337 7.58329Z"
                                         fill="" />
                                 </svg>
-                                <input type="file" accept="image/*" name="profile_img" id="profile" class="sr-only" onchange="showModal();" />
+                                <input type="file" accept="image/*" name="profile_img" id="profile" class="sr-only"
+                                    onchange="showModal();" />
                             </label>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="mt-4">
@@ -83,46 +85,54 @@
 @endsection
 
 @push('modals')
-<!-- Modal -->
-<div id="modal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-  <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideModal()"></div>
+    <!-- Modal -->
+    <div id="modalUpdateProfile" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideModal()"></div>
 
-  <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
-    <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
-      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-        <div class="sm:flex sm:items-start">
-          <div class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
-            <svg class="size-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-            </svg>
-          </div>
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Ubah Foto Profile</h3>
-            <p class="text-sm text-gray-500 mt-2">Are you sure you want to change your profile picture? This action cannot be undone.</p>
-          </div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+                            <svg class="size-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Ubah Foto Profile</h3>
+                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to change your profile picture? This
+                                action cannot be undone.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                    <button id="confirmUpdateProfileBtn" type="button"
+                        class="w-full sm:w-auto px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500">Update</button>
+                    <button onclick="hideModal()"
+                        class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
-        <button onclick="submitChange();" type="button" class="w-full sm:w-auto px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500">Update</button>
-        <button onclick="hideModal()" class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
-      </div>
     </div>
-  </div>
-</div>
 @endpush
 
 @push('scripts')
-<script>
-    function showModal() {
-      document.getElementById('modal').classList.remove('hidden');
-    }
-  
-    function hideModal() {
-      document.getElementById('modal').classList.add('hidden');
-    }
+    <script>
+        function showModal() {
+            document.getElementById('modalUpdateProfile').classList.remove('hidden');
+        }
 
-    function submitChange() {
-        document.getElementById('changeProfilePicture').submit();
-    }
-  </script>
+        function hideModal() {
+            document.getElementById('modalUpdateProfile').classList.add('hidden');
+        }
+
+        document.getElementById("confirmUpdateProfileBtn").addEventListener("click", function() {
+            document.getElementById('changeProfilePicture').submit();
+        });
+    </script>
 @endpush
