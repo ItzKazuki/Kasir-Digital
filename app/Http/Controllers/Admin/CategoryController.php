@@ -33,7 +33,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories,name',
+            'description' => 'string'
+        ]);
+
+        Category::create($request->all());
+
+        Sweetalert::success('berhasil menabah kategori baru', 'Tambah Kategori Berhasil!');
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -58,7 +66,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories,name,' . $category->id,
+            'description' => 'string'
+        ]);
+
+        $category->update($request->all());
+
+        Sweetalert::success('berhasil mengubah kategori baru', 'Ubah Kategori Berhasil!');
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
