@@ -39,7 +39,7 @@
                 <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-7">
                     <div class="flex items-center gap-3 p-2 xl:p-5 col-span-2">
                         <div class="flex-shrink-0">
-                            <img class="w-30" src="{{ Storage::url('static/images/products/' . $product->image_url) }}"
+                            <img class="w-30" src="{{ $product->product_image }}"
                                 alt="Brand" />
                         </div>
                         <p class="hidden font-medium text-black dark:text-white sm:block">
