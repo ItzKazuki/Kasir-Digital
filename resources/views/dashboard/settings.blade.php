@@ -52,7 +52,7 @@
                                             </svg>
                                         </span>
                                         <input
-                                            class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-blue-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-blue-600"
+                                            class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
                                             type="text" name="full_name" id="full_name" placeholder="Jhon Doe"
                                             value="{{ $user->full_name }}" />
                                     </div>
@@ -67,7 +67,7 @@
                                     <label class="mb-3 block text-sm font-medium text-black dark:text-white"
                                         for="phoneNumber">Phone Number</label>
                                     <input
-                                        class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-blue-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-blue-600"
+                                        class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
                                         type="tel" pattern="08[0-9]{8,11}" name="phone_number" id="full_name"
                                         placeholder="08XXXXXXXXXX" value="{{ $user->no_telp }}" />
                                     @error('phone_number')
@@ -96,7 +96,7 @@
                                         </svg>
                                     </span>
                                     <input
-                                        class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-blue-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-blue-600"
+                                        class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
                                         type="email" name="email" id="email" placeholder="someone@domain.com"
                                         value="{{ $user->email }}" />
                                 </div>
@@ -111,7 +111,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white"
                                     for="username">Username</label>
                                 <input
-                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-blue-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-blue-600"
+                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
                                     type="text" name="username" id="username" placeholder="yourname"
                                     value="{{ $user->username }}" />
                                 @error('username')

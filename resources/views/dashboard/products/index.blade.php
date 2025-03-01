@@ -4,13 +4,18 @@
         <!-- ====== Table One Start -->
         <div
             class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
-                Products
-            </h4>
+            <div class="flex justify-between items-center">
+                <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
+                    Products
+                </h4>
+                <a href="{{ route('dashboard.products.create') }}" class="flex font-bold justify-center rounded bg-red-600 px-6 py-2 text-white hover:bg-red-700">
+                    Tambah Produk
+                </a>
+            </div>
 
             <div class="flex flex-col">
-                <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-6">
-                    <div class="p-2 xl:p-5">
+                <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-7">
+                    <div class="p-2 xl:p-5 col-span-2">
                         <h5 class="text-sm font-medium uppercase xsm:text-base">Nama Produk</h5>
                     </div>
                     <div class="p-2 text-center xl:p-5">
@@ -31,10 +36,10 @@
                 </div>
 
                 @foreach ($products as $product)
-                    <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-6">
-                        <div class="flex items-center gap-3 p-2 xl:p-5">
+                    <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-7">
+                        <div class="flex items-center gap-3 p-2 xl:p-5 col-span-2">
                             <div class="flex-shrink-0">
-                                <img src="src/images/brand/brand-01.svg" alt="Brand" />
+                                <img class="w-30" src="{{ Storage::url('static/images/products/' . $product->image_url) }}" alt="Brand" />
                             </div>
                             <p class="hidden font-medium text-black dark:text-white sm:block">
                                 {{ $product->name }}
@@ -57,7 +62,7 @@
                             @if ($product->expired_at == null)
                                 <p
                                     class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100">
-                                    produk tidak expired
+                                    tidak expired
                                 </p>
                             @else
                                 <p
