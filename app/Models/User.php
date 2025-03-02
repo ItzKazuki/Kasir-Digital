@@ -3,10 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Order;
+use Illuminate\Support\Str;
+use Laravolt\Avatar\Avatar;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\CustomResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -51,10 +57,28 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new CustomResetPassword($token));
+    }
+
     // Mutator untuk hashing password
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    // Accessor untuk membuat field baru namun field lamanya tidak berubah
+    public function getProfileImageAttribute()
+    {
+        return $this->profile_img
+            ? Storage::url('static/images/profiles/' . $this->profile_img)
+            : null;
     }
 
     // Relasi: User (kasir/admin) bisa menangani banyak order

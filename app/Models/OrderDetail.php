@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Observers\OrderDetailObserver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrderDetail extends Model
 {
@@ -15,6 +16,17 @@ class OrderDetail extends Model
         'quantity',
         'total_price',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(OrderDetailObserver::class);
+    }
+
+    public function setTotalPriceAttribute($value)
+    {
+        $this->attributes['total_price'] = $this->attributes['quantity'] * $this->product->price;
+    }
 
     // Relasi: Order Detail milik satu order
     public function order()
@@ -28,4 +40,3 @@ class OrderDetail extends Model
         return $this->belongsTo(Product::class);
     }
 }
-
