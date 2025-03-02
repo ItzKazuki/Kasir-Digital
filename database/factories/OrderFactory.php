@@ -23,8 +23,6 @@ class OrderFactory extends Factory
             'user_id' => User::inRandomOrder()->value('id') ?? User::factory(),
             'member_id' => Member::inRandomOrder()->value('id') ?? Member::factory(),
             'order_date' => $this->faker->dateTimeBetween('-3 year', 'now'),
-            'total_items' => $this->faker->numberBetween(1, 100),
-            'total_price' => $this->faker->randomFloat(2, 10, 1000),
             'discount_id' => Discount::inRandomOrder()->value('id') ?? null,
             'created_at' => now(),
             'updated_at' => now(),
