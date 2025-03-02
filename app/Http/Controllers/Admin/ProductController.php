@@ -40,12 +40,13 @@ class ProductController extends Controller
     {
         $productDetail = $request->validate([
             'name_product' => 'required|min:3',
+            'barcode' => 'nullable',
             'category_id' => 'required|exists:categories,id',
+            'discount_id' => 'nullable',
             'price' => 'required|numeric',
             'stock' => 'required',
-            'expired_at' => 'date',
+            'expired_at' => 'nullable|date',
             'product_img' => 'required|mimes:png,jpg|max:2048',
-            'discount_id' => ''
         ]);
 
         // upload image products
@@ -54,6 +55,7 @@ class ProductController extends Controller
 
         $dataProduk = [
             'name' => $productDetail['name_product'],
+            'barcode' => $productDetail['barcode'],
             'category_id' => $productDetail['category_id'],
             'price' => $productDetail['price'],
             'stock' => $productDetail['stock'],
@@ -71,7 +73,7 @@ class ProductController extends Controller
         Product::create($dataProduk);
 
         Sweetalert::success('berhasil menabah produk baru', 'Tambah Produk Berhasil!');
-        return back();
+        return redirect()->route('dashboard.products.index');
     }
 
     /**
@@ -100,15 +102,17 @@ class ProductController extends Controller
     {
         $productDetail = $request->validate([
             'name_product' => 'required|min:3',
+            'barcode' => 'nullable',
             'category_id' => 'required|numeric|exists:categories,id',
+            'discount_id' => 'nullable',
             'price' => 'required|numeric',
             'stock' => 'required',
-            'expired_at' => 'date',
+            'expired_at' => 'nullable|date',
             'product_img' => 'required|mimes:png,jpg|max:2048',
-            'discount_id' => ''
         ]);
 
         $product->name = $productDetail['name_product'];
+        $product->barcode = $productDetail['barcode'];
         $product->category_id = $productDetail['category_id'];
         $product->price = $productDetail['price'];
         $product->stock = $productDetail['stock'];
@@ -137,7 +141,7 @@ class ProductController extends Controller
         $product->save();
 
         Sweetalert::success('berhasil menabah produk baru', 'Tambah Produk Berhasil!');
-        return back();
+        return redirect()->route('dashboard.products.index');
     }
 
     /**

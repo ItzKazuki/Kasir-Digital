@@ -359,7 +359,7 @@
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
-                    <button id="confirmDeleteBtn" type="button"
+                    <button id="confirmLogoutBtn" type="button"
                         class="w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Logout</button>
                     <button onclick="hideLogoutModal()"
                         class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
@@ -415,7 +415,7 @@
             document.getElementById('logoutConfirmModal').classList.add('hidden');
         }
 
-        document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
+        document.getElementById("confirmLogoutBtn").addEventListener("click", function() {
                 document.getElementById('logoutForm').submit();
         });
     </script>

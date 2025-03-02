@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -11,6 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'barcode',
         'category_id',
         'discount_id',
         'price',
@@ -18,6 +20,12 @@ class Product extends Model
         'image_url',
         'description',
     ];
+
+    // Accessor untuk membuat field baru namun field lamanya tidak berubah
+    public function getProductImageAttribute()
+    {
+        return $this->image_url ? Storage::url('static/images/products/' . $this->image_url) : "";
+    }
 
     // Relasi: Produk milik satu kategori
     public function category()

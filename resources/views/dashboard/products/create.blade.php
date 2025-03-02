@@ -11,20 +11,47 @@
             <form action="{{ route('dashboard.products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="p-6.5">
-                    <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                            Nama Produk <span class="text-red-600">*</span>
-                        </label>
-                        <input type="text" placeholder="contoh: Nasi Padang" name="name_product" required
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
-                        @error('name_product')
-                            <div class="mt-1 text-red-600">
-                                <p class="text-xs">{{ $message }}</p>
-                            </div>
-                        @enderror
+                    <div class="mb-4 flex flex-col gap-6 xl:flex-row">
+                        <div class="w-full xl:w-2/1">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Nama Produk <span class="text-red-600">*</span>
+                            </label>
+                            <input type="text" placeholder="contoh: Nasi Padang" name="name_product" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                            @error('name_product')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+
+                        <!-- Tombol yang akan dihapus -->
+                        <div class="w-full xl:w-1/2" id="buttonContainer">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Ada Barcode? <span class="text-red-600">*</span>
+                            </label>
+                            <button id="toggleButton" type="button"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default">
+                                Input barcode
+                            </button>
+                        </div>
+
+                        <!-- Input Barcode (Hidden by default) -->
+                        <div class="w-full xl:w-1/2" id="barcodeInputContainer" style="display: none;">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Barcode Barang <span class="text-red-600">*</span>
+                            </label>
+                            <input type="text" id="barcodeInput" placeholder="contoh: 8997204401776" name="barcode"
+                                class="w-full cursor-pointer rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                            @error('barcode_product')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div class="mb-4 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Kategori <span class="text-red-600">*</span>
@@ -32,11 +59,12 @@
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="category_id"
                                     class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
-                                    <option value="" class="text-body">
+                                    <option value="" class="text-gray-800">
                                         Pilih kategori produk
                                     </option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" class="text-body">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" class="text-gray-800">{{ $category->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -64,11 +92,12 @@
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="discount_id"
                                     class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
-                                    <option value="" class="text-body">
+                                    <option value="" class="text-gray-800">
                                         Pilih diskon produk
                                     </option>
                                     @foreach ($discounts as $discount)
-                                        <option value="{{ $discount->id }}" class="text-body">{{ $discount->name }}</option>
+                                        <option value="{{ $discount->id }}" class="text-gray-800">{{ $discount->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -90,7 +119,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div class="mb-4 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Harga <span class="text-red-600">*</span>
@@ -129,12 +158,12 @@
                         </div>
                     </div>
 
-                    <div class="mb-4.5">
+                    <div class="mb-4">
                         <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                             Attach file <span class="text-red-600">*</span>
                         </label>
                         <input type="file" name="product_img"
-                            class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-white file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-red-600"
+                            class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-100 file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-red-600"
                             required />
                         @error('product_img')
                             <div class="mt-1 text-red-600">
@@ -166,3 +195,18 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.getElementById("toggleButton").addEventListener("click", function() {
+            // Hapus div tombol sepenuhnya
+            document.getElementById("buttonContainer").remove();
+
+            // Tampilkan input barcode
+            document.getElementById("barcodeInputContainer").style.display = "block";
+
+            let barcodeInput = document.getElementById("barcodeInput");
+            barcodeInput.focus();
+        });
+    </script>
+@endpush

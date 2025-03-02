@@ -4,40 +4,64 @@
         <!-- Contact Form -->
         <div class="rounded-sm border border-gray-300 bg-white shadow-md dark:border-gray-300dark dark:bg-boxdark">
             <div class="border-b border-gray-300 px-6 py-4 dark:border-gray-300dark">
-                <h3 class="font-medium text-black dark:text-white">
-                    Buat Produk Baru
+                <h3 class="font-medium text-gray-800 dark:text-white">
+                    Edit Produk {{ $product->name }}
                 </h3>
             </div>
-            <form action="{{ route('dashboard.products.update', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('dashboard.products.update', ['product' => $product->id]) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="p-6.5">
-                    <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                            Nama Produk <span class="text-red-600">*</span>
-                        </label>
-                        <input type="text" placeholder="contoh: Nasi Padang" name="name_product" required value="{{ $product->name }}"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
-                        @error('name_product')
-                            <div class="mt-1 text-red-600">
-                                <p class="text-xs">{{ $message }}</p>
+                    <div class="mb-4 flex flex-col gap-6 xl:flex-row">
+                        <div class="w-full xl:w-2/1">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
+                                Nama Produk <span class="text-red-600">*</span>
+                            </label>
+                            <input type="text" placeholder="contoh: Nasi Padang" name="name_product"
+                                value="{{ $product->name }}" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                            @error('name_product')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+
+                        @if ($product->barcode)
+                            <div class="w-full xl:w-1/2" id="barcodeInputContainer">
+                                <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
+                                    Barcode Barang <span class="text-red-600">*</span>
+                                </label>
+                                <input type="text" id="barcodeInput" placeholder="contoh: 8997204401776" name="barcode"
+                                    value="{{ $product->barcode }}" readonly
+                                    class="w-full cursor-pointer rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-500 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                                @error('barcode_product')
+                                    <div class="mt-1 text-red-600">
+                                        <p class="text-xs">{{ $message }}</p>
+                                    </div>
+                                @enderror
                             </div>
-                        @enderror
+                        @endif
+
                     </div>
 
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                                 Kategori <span class="text-red-600">*</span>
                             </label>
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="category_id"
                                     class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
-                                    <option value="" class="text-body">
+                                    <option value="" class="text-gray-800">
                                         Pilih kategori produk
                                     </option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" class="text-body">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}"
+                                            {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -59,17 +83,20 @@
                         </div>
 
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                                 Diskon
                             </label>
                             <div class="relative z-20 bg-transparent dark:bg-form-input">
                                 <select name="discount_id"
                                     class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
-                                    <option value="" class="text-body">
+                                    <option value="" class="text-gray-800">
                                         Pilih diskon produk
                                     </option>
                                     @foreach ($discounts as $discount)
-                                        <option value="{{ $discount->id }}" class="text-body">{{ $discount->name }}</option>
+                                        <option value="{{ $discount->id }}"
+                                            {{ $product->discount_id == $discount->id ? 'selected' : '' }}>
+                                            {{ $discount->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <span class="absolute right-4 top-1/2 z-30 -translate-y-1/2">
@@ -93,11 +120,12 @@
 
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                                 Harga <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" placeholder="Enter your first name" required name="price" value="{{ $product->price }}"
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                            <input type="number" placeholder="Enter your first name" required name="price"
+                                value="{{ $product->price }}"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('price')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -105,11 +133,12 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                                 Stok <span class="text-red-600">*</span>
                             </label>
-                            <input type="number" placeholder="Enter your first name" required name="stock" value="{{ $product->stock }}"
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                            <input type="number" placeholder="Enter your first name" required name="stock"
+                                value="{{ $product->stock }}"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('stock')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -117,11 +146,12 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                                 Expired at
                             </label>
-                            <input type="date" placeholder="Enter your first name" name="expired_at" value="{{ $product->expired_at }}"
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                            <input type="date" placeholder="Enter your first name" name="expired_at"
+                                value="{{ $product->expired_at }}"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
                             @error('product_img')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -131,7 +161,7 @@
                     </div>
 
                     <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                             Attach file <span class="text-red-600">*</span>
                         </label>
                         <input type="file" name="product_img"
@@ -145,11 +175,11 @@
                     </div>
 
                     <div class="mb-6">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
                             Deskripsi
                         </label>
                         <textarea rows="6" placeholder="Masukan deskripsi mengenai produk"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600"></textarea>
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600"></textarea>
                     </div>
 
                     <div class="px-30 flex flex-row gap-5 justify-center items-center">
