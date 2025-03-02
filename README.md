@@ -151,3 +151,8 @@ Sistem kasir digital ini terdiri dari beberapa entitas utama:
 ## todo v0.2 (2025)
 - ubah konsep menjadi kasir digital
 
+
+# License
+This project is licensed under the GPL v3 License - see the [LICENSE](LICENSE) file for details.
+
+
