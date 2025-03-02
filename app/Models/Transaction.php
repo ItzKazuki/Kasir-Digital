@@ -17,6 +17,8 @@ class Transaction extends Model
         'payment_status',
     ];
 
+    public $timestamps = false;
+
     // Relasi: Transaksi terkait dengan satu order
     public function order()
     {

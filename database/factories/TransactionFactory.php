@@ -22,15 +22,16 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         $order = Order::inRandomOrder()->first() ?? Order::factory()->create();
+        $cash = '1200000';
 
         return [
             'order_id' => $order->id,
             'member_id' => Member::inRandomOrder()->value('id') ?? Member::factory(),
             'total_price' => $order->total_price, // Menggunakan total dari order terkait
-            'payment_method' => $this->faker->randomElement(['cash', 'debit', 'credit', 'ewallet']),
+            'payment_method' => 'cash',
             'payment_status' => $this->faker->randomElement(['paid', 'unpaid', 'pending']),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'cash' => $cash,
+            'cash_change' => $order->total_price - $cash,
         ];
     }
 }
