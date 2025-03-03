@@ -32,7 +32,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/products') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/products*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                             href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" class="fill-current" width="18" height="18"
                                 viewBox="0 0 448 512"
@@ -51,7 +51,7 @@
                             </svg>
                         </a>
                         <div
-                            class="translate transform overflow-hidden {{ request()->is('dashboard/products') ? '' : 'hidden' }}">
+                            class="translate transform overflow-hidden {{ request()->is('dashboard/products*') && !request()->is('dashboard/products/*/edit') ? '' : 'hidden' }}">
                             <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                 <li>
                                     <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/products') ? 'text-red-600' : '' }} hover:text-red-600"
@@ -68,7 +68,7 @@
                     </li>
 
                     <li>
-                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/categories') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/categories*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                             href="#">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 512 512" fill="none"
                                 xmlns="http://www.w3.org/2000/svg"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -86,7 +86,7 @@
                             </svg>
                         </a>
                         <div
-                            class="translate transform overflow-hidden {{ request()->is('dashboard/categories') ? '' : 'hidden' }}">
+                            class="translate transform overflow-hidden {{ request()->is('dashboard/categories*') && !request()->is('dashboard/categories/*/edit') ? '' : 'hidden' }}">
                             <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                 <li>
                                     <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/categories') ? 'text-red-600' : '' }} hover:text-red-600"
@@ -102,7 +102,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/discounts') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                        <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/discounts*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                             href="#">
                             <svg class="fill-current" width="18" height="18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +121,7 @@
                             </svg>
                         </a>
                         <div
-                            class="translate transform overflow-hidden {{ request()->is('dashboard/discounts') ? '' : 'hidden' }}">
+                            class="translate transform overflow-hidden {{ request()->is('dashboard/discounts*') && !request()->is('dashboard/discounts/*/edit') ? '' : 'hidden' }}">
                             <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                 <li>
                                     <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/discounts') ? 'text-red-600' : '' }} hover:text-red-600"
@@ -143,7 +143,7 @@
                     <h3 class="mb-4 ml-4 text-xl font-bold text-gray-800">Admin</h3>
                     <ul class="mb-6 flex flex-col gap-1">
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/members') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/members*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                                 href="#">
                                 <svg class="fill-current" width="18" height="18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@
                                 </svg>
                             </a>
                             <div
-                                class="translate transform overflow-hidden {{ request()->is('dashboard/members') ? '' : 'hidden' }}">
+                                class="translate transform overflow-hidden {{ request()->is('dashboard/members*') && !request()->is('dashboard/members/*/edit') ? '' : 'hidden' }}">
                                 <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                     <li>
                                         <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/members') ? 'text-red-600' : '' }} hover:text-red-600"
@@ -180,7 +180,7 @@
                         </li>
 
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/users') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/users*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                                 href="#">
                                 <svg class="fill-current" width="18" height="18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@
                                 </svg>
                             </a>
                             <div
-                                class="translate transform overflow-hidden {{ request()->is('dashboard/users') ? '' : 'hidden' }}">
+                                class="translate transform overflow-hidden {{ request()->is('dashboard/users*') && !request()->is('dashboard/users/*/edit') ? '' : 'hidden' }}">
                                 <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
                                     <li>
                                         <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/users') ? 'text-red-600' : '' }} hover:text-red-600"
@@ -217,7 +217,7 @@
                         </li>
 
                     <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                                 href="{{ route('dashboard.transactions.index') }}">
                                 <svg class="fill-current" width="18" height="18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +230,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/reports') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/reports*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
                                 href="">
                                 <svg class="fill-current" width="18" height="18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
