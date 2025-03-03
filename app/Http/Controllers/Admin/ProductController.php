@@ -46,12 +46,19 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required',
             'expired_at' => 'nullable|date',
-            'product_img' => 'required|mimes:png,jpg|max:2048',
+            'product_img' => 'required|string',
         ]);
 
+        // convert base64 image to file
+        $imageData = $request->input('product_img');
+        $imageData = str_replace('data:image/png;base64,', '', $imageData);
+        $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+        $imageData = str_replace(' ', '+', $imageData);
+        $imageData = base64_decode($imageData);
+
         // upload image products
-        $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.' . $request->file('product_img')->extension();
-        Storage::putFileAs('static/images/products', $request->file('product_img'), $imageName);
+        $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.png';
+        Storage::put('static/images/products/' . $imageName, $imageData);
 
         $dataProduk = [
             'name' => $productDetail['name_product'],
@@ -62,11 +69,11 @@ class ProductController extends Controller
             'image_url' => $imageName
         ];
 
-        if($productDetail['discount_id'] != null) {
+        if ($productDetail['discount_id'] != null) {
             $dataProduk['discount_id'] = $productDetail['discount_id'];
         }
 
-        if($productDetail['expired_at'] != null) {
+        if ($productDetail['expired_at'] != null) {
             $dataProduk['expired_at'] = $productDetail['expired_at'];
         }
 
@@ -108,7 +115,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required',
             'expired_at' => 'nullable|date',
-            'product_img' => 'required|mimes:png,jpg|max:2048',
+            'product_img' => 'required|string',
         ]);
 
         $product->name = $productDetail['name_product'];
@@ -117,30 +124,36 @@ class ProductController extends Controller
         $product->price = $productDetail['price'];
         $product->stock = $productDetail['stock'];
 
-        if($request->file('product_img')) {
+        if ($request->product_img) {
             // delete old image
-            if($product->image_url != null) {
+            if ($product->image_url != null) {
                 Storage::delete('static/images/products/' . $product->image_url);
             }
 
-            // store new image
-            // upload image products
-            $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.' . $request->file('product_img')->extension();
-            Storage::putFileAs('static/images/products', $request->file('product_img'), $imageName);
+            // convert base64 image to file
+            $imageData = $request->input('product_img');
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $imageData = base64_decode($imageData);
+
+            // upload new image products
+            $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.png';
+            Storage::put('static/images/products/' . $imageName, $imageData);
             $product->image_url = $imageName;
         }
 
-        if($productDetail['discount_id'] != null) {
+        if ($productDetail['discount_id'] != null) {
             $product->discount_id = $productDetail['discount_id'];
         }
 
-        if($productDetail['expired_at'] != null) {
+        if ($productDetail['expired_at'] != null) {
             $product->expired_at = $productDetail['expired_at'];
         }
 
         $product->save();
 
-        Sweetalert::success('berhasil menabah produk baru', 'Tambah Produk Berhasil!');
+        Sweetalert::success('berhasil mengubah produk ' . $product->name, 'Tambah Produk Berhasil!');
         return redirect()->route('dashboard.products.index');
     }
 
