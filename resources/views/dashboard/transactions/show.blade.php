@@ -5,7 +5,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Transaksi: {{ $transaction->invoice_number }}
         </h2>
 
@@ -29,9 +29,9 @@
             <!-- Contact Form -->
             @if ($transaction->member)
                 <div
-                    class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                    <div class="border-b border-gray-300 px-6.5 py-4 dark:border-gray-300dark">
-                        <h3 class="font-medium text-black dark:text-white">
+                    class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                    <div class="border-b border-gray-300 px-6.5 py-4  ">
+                        <h3 class="font-medium text-black  ">
                             Detail Member
                         </h3>
                     </div>
@@ -43,9 +43,9 @@
                     </div>
                 </div>
             @endif
-            <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                <div class="border-b border-gray-300 px-6.5 py-4 dark:border-gray-300dark">
-                    <h3 class="font-medium text-black dark:text-white">
+            <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                <div class="border-b border-gray-300 px-6.5 py-4  ">
+                    <h3 class="font-medium text-black  ">
                         Detail Order
                     </h3>
                 </div>
@@ -60,9 +60,9 @@
 
         <div class="flex flex-col gap-9">
             <!-- Sign In Form -->
-            <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                <div class="border-b border-gray-300 px-6.5 py-4 dark:border-gray-300dark">
-                    <h3 class="font-medium text-black dark:text-white">
+            <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                <div class="border-b border-gray-300 px-6.5 py-4  ">
+                    <h3 class="font-medium text-black  ">
                         Struk Pembayaran
                     </h3>
                 </div>

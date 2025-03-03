@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Daftar Produk
         </h2>
 
@@ -18,9 +18,9 @@
     <!-- Breadcrumb End -->
     <!-- ====== Table One Start -->
     {{-- <div
-        class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+        class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md     sm:px-7.5 xl:pb-1">
         <div class="flex justify-between items-center">
-            <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
+            <h4 class="mb-6 text-xl font-bold text-black  ">
                 Products
             </h4>
             <a href="{{ route('dashboard.products.create') }}"
@@ -30,7 +30,7 @@
         </div>
 
         <div class="flex flex-col">
-            <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-7">
+            <div class="grid grid-cols-3 rounded-sm bg-gray-200   sm:grid-cols-7">
                 <div class="p-2 xl:p-5 col-span-2">
                     <h5 class="text-sm font-medium uppercase xsm:text-base">Nama Produk</h5>
                 </div>
@@ -52,18 +52,18 @@
             </div>
 
             @foreach ($products as $product)
-                <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-7">
+                <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-7">
                     <div class="flex items-center gap-3 p-2 xl:p-5 col-span-2">
                         <div class="flex-shrink-0">
                             <img class="w-30" src="{{ $product->product_image }}" alt="Brand" />
                         </div>
-                        <p class="hidden font-medium text-black dark:text-white sm:block">
+                        <p class="hidden font-medium text-black   sm:block">
                             {{ $product->name }}
                         </p>
                     </div>
 
                     <div class="flex items-center justify-center p-2 xl:p-5">
-                        <p class="font-medium text-black dark:text-white">{{ $product->category->name }}</p>
+                        <p class="font-medium text-black  ">{{ $product->category->name }}</p>
                     </div>
 
                     <div class="flex items-center justify-center p-2 xl:p-5">
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
-                        <p class="font-medium text-black dark:text-white">{{ $product->stock }}</p>
+                        <p class="font-medium text-black  ">{{ $product->stock }}</p>
                     </div>
 
                     <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
@@ -120,9 +120,9 @@
         </div>
     </div> --}}
     <!-- ====== Table Two Start -->
-    <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
+    <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
         <div class="flex justify-between items-center px-4 py-6 md:px-6 xl:px-7">
-            <h4 class="text-xl font-bold text-black dark:text-white">
+            <h4 class="text-xl font-bold text-black  ">
                 Products
             </h4>
             <a href="{{ route('dashboard.products.create') }}"
@@ -132,7 +132,7 @@
         </div>
 
         <div
-            class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5 dark:border-gray-300dark sm:grid-cols-9 md:px-6 2xl:px-7.5">
+            class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
             <div class="col-span-3 flex items-center">
                 <p class="font-medium">Nama Produk</p>
             </div>
@@ -155,26 +155,26 @@
 
         @foreach ($products as $product)
             <div
-                class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5 dark:border-gray-300dark sm:grid-cols-9 md:px-6 2xl:px-7.5">
+                class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
                 <div class="col-span-3 flex items-center">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div class="h-12.5 w-15 rounded-md">
                             <img src="src/images/product/product-01.png" alt="Product" />
                         </div>
-                        <p class="font-medium text-black dark:text-white">
+                        <p class="font-medium text-black  ">
                             {{ $product->name }}
                         </p>
                     </div>
                 </div>
                 <div class="col-span-2 hidden items-center sm:flex">
-                    <p class="font-medium text-black dark:text-white">{{ $product->category->name }}</p>
+                    <p class="font-medium text-black  ">{{ $product->category->name }}</p>
                 </div>
                 <div class="col-span-1 flex items-center">
-                    <p class="font-medium text-black dark:text-white">Rp. {{ number_format($product->price, 0, ',', '.') }}
+                    <p class="font-medium text-black  ">Rp. {{ number_format($product->price, 0, ',', '.') }}
                     </p>
                 </div>
                 <div class="col-span-1 flex items-center">
-                    <p class="font-medium text-black dark:text-white">{{ $product->stock }}</p>
+                    <p class="font-medium text-black  ">{{ $product->stock }}</p>
                 </div>
                 <div class="col-span-1 flex items-center">
                     <p class="font-medium text-meta-3">Rp. {{ number_format($product->estimasi_keuntungan, 0, ',', '.') }}

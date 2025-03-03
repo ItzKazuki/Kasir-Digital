@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-242.5">
         <!-- Breadcrumb Start -->
         <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-4xl font-bold text-black dark:text-white">
+            <h2 class="text-4xl font-bold text-black  ">
                 Profile
             </h2>
 
@@ -20,7 +20,7 @@
 
         <!-- ====== Profile Section Start -->
         <div
-            class="overflow-hidden rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
+            class="overflow-hidden rounded-sm border border-gray-300 bg-white shadow-default    ">
             <div class="relative z-20 h-35 md:h-65">
                 <img src="{{ asset('img/profile/cover-01.png') }}" alt="profile cover"
                     class="h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center" />
@@ -56,24 +56,24 @@
                     </form>
                 </div>
                 <div class="mt-4">
-                    <h3 class="mb-1.5 text-2xl font-medium text-black dark:text-white">
+                    <h3 class="mb-1.5 text-2xl font-medium text-black  ">
                         {{ auth()->user()->full_name }}
                     </h3>
                     <p class="font-medium">{{ ucfirst(auth()->user()->role) }}</p>
                     <div
-                        class="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-gray-300 py-2.5 shadow-1 dark:border-gray-300dark dark:bg-[#37404F]">
+                        class="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-gray-300 py-2.5 shadow-1    ">
                         <div
-                            class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4 dark:border-gray-300dark xsm:flex-row">
-                            <span class="font-semibold text-black dark:text-white">259</span>
+                            class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4   xsm:flex-row">
+                            <span class="font-semibold text-black  ">259</span>
                             <span class="text-sm">Product</span>
                         </div>
                         <div
-                            class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4 dark:border-gray-300dark xsm:flex-row">
-                            <span class="font-semibold text-black dark:text-white">129K</span>
+                            class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4   xsm:flex-row">
+                            <span class="font-semibold text-black  ">129K</span>
                             <span class="text-sm">Transaction</span>
                         </div>
                         <div class="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                            <span class="font-semibold text-black dark:text-white">2K</span>
+                            <span class="font-semibold text-black  ">2K</span>
                             <span class="text-sm">Following</span>
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Edit Member
         </h2>
 
@@ -19,9 +19,9 @@
     <!-- Breadcrumb End -->
     <div class="flex flex-col gap-9">
         <!-- Contact Form -->
-        <div class="rounded-sm border border-gray-300 bg-white shadow-md dark:border-gray-300dark dark:bg-boxdark">
-            <div class="border-b border-gray-300 px-6 py-4 dark:border-gray-300dark">
-                <h3 class="font-medium text-black dark:text-white">
+        <div class="rounded-sm border border-gray-300 bg-white shadow-md    ">
+            <div class="border-b border-gray-300 px-6 py-4  ">
+                <h3 class="font-medium text-black  ">
                     Edit Member {{ $member->full_name }}
                 </h3>
             </div>
@@ -31,11 +31,11 @@
                 <div class="p-6.5">
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Nama Lengkap <span class="text-red-600">*</span>
                             </label>
                             <input type="text" placeholder="Jhon doe" name="full_name" value="{{ $member->full_name }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
                             @error('full_name')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -43,11 +43,11 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Nomor Telepon <span class="text-red-600">*</span>
                             </label>
                             <input ype="tel" pattern="08[0-9]{8,11}" placeholder="08XXXXXXXXX" name="phone_number" value="{{ $member->no_telp }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
                             @error('phone_number')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -55,11 +55,11 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Point <span class="text-red-600">*</span>
                             </label>
                             <input type="number" placeholder="contoh: 12000" name="point" value="{{ $member->point }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
                             @error('point')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -70,7 +70,7 @@
 
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Email <span class="text-red-600">*</span>
                             </label>
                             <input type="email" placeholder="someone@yourdomain.com" required name="email" value="{{ $member->email }}"
@@ -82,12 +82,12 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Status <span class="text-red-600">*</span>
                             </label>
-                            <div class="relative z-20 bg-transparent dark:bg-form-input">
+                            <div class="relative z-20 bg-transparent  ">
                                 <select name="status" value="{{ $member->status }}"
-                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
+                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600      ">
                                     <option value="" class="text-body" {{ $member->status === null ? 'selected' : '' }}>
                                         Pilih status member
                                     </option>

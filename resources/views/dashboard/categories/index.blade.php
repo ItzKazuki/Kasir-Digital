@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Daftar Kategori
         </h2>
 
@@ -19,9 +19,9 @@
     <div class="flex flex-col gap-10">
         <!-- ====== Table One Start -->
         <div
-            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md     sm:px-7.5 xl:pb-1">
             <div class="flex justify-between items-center mb-2">
-                <h4 class="text-xl font-bold text-black justify-center text-center dark:text-white">
+                <h4 class="text-xl font-bold text-black justify-center text-center  ">
                     Kategori
                 </h4>
                 <a href="{{ route('dashboard.categories.create') }}"
@@ -31,7 +31,7 @@
             </div>
 
             <div class="flex flex-col">
-                <div class="grid grid-cols-3 rounded-sm bg-gray-200 dark:bg-meta-4 sm:grid-cols-5">
+                <div class="grid grid-cols-3 rounded-sm bg-gray-200   sm:grid-cols-5">
                     <div class="p-2 xl:p-4">
                         <h5 class="text-sm font-medium uppercase xsm:text-base">#</h5>
                     </div>
@@ -50,18 +50,18 @@
                 </div>
 
                 @foreach ($categories as $category)
-                    <div class="grid grid-cols-3 border-b border-gray-300 dark:border-gray-300dark sm:grid-cols-5">
+                    <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-5">
                         <div class="flex items-center p-2 xl:p-2">
-                            <p class="font-medium text-black dark:text-white">{{ $category->id }}</p>
+                            <p class="font-medium text-black  ">{{ $category->id }}</p>
                         </div>
                         <div class="flex items-center gap-3 p-2 xl:p-5">
-                            <p class="hidden font-medium text-black dark:text-white sm:block">
+                            <p class="hidden font-medium text-black   sm:block">
                                 {{ $category->name }}
                             </p>
                         </div>
 
                         <div class="flex items-center justify-center p-2 xl:p-5">
-                            {{-- <p class="font-medium text-black dark:text-white">{{ $category->category->name }}</p> --}}
+                            {{-- <p class="font-medium text-black  ">{{ $category->category->name }}</p> --}}
                         </div>
 
                         <div class="flex items-center justify-center p-2 xl:p-5">

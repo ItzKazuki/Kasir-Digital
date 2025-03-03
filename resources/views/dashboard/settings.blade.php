@@ -3,7 +3,7 @@
     <div class="mx-auto max-w-270">
         <!-- Breadcrumb Start -->
         <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-3xl font-bold text-black dark:text-white">
+            <h2 class="text-3xl font-bold text-black  ">
                 Settings
             </h2>
 
@@ -22,9 +22,9 @@
         <div class="grid grid-cols-5 gap-8">
             <div class="col-span-5 xl:col-span-3">
                 <div
-                    class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                    <div class="border-b border-gray-300 px-7 py-4 dark:border-gray-300dark">
-                        <h3 class="font-medium text-black dark:text-white">
+                    class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                    <div class="border-b border-gray-300 px-7 py-4  ">
+                        <h3 class="font-medium text-black  ">
                             Personal Information
                         </h3>
                     </div>
@@ -34,7 +34,7 @@
                             @method('PUT')
                             <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                                 <div class="w-full sm:w-1/2">
-                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white"
+                                    <label class="mb-3 block text-sm font-medium text-black  "
                                         for="fullName">Full Name</label>
                                     <div class="relative">
                                         <span class="absolute left-4 top-4">
@@ -51,7 +51,7 @@
                                             </svg>
                                         </span>
                                         <input
-                                            class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
+                                            class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                             type="text" name="full_name" id="full_name" placeholder="Jhon Doe"
                                             value="{{ $user->full_name }}" />
                                     </div>
@@ -63,10 +63,10 @@
                                 </div>
 
                                 <div class="w-full sm:w-1/2">
-                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white"
+                                    <label class="mb-3 block text-sm font-medium text-black  "
                                         for="phoneNumber">Phone Number</label>
                                     <input
-                                        class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
+                                        class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                         type="tel" pattern="08[0-9]{8,11}" name="phone_number" id="full_name"
                                         placeholder="08XXXXXXXXXX" value="{{ $user->no_telp }}" />
                                     @error('phone_number')
@@ -78,7 +78,7 @@
                             </div>
 
                             <div class="mb-5.5">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"
+                                <label class="mb-3 block text-sm font-medium text-black  "
                                     for="emailAddress">Email Address</label>
                                 <div class="relative">
                                     <span class="absolute left-4 top-4">
@@ -95,7 +95,7 @@
                                         </svg>
                                     </span>
                                     <input
-                                        class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
+                                        class="w-full rounded border border-gray-300 bg-gray-200 py-3 pl-11.5 pr-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                         type="email" name="email" id="email" placeholder="someone@domain.com"
                                         value="{{ $user->email }}" />
                                 </div>
@@ -107,10 +107,10 @@
                             </div>
 
                             <div class="mb-5.5">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white"
+                                <label class="mb-3 block text-sm font-medium text-black  "
                                     for="username">Username</label>
                                 <input
-                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none dark:border-gray-300dark dark:bg-meta-4 dark:text-white dark:focus:border-red-600"
+                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                     type="text" name="username" id="username" placeholder="yourname"
                                     value="{{ $user->username }}" />
                                 @error('username')
@@ -122,7 +122,7 @@
 
                             <div class="flex justify-end gap-4.5">
                                 <button
-                                    class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1 dark:border-gray-300dark dark:text-white"
+                                    class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1    "
                                     type="submit">
                                     Cancel
                                 </button>
@@ -138,9 +138,9 @@
             </div>
             <div class="col-span-5 xl:col-span-2">
                 <div
-                    class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                    <div class="border-b border-gray-300 px-7 py-4 dark:border-gray-300dark">
-                        <h3 class="font-medium text-black dark:text-white">
+                    class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                    <div class="border-b border-gray-300 px-7 py-4  ">
+                        <h3 class="font-medium text-black  ">
                             Your Photo Profile
                         </h3>
                     </div>
@@ -152,7 +152,7 @@
                                     alt="User" />
                             </div>
                             <div>
-                                <span class="mb-1 font-medium text-black dark:text-white">Edit your photo</span>
+                                <span class="mb-1 font-medium text-black  ">Edit your photo</span>
                                 <span class="flex gap-2">
                                     @if ($user->profile_image)
                                         <form id="update-profile-{{ $user->id }}"
@@ -181,13 +181,13 @@
                             @method('PATCH')
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <div id="FileUpload"
-                                class="relative mb-5 block w-full cursor-pointer appearance-none rounded border border-dashed border-blue-600 bg-gray-200 px-4 py-4 dark:bg-meta-4 sm:py-7">
+                                class="relative mb-5 block w-full cursor-pointer appearance-none rounded border border-dashed border-blue-600 bg-gray-200 px-4 py-4   sm:py-7">
                                 <input type="hidden" name="profile_img" id="profile_img_base64">
                                 <input type="file" accept="image/*" id="inputImageProfile"
                                     class="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />
                                 <div class="flex flex-col items-center justify-center space-y-3">
                                     <span
-                                        class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white dark:border-gray-300dark dark:bg-boxdark">
+                                        class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-white    ">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -222,7 +222,7 @@
 
                             <div class="flex justify-end gap-4.5">
                                 <button
-                                    class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1 dark:border-gray-300dark dark:text-white"
+                                    class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1    "
                                     type="button">
                                     Cancel
                                 </button>

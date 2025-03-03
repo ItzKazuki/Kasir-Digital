@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Statistik Penjualan
         </h2>
 
@@ -32,7 +32,7 @@
 
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <h4 class="text-3xl font-bold text-black dark:text-white">
+                    <h4 class="text-3xl font-bold text-black  ">
                         $3.456K
                     </h4>
                     <span class="text-sm font-medium">Total views</span>
@@ -70,7 +70,7 @@
 
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <h4 class="text-3xl font-bold text-black dark:text-white">
+                    <h4 class="text-3xl font-bold text-black  ">
                         {{ 'Rp ' . number_format($profit, 0, ',', '.') }}
                     </h4>
                     <span class="text-sm font-medium">Total Profit</span>
@@ -105,7 +105,7 @@
 
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <h4 class="text-3xl font-bold text-black dark:text-white">
+                    <h4 class="text-3xl font-bold text-black  ">
                         {{ $total_product }}
                     </h4>
                     <span class="text-sm font-medium">Total Product</span>
@@ -125,7 +125,7 @@
         <!-- Card Item End -->
 
         <!-- Card Item Start -->
-        <div class="rounded-sm border border-gray-100  bg-white px-7 py-6 shadow-md dark:border-strokedark dark:bg-boxdark">
+        <div class="rounded-sm border border-gray-100  bg-white px-7 py-6 shadow-md  ">
             <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
                 <svg class="fill-current text-red-800" width="22" height="18" viewBox="0 0 22 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +143,7 @@
 
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <h4 class="text-3xl font-bold text-black dark:text-white">
+                    <h4 class="text-3xl font-bold text-black  ">
                         {{ $total_member }}
                     </h4>
                     <span class="text-sm font-medium">Total Member</span>
@@ -166,7 +166,7 @@
     <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7">
         <!-- ====== Chart One Start -->
         <div
-            class="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7 xl:col-span-8">
+            class="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default   sm:px-7 xl:col-span-8">
             <div class="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
                 <div class="flex w-full flex-wrap gap-3 sm:gap-5">
                     <div class="flex min-w-47.5">
@@ -191,17 +191,17 @@
                     </div>
                 </div>
                 <div class="flex w-full max-w-45 justify-end">
-                    <div class="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
+                    <div class="inline-flex items-center rounded-md bg-whiter p-1.5  ">
                         <button
-                            class="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
+                            class="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card      ">
                             Day
                         </button>
                         <button
-                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
+                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card    ">
                             Week
                         </button>
                         <button
-                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
+                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card    ">
                             Month
                         </button>
                     </div>

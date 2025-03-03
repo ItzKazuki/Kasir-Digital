@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Edit Diskon
         </h2>
 
@@ -19,9 +19,9 @@
     <!-- Breadcrumb End -->
     <div class="flex flex-col gap-9">
         <!-- Contact Form -->
-        <div class="rounded-sm border border-gray-300 bg-white shadow-md dark:border-gray-300dark dark:bg-boxdark">
-            <div class="border-b border-gray-300 px-6 py-4 dark:border-gray-300dark">
-                <h3 class="font-medium text-black dark:text-white">
+        <div class="rounded-sm border border-gray-300 bg-white shadow-md    ">
+            <div class="border-b border-gray-300 px-6 py-4  ">
+                <h3 class="font-medium text-black  ">
                     Edit Diskon {{ $discount->name }}
                 </h3>
             </div>
@@ -30,11 +30,11 @@
                 @method('PUT')
                 <div class="p-6.5">
                     <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <label class="mb-3 block text-sm font-medium text-black  ">
                             Nama Diskon <span class="text-red-600">*</span>
                         </label>
                         <input type="text" placeholder="contoh: Nasi Padang" name="name" required value="{{ $discount->name }}"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
                         @error('name')
                             <div class="mt-1 text-red-600">
                                 <p class="text-xs">{{ $message }}</p>
@@ -44,12 +44,12 @@
 
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Tipe <span class="text-red-600">*</span>
                             </label>
-                            <div class="relative z-20 bg-transparent dark:bg-form-input">
+                            <div class="relative z-20 bg-transparent  ">
                                 <select name="type"
-                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
+                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600      ">
                                     <option value="" class="text-body" {{ $discount->type == null ? '' : 'selected' }}>
                                         Pilih tipe diskon
                                     </option>
@@ -74,7 +74,7 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Jumlah Diskon <span class="text-red-600">*</span>
                             </label>
                             <input type="number" placeholder="Enter your first name" required name="value" value="{{ $discount->value }}"
@@ -89,7 +89,7 @@
 
                     <div class="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Mulai Pada <span class="text-red-600">*</span>
                             </label>
                             <input type="date" placeholder="Enter your first name" name="start_date" value="{{ $discount->start_date }}"
@@ -101,7 +101,7 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Berakhir Pada <span class="text-red-600">*</span>
                             </label>
                             <input type="date" placeholder="Enter your first name" name="end_date" value="{{ $discount->end_date }}"
@@ -113,12 +113,12 @@
                             @enderror
                         </div>
                         <div class="w-full xl:w-1/2">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <label class="mb-3 block text-sm font-medium text-black  ">
                                 Status <span class="text-red-600">*</span>
                             </label>
-                            <div class="relative z-20 bg-transparent dark:bg-form-input">
+                            <div class="relative z-20 bg-transparent  ">
                                 <select name="status"
-                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600 dark:border-form-strokedark dark:bg-form-input dark:focus:border-red-600">
+                                    class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600      ">
                                     <option value="" class="text-body" {{ $discount->status == null ? '' : 'selected' }}>
                                         Pilih status diskon
                                     </option>

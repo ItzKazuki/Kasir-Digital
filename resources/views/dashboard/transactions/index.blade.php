@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Daftar Transaksi
         </h2>
 
@@ -19,24 +19,24 @@
 
     <div class="flex flex-col gap-10">
         <div
-            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md     sm:px-7.5 xl:pb-1">
             <div class="max-w-full overflow-x-auto">
                 <table class="w-full table-auto">
                     <thead>
-                        <tr class="bg-gray-100 text-left dark:bg-meta-4">
-                            <th class="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white">
+                        <tr class="bg-gray-100 text-left  ">
+                            <th class="min-w-[220px] px-4 py-4 font-medium text-black  ">
                                 Invoice No
                             </th>
-                            <th class="min-w-[220px] px-4 py-4 font-medium text-black dark:text-white xl:pl-11">
+                            <th class="min-w-[220px] px-4 py-4 font-medium text-black   xl:pl-11">
                                 Package
                             </th>
-                            <th class="min-w-[150px] px-4 py-4 font-medium text-black dark:text-white">
+                            <th class="min-w-[150px] px-4 py-4 font-medium text-black  ">
                                 Invoice date
                             </th>
-                            <th class="min-w-[120px] px-4 py-4 font-medium text-black dark:text-white">
+                            <th class="min-w-[120px] px-4 py-4 font-medium text-black  ">
                                 Status
                             </th>
-                            <th class="px-4 py-4 font-medium text-black dark:text-white">
+                            <th class="px-4 py-4 font-medium text-black  ">
                                 Actions
                             </th>
                         </tr>
@@ -44,29 +44,29 @@
                     <tbody>
                         @foreach ($transactions as $transaction)
                             <tr>
-                                <td class="border-b border-gray-200 px-4 py-5 pl-9 dark:border-gray-300dark xl:pl-11">
-                                    <h5 class="font-medium text-black dark:text-white">{{ $transaction->invoice_number }}
+                                <td class="border-b border-gray-200 px-4 py-5 pl-9   xl:pl-11">
+                                    <h5 class="font-medium text-black  ">{{ $transaction->invoice_number }}
                                     </h5>
                                 </td>
-                                <td class="border-b border-gray-200 px-4 py-5 pl-9 dark:border-gray-300dark xl:pl-11">
-                                    <h5 class="font-medium text-black dark:text-white">
+                                <td class="border-b border-gray-200 px-4 py-5 pl-9   xl:pl-11">
+                                    <h5 class="font-medium text-black  ">
                                         {{ $transaction->order->member ? $transaction->order->member->full_name : 'Non Member' }}
                                     </h5>
                                     <p class="text-sm">Rp.
                                         {{ number_format($transaction->order->total_price, 0, ',', '.') }}
                                         ({{ $transaction->order->total_items }} items)</p>
                                 </td>
-                                <td class="border-b border-gray-200 px-4 py-5 dark:border-gray-300dark">
-                                    <p class="text-black dark:text-white">
+                                <td class="border-b border-gray-200 px-4 py-5  ">
+                                    <p class="text-black  ">
                                         {{ \Carbon\Carbon::parse($transaction->order->order_date)->format('M d, Y') }}</p>
                                 </td>
-                                <td class="border-b border-gray-200 px-4 py-5 dark:border-gray-300dark">
+                                <td class="border-b border-gray-200 px-4 py-5  ">
                                     <p
                                         class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ $transaction->payment_status == 'paid' ? 'bg-green-100 text-green-600' : ($transaction->payment_status == 'unpaid' ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-600') }}">
                                         {{ $transaction->payment_status }}
                                     </p>
                                 </td>
-                                <td class="border-b border-gray-200 px-4 py-5 dark:border-gray-300dark">
+                                <td class="border-b border-gray-200 px-4 py-5  ">
                                     <div class="flex items-center space-x-3.5">
                                         <a href="{{ route('dashboard.transactions.show', ['transaction' => $transaction->id]) }}"
                                             class="hover:text-red-600">

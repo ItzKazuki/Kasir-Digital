@@ -56,17 +56,17 @@
 
                             <!-- Dropdown Start -->
                             <div x-show="dropdownOpen"
-                                class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark sm:right-0 sm:w-80">
+                                class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
                                 <div class="px-4.5 py-3">
                                     <h5 class="text-sm font-medium text-bodydark2">Notification</h5>
                                 </div>
 
                                 <ul class="flex h-auto flex-col overflow-y-auto">
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="#">
                                             <p class="text-sm">
-                                                <span class="text-black dark:text-white">Edit your information in a
+                                                <span class="text-black  ">Edit your information in a
                                                     swipe</span>
                                                 Sint occaecat cupidatat non proident, sunt in culpa qui
                                                 officia deserunt mollit anim.
@@ -76,10 +76,10 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="#">
                                             <p class="text-sm">
-                                                <span class="text-black dark:text-white">It is a long established
+                                                <span class="text-black  ">It is a long established
                                                     fact</span>
                                                 that a reader will be distracted by the readable.
                                             </p>
@@ -88,10 +88,10 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="#">
                                             <p class="text-sm">
-                                                <span class="text-black dark:text-white">There are many
+                                                <span class="text-black  ">There are many
                                                     variations</span>
                                                 of passages of Lorem Ipsum available, but the majority have
                                                 suffered
@@ -101,10 +101,10 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="#">
                                             <p class="text-sm">
-                                                <span class="text-black dark:text-white">There are many
+                                                <span class="text-black  ">There are many
                                                     variations</span>
                                                 of passages of Lorem Ipsum available, but the majority have
                                                 suffered
@@ -150,21 +150,21 @@
 
                             <!-- Dropdown Start -->
                             <div x-show="dropdownOpen"
-                                class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark sm:right-0 sm:w-80">
+                                class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
                                 <div class="px-4.5 py-3">
                                     <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
                                 </div>
 
                                 <ul class="flex h-auto flex-col overflow-y-auto">
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-02.png" alt="User" />
                                             </div>
 
                                             <div>
-                                                <h6 class="text-sm font-medium text-black dark:text-white">
+                                                <h6 class="text-sm font-medium text-black  ">
                                                     Mariya Desoja
                                                 </h6>
                                                 <p class="text-sm">I like your confidence 💪</p>
@@ -173,14 +173,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-01.png" alt="User" />
                                             </div>
 
                                             <div>
-                                                <h6 class="text-sm font-medium text-black dark:text-white">
+                                                <h6 class="text-sm font-medium text-black  ">
                                                     Robert Jhon
                                                 </h6>
                                                 <p class="text-sm">Can you share your offer?</p>
@@ -189,14 +189,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-03.png" alt="User" />
                                             </div>
 
                                             <div>
-                                                <h6 class="text-sm font-medium text-black dark:text-white">
+                                                <h6 class="text-sm font-medium text-black  ">
                                                     Henry Dholi
                                                 </h6>
                                                 <p class="text-sm">I cam across your profile and...</p>
@@ -205,14 +205,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-04.png" alt="User" />
                                             </div>
 
                                             <div>
-                                                <h6 class="text-sm font-medium text-black dark:text-white">
+                                                <h6 class="text-sm font-medium text-black  ">
                                                     Cody Fisher
                                                 </h6>
                                                 <p class="text-sm">I’m waiting for you response!</p>
@@ -221,14 +221,14 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2 dark:border-gray-300dark dark:hover:bg-meta-4"
+                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
                                             href="messages.html">
                                             <div class="h-12.5 w-12.5 rounded-full">
                                                 <img src="src/images/user/user-02.png" alt="User" />
                                             </div>
 
                                             <div>
-                                                <h6 class="text-sm font-medium text-black dark:text-white">
+                                                <h6 class="text-sm font-medium text-black  ">
                                                     Mariya Desoja
                                                 </h6>
                                                 <p class="text-sm">I like your confidence 💪</p>
@@ -249,7 +249,7 @@
                             @click.prevent="dropdownOpen = ! dropdownOpen">
                             <span class="hidden text-right lg:block">
                                 <span
-                                    class="block text-sm font-medium text-black dark:text-white">{{ auth()->user()->full_name }}</span>
+                                    class="block text-sm font-medium text-black  ">{{ auth()->user()->full_name }}</span>
                                 <span class="block text-xs font-medium">{{ ucfirst(auth()->user()->role) }}</span>
                             </span>
 
@@ -269,8 +269,8 @@
 
                         <!-- Dropdown Start -->
                         <div x-show="dropdownOpen"
-                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-red-100 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-                            <ul class="flex flex-col gap-5 border-b border-red-100 px-6 py-7.5 dark:border-gray-300dark">
+                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-red-100 bg-white shadow-default    ">
+                            <ul class="flex flex-col gap-5 border-b border-red-100 px-6 py-7.5  ">
                                 <li>
                                     <a href="{{ route('dashboard.profile') }}"
                                         class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">

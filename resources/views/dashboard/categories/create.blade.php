@@ -2,7 +2,7 @@
 @section('content')
     <!-- Breadcrumb Start -->
     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-2xl font-bold text-black dark:text-white">
+        <h2 class="text-2xl font-bold text-black  ">
             Buat Kategori
         </h2>
 
@@ -19,9 +19,9 @@
     <!-- Breadcrumb End -->
     <div class="flex flex-col gap-9">
         <!-- Contact Form -->
-        <div class="rounded-sm border border-gray-300 bg-white shadow-md dark:border-gray-300dark dark:bg-boxdark">
-            <div class="border-b border-gray-300 px-6 py-4 dark:border-gray-300dark">
-                <h3 class="font-medium text-black dark:text-white">
+        <div class="rounded-sm border border-gray-300 bg-white shadow-md    ">
+            <div class="border-b border-gray-300 px-6 py-4  ">
+                <h3 class="font-medium text-black  ">
                     Buat Kategori Baru
                 </h3>
             </div>
@@ -29,11 +29,11 @@
                 @csrf
                 <div class="p-6.5">
                     <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <label class="mb-3 block text-sm font-medium text-black  ">
                             Nama Kategori <span class="text-red-600">*</span>
                         </label>
                         <input type="text" placeholder="contoh: Makanan" name="name" required
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600" />
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
                         @error('name')
                             <div class="mt-1 text-red-600">
                                 <p class="text-xs">{{ $message }}</p>
@@ -42,11 +42,11 @@
                     </div>
 
                     <div class="mb-6">
-                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <label class="mb-3 block text-sm font-medium text-black  ">
                             Deskripsi
                         </label>
                         <textarea rows="6" placeholder="Masukan deskripsi mengenai produk" name="description"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600"></textarea>
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        "></textarea>
                         @error('description')
                             <div class="mt-1 text-red-600">
                                 <p class="text-xs">{{ $message }}</p>
