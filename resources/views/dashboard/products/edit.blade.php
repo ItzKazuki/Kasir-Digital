@@ -37,7 +37,7 @@
                             </label>
                             <input type="text" placeholder="contoh: Nasi Padang" name="name_product"
                                 value="{{ $product->name }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                             @error('name_product')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -52,7 +52,7 @@
                                 </label>
                                 <input type="text" id="barcodeInput" placeholder="contoh: 8997204401776" name="barcode"
                                     value="{{ $product->barcode }}" readonly
-                                    class="w-full cursor-pointer rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-500 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                                    class="w-full cursor-pointer rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-500 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                                 @error('barcode_product')
                                     <div class="mt-1 text-red-600">
                                         <p class="text-xs">{{ $message }}</p>
@@ -184,7 +184,7 @@
                                     Attach file <span class="text-red-600">*</span>
                                 </label>
                                 <input type="file" name="product_img" id="productImgInput"
-                                    class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-100 file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter            "
+                                    class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-100 file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100            "
                                     required />
                                 @error('product_img')
                                     <div class="mt-1 text-red-600">
@@ -197,7 +197,7 @@
                                     Deskripsi
                                 </label>
                                 <textarea rows="6" placeholder="Masukan deskripsi mengenai produk"
-                                    class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        ">{{ $product->description }}</textarea>
+                                    class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        ">{{ $product->description }}</textarea>
                             </div>
                         </div>
                         <div class="w-full xl:w-1/4">

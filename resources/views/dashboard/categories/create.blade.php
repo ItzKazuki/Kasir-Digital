@@ -33,7 +33,7 @@
                             Nama Kategori <span class="text-red-600">*</span>
                         </label>
                         <input type="text" placeholder="contoh: Makanan" name="name" required
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                         @error('name')
                             <div class="mt-1 text-red-600">
                                 <p class="text-xs">{{ $message }}</p>
@@ -46,7 +46,7 @@
                             Deskripsi
                         </label>
                         <textarea rows="6" placeholder="Masukan deskripsi mengenai produk" name="description"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        "></textarea>
+                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        "></textarea>
                         @error('description')
                             <div class="mt-1 text-red-600">
                                 <p class="text-xs">{{ $message }}</p>

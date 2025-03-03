@@ -35,7 +35,7 @@
                                 Nama Lengkap <span class="text-red-600">*</span>
                             </label>
                             <input type="text" placeholder="Jhon doe" name="full_name" value="{{ $member->full_name }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                             @error('full_name')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -47,7 +47,7 @@
                                 Nomor Telepon <span class="text-red-600">*</span>
                             </label>
                             <input ype="tel" pattern="08[0-9]{8,11}" placeholder="08XXXXXXXXX" name="phone_number" value="{{ $member->no_telp }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                             @error('phone_number')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
@@ -59,7 +59,7 @@
                                 Point <span class="text-red-600">*</span>
                             </label>
                             <input type="number" placeholder="contoh: 12000" name="point" value="{{ $member->point }}" required
-                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter        " />
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100        " />
                             @error('point')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>

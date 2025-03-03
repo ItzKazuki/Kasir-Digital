@@ -18,8 +18,8 @@
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7 ">
         <!-- Card Item Start -->
         {{-- <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
-            <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
-                <svg class="fill-current text-red-800" width="22" height="16" viewBox="0 0 22 16" fill="none"
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="22" height="16" viewBox="0 0 22 16" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M11 15.1156C4.19376 15.1156 0.825012 8.61876 0.687512 8.34376C0.584387 8.13751 0.584387 7.86251 0.687512 7.65626C0.825012 7.38126 4.19376 0.918762 11 0.918762C17.8063 0.918762 21.175 7.38126 21.3125 7.65626C21.4156 7.86251 21.4156 8.13751 21.3125 8.34376C21.175 8.61876 17.8063 15.1156 11 15.1156ZM2.26876 8.00001C3.02501 9.27189 5.98126 13.5688 11 13.5688C16.0188 13.5688 18.975 9.27189 19.7313 8.00001C18.975 6.72814 16.0188 2.43126 11 2.43126C5.98126 2.43126 3.02501 6.72814 2.26876 8.00001Z"
@@ -53,8 +53,8 @@
 
         <!-- Card Item Start -->
         <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
-            <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
-                <svg class="fill-current text-red-800" width="20" height="22" viewBox="0 0 20 22" fill="none"
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="20" height="22" viewBox="0 0 20 22" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M11.7531 16.4312C10.3781 16.4312 9.27808 17.5312 9.27808 18.9062C9.27808 20.2812 10.3781 21.3812 11.7531 21.3812C13.1281 21.3812 14.2281 20.2812 14.2281 18.9062C14.2281 17.5656 13.0937 16.4312 11.7531 16.4312ZM11.7531 19.8687C11.2375 19.8687 10.825 19.4562 10.825 18.9406C10.825 18.425 11.2375 18.0125 11.7531 18.0125C12.2687 18.0125 12.6812 18.425 12.6812 18.9406C12.6812 19.4219 12.2343 19.8687 11.7531 19.8687Z"
@@ -91,8 +91,8 @@
 
         <!-- Card Item Start -->
         <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
-            <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
-                <svg class="fill-current text-red-800" width="22" height="22" viewBox="0 0 22 22" fill="none"
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="22" height="22" viewBox="0 0 22 22" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M21.1063 18.0469L19.3875 3.23126C19.2157 1.71876 17.9438 0.584381 16.3969 0.584381H5.56878C4.05628 0.584381 2.78441 1.71876 2.57816 3.23126L0.859406 18.0469C0.756281 18.9063 1.03128 19.7313 1.61566 20.3844C2.20003 21.0375 2.99066 21.3813 3.85003 21.3813H18.1157C18.975 21.3813 19.8 21.0031 20.35 20.3844C20.9 19.7656 21.2094 18.9063 21.1063 18.0469ZM19.2157 19.3531C18.9407 19.6625 18.5625 19.8344 18.15 19.8344H3.85003C3.43753 19.8344 3.05941 19.6625 2.78441 19.3531C2.50941 19.0438 2.37191 18.6313 2.44066 18.2188L4.12503 3.43751C4.19378 2.71563 4.81253 2.16563 5.56878 2.16563H16.4313C17.1532 2.16563 17.7719 2.71563 17.875 3.43751L19.5938 18.2531C19.6282 18.6656 19.4907 19.0438 19.2157 19.3531Z"
@@ -126,8 +126,8 @@
 
         <!-- Card Item Start -->
         <div class="rounded-sm border border-gray-100  bg-white px-7 py-6 shadow-md  ">
-            <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
-                <svg class="fill-current text-red-800" width="22" height="18" viewBox="0 0 22 18" fill="none"
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="22" height="18" viewBox="0 0 22 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M7.18418 8.03751C9.31543 8.03751 11.0686 6.35313 11.0686 4.25626C11.0686 2.15938 9.31543 0.475006 7.18418 0.475006C5.05293 0.475006 3.2998 2.15938 3.2998 4.25626C3.2998 6.35313 5.05293 8.03751 7.18418 8.03751ZM7.18418 2.05626C8.45605 2.05626 9.52168 3.05313 9.52168 4.29063C9.52168 5.52813 8.49043 6.52501 7.18418 6.52501C5.87793 6.52501 4.84668 5.52813 4.84668 4.29063C4.84668 3.05313 5.9123 2.05626 7.18418 2.05626Z"
@@ -166,32 +166,32 @@
     <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7">
         <!-- ====== Chart One Start -->
         <div
-            class="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default   sm:px-7 xl:col-span-8">
+            class="col-span-12 rounded-sm border border-gray-300 bg-white px-5 pb-5 pt-7.5 shadow-default   sm:px-7 xl:col-span-8">
             <div class="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
                 <div class="flex w-full flex-wrap gap-3 sm:gap-5">
                     <div class="flex min-w-47.5">
                         <span
-                            class="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-                            <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
+                            class="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-red-600">
+                            <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-red-600"></span>
                         </span>
                         <div class="w-full">
-                            <p class="font-semibold text-primary">Total Revenue</p>
+                            <p class="font-semibold  text-red-600">Total Revenue</p>
                             <p class="text-sm font-medium">12.04.2022 - 12.05.2022</p>
                         </div>
                     </div>
                     <div class="flex min-w-47.5">
                         <span
-                            class="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-secondary">
-                            <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
+                            class="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-red-300">
+                            <span class="block h-2.5 w-full max-w-2.5 rounded-full bg-red-300"></span>
                         </span>
                         <div class="w-full">
-                            <p class="font-semibold text-secondary">Total Sales</p>
+                            <p class="font-semibold  text-red-300">Total Sales</p>
                             <p class="text-sm font-medium">12.04.2022 - 12.05.2022</p>
                         </div>
                     </div>
                 </div>
                 <div class="flex w-full max-w-45 justify-end">
-                    <div class="inline-flex items-center rounded-md bg-whiter p-1.5  ">
+                    <div class="inline-flex items-center rounded-md bg-gray-100 p-1.5  ">
                         <button
                             class="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card      ">
                             Day

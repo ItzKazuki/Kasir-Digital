@@ -269,11 +269,11 @@
 
                         <!-- Dropdown Start -->
                         <div x-show="dropdownOpen"
-                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-red-100 bg-white shadow-default    ">
-                            <ul class="flex flex-col gap-5 border-b border-red-100 px-6 py-7.5  ">
+                            class="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-gray-100 bg-white shadow-default    ">
+                            <ul class="flex flex-col gap-5 border-b border-gray-100 px-6 py-7.5  ">
                                 <li>
                                     <a href="{{ route('dashboard.profile') }}"
-                                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover: text-gray-600 lg:text-base">
                                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -288,7 +288,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('dashboard.settings') }}"
-                                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                                        class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover: text-gray-600 lg:text-base">
                                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                             fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -305,7 +305,7 @@
                             <form id="logoutForm" action="{{ route('auth.logout') }}" method="POST">
                                 @csrf
                                 <button type="button" onclick="showLogoutModal()"
-                                    class="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                                    class="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover: text-gray-600 lg:text-base">
                                     <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path
