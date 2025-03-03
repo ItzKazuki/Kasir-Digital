@@ -17,7 +17,7 @@
     </div>
     <!-- Breadcrumb End -->
     <!-- ====== Table One Start -->
-    <div
+    {{-- <div
         class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div class="flex justify-between items-center">
             <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="flex items-center justify-center p-2 xl:p-5">
-                        <p class="font-medium text-green-600">Rp. {{ number_format($product->price, 2, ',', '.') }}</p>
+                        <p class="font-medium text-green-600">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
 
                     <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
@@ -118,6 +118,91 @@
                 </div>
             @endforeach
         </div>
+    </div> --}}
+    <!-- ====== Table Two Start -->
+    <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
+        <div class="px-4 py-6 md:px-6 xl:px-7.5">
+            <h4 class="text-xl font-bold text-black dark:text-white">Top Products</h4>
+        </div>
+
+        <div
+            class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5 dark:border-gray-300dark sm:grid-cols-9 md:px-6 2xl:px-7.5">
+            <div class="col-span-3 flex items-center">
+                <p class="font-medium">Nama Produk</p>
+            </div>
+            <div class="col-span-2 hidden items-center sm:flex">
+                <p class="font-medium">Kategori</p>
+            </div>
+            <div class="col-span-1 flex items-center">
+                <p class="font-medium">Harga</p>
+            </div>
+            <div class="col-span-1 flex items-center">
+                <p class="font-medium">Stok</p>
+            </div>
+            <div class="col-span-1 flex items-center">
+                <p class="font-medium">Estimasi Profit</p>
+            </div>
+            <div class="col-span-1 flex items-center">
+                <p class="font-medium">Aksi</p>
+            </div>
+        </div>
+
+        @foreach ($products as $product)
+            <div
+                class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5 dark:border-gray-300dark sm:grid-cols-9 md:px-6 2xl:px-7.5">
+                <div class="col-span-3 flex items-center">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                        <div class="h-12.5 w-15 rounded-md">
+                            <img src="src/images/product/product-01.png" alt="Product" />
+                        </div>
+                        <p class="font-medium text-black dark:text-white">
+                            {{ $product->name }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-2 hidden items-center sm:flex">
+                    <p class="font-medium text-black dark:text-white">{{ $product->category->name }}</p>
+                </div>
+                <div class="col-span-1 flex items-center">
+                    <p class="font-medium text-black dark:text-white">Rp. {{ number_format($product->price, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="col-span-1 flex items-center">
+                    <p class="font-medium text-black dark:text-white">{{ $product->stock }}</p>
+                </div>
+                <div class="col-span-1 flex items-center">
+                    <p class="font-medium text-meta-3">Rp. {{ number_format($product->estimasi_keuntungan, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
+                    <a href="{{ route('dashboard.products.edit', $product->id) }}"
+                        class="inline-flex items-center justify-center gap-2 bg-yellow-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                        <span>
+                            <svg class="fill-current" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                <path
+                                    d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <form id="delete-product-{{ $product->id }}"
+                        action="{{ route('dashboard.products.destroy', ['product' => $product->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" onclick="showModal('delete-product-{{ $product->id }}')"
+                            class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                            <span>
+                                <svg class="fill-current" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                    <path
+                                        d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                </svg>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection
 
