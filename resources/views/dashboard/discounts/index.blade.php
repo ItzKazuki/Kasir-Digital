@@ -20,8 +20,8 @@
         <!-- ====== Table One Start -->
         <div
             class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <div class="flex justify-between items-center">
-                <h4 class="mb-6 text-xl font-bold text-black dark:text-white">
+            <div class="flex justify-between items-center mb-2">
+                <h4 class="text-xl font-bold text-black justify-center text-center dark:text-white">
                     Diskon
                 </h4>
                 <a href="{{ route('dashboard.discounts.create') }}"

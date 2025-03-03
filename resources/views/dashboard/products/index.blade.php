@@ -121,7 +121,7 @@
     </div> --}}
     <!-- ====== Table Two Start -->
     <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-        <div class="flex justify-between items-center px-4 py-6 md:px-6 xl:px-7.5">
+        <div class="flex justify-between items-center px-4 py-6 md:px-6 xl:px-7">
             <h4 class="text-xl font-bold text-black dark:text-white">
                 Products
             </h4>
