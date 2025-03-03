@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @push('styles')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 
 @section('content')
@@ -196,17 +196,17 @@
                     </div>
                 </div>
                 <div class="flex w-full max-w-45 justify-end">
-                    <div class="inline-flex items-center rounded-md bg-gray-100 p-1.5  ">
-                        <button
-                            class="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card      ">
+                    <div class="inline-flex items-center rounded-md bg-gray-100 p-1.5">
+                        <button id="dayBtn"
+                            class="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card">
                             Day
                         </button>
-                        <button
-                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card    ">
+                        <button id="weekBtn"
+                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card">
                             Week
                         </button>
-                        <button
-                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card    ">
+                        <button id="monthBtn"
+                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card">
                             Month
                         </button>
                     </div>
@@ -221,53 +221,62 @@
     @push('scripts')
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Chart Harian
                 var dailyCtx = document.getElementById("dailyProfitChart").getContext("2d");
-                new Chart(dailyCtx, {
-                    type: "line",
-                    data: {
-                        labels: @json($dailyLabels),
-                        datasets: [{
-                            label: "Keuntungan Harian (Rp)",
-                            data: @json($dailyProfits),
-                            backgroundColor: "rgba(255, 99, 132, 0.5)",
-                            borderColor: "rgba(255, 99, 132, 1)",
-                            borderWidth: 1
-                        }]
+                var dailyBtn = document.getElementById("dayBtn");
+                var monthlyBtn = document.getElementById("monthBtn");
+                var weeklyBtn = document.getElementById("weekBtn");
+                var profitChart;
+
+                function updateChart(labels, data, label) {
+                    if (profitChart) {
+                        profitChart.destroy();
                     }
+
+                    profitChart = new Chart(dailyCtx, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: label,
+                                data: data,
+                                backgroundColor: "rgba(255, 99, 132, 0.5)",
+                                borderColor: "rgba(255, 99, 132, 1)",
+                                borderWidth: 1
+                            }]
+                        }
+                    });
+                }
+
+                dailyBtn.addEventListener("click", function() {
+                    monthlyBtn.classList.remove("bg-white", "shadow-card");
+                    weeklyBtn.classList.remove("bg-white", "shadow-card");
+                    dailyBtn.classList.add("bg-white", "shadow-card");
+                    updateChart(@json($dailyLabels), @json($dailyProfits),
+                        "Keuntungan Harian (Rp)");
                 });
 
-                // Chart Bulanan
-                var monthlyCtx = document.getElementById("monthlyProfitChart").getContext("2d");
-                new Chart(monthlyCtx, {
-                    type: "bar",
-                    data: {
-                        labels: @json($monthlyLabels),
-                        datasets: [{
-                            label: "Keuntungan Bulanan (Rp)",
-                            data: @json($monthlyProfits),
-                            backgroundColor: "rgba(54, 162, 235, 0.5)",
-                            borderColor: "rgba(54, 162, 235, 1)",
-                            borderWidth: 1
-                        }]
-                    }
+                weeklyBtn.addEventListener("click", function() {
+                    // Update chart with weekly data
+                    // You need to provide weeklyLabels and weeklyProfits from the server
+                    dailyBtn.classList.remove("bg-white", "shadow-card");
+                    monthlyBtn.classList.remove("bg-white", "shadow-card");
+                    weeklyBtn.classList.add("bg-white", "shadow-card");
+                    updateChart(@json($weeklyLabels), @json($weeklyProfits),
+                        "Keuntungan Mingguan (Rp)");
                 });
 
-                // Chart Tahunan
-                var yearlyCtx = document.getElementById("yearlyProfitChart").getContext("2d");
-                new Chart(yearlyCtx, {
-                    type: "line",
-                    data: {
-                        labels: @json($yearlyLabels),
-                        datasets: [{
-                            label: "Keuntungan Tahunan (Rp)",
-                            data: @json($yearlyProfits),
-                            backgroundColor: "rgba(75, 192, 192, 0.5)",
-                            borderColor: "rgba(75, 192, 192, 1)",
-                            borderWidth: 1
-                        }]
-                    }
+                monthlyBtn.addEventListener("click", function() {
+                    // Update chart with monthly data
+                    // You need to provide monthlyLabels and monthlyProfits from the server
+                    dailyBtn.classList.remove("bg-white", "shadow-card");
+                    weeklyBtn.classList.remove("bg-white", "shadow-card");
+                    monthlyBtn.classList.add("bg-white", "shadow-card");    
+                    updateChart(@json($monthlyLabels), @json($monthlyProfits),
+                        "Keuntungan Bulanan (Rp)");
                 });
+
+                // Initialize chart with daily data by default
+                updateChart(@json($dailyLabels), @json($dailyProfits), "Keuntungan Harian (Rp)");
             });
         </script>
     @endpush

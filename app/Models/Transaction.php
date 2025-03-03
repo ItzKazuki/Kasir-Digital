@@ -63,9 +63,9 @@ class Transaction extends Model
             $transactionId = (int) $matches[2]; // Konversi ke integer
 
             return $query->where('transactions.id', $transactionId)
-                     ->whereHas('order', function ($q) use ($orderDate) {
-                         $q->whereDate('order_date', $orderDate);
-                     });
+                ->whereHas('order', function ($q) use ($orderDate) {
+                    $q->whereDate('order_date', $orderDate);
+                });
         }
 
         return $query; // Jika format salah, kembalikan query tanpa filter
@@ -122,6 +122,20 @@ class Transaction extends Model
                              SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
             ->groupBy('year')
             ->orderBy('year', 'asc')
+            ->get();
+    }
+
+    public static function getWeeklyProfit()
+    {
+        return self::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->join('products', 'order_details.product_id', '=', 'products.id')
+            ->where('transactions.payment_status', 'paid')
+            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week,
+                         SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'asc')
+            ->orderBy('week', 'asc')
             ->get();
     }
 }

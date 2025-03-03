@@ -14,52 +14,58 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // dd(Transaction::getTotalProfit());
         // Data Keuntungan Harian
-        $dailyProfitData = Transaction::getDailyProfit();
-        $dailyLabels = [];
-        $dailyProfits = [];
+    $dailyProfitData = Transaction::getDailyProfit();
+    $dailyLabels = [];
+    $dailyProfits = [];
 
-        foreach ($dailyProfitData as $data) {
-            $dailyLabels[] = $data->date;
-            $dailyProfits[] = $data->profit;
-        }
+    foreach ($dailyProfitData as $data) {
+        $dailyLabels[] = $data->date;
+        $dailyProfits[] = $data->profit;
+    }
 
-        // Data Keuntungan Bulanan
-        $monthlyProfitData = Transaction::getMonthlyProfit();
-        $monthlyLabels = [];
-        $monthlyProfits = [];
+    // Data Keuntungan Mingguan
+    $weeklyProfitData = Transaction::getWeeklyProfit();
+    $weeklyLabels = [];
+    $weeklyProfits = [];
 
-        foreach ($monthlyProfitData as $data) {
-            $monthlyLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
-            $monthlyProfits[] = $data->profit;
-        }
+    foreach ($weeklyProfitData as $data) {
+        $weeklyLabels[] = 'Week ' . $data->week . ' ' . $data->year;
+        $weeklyProfits[] = $data->profit;
+    }
 
-        // Data Keuntungan Tahunan
-        $yearlyProfitData = Transaction::getYearlyProfit();
-        $yearlyLabels = [];
-        $yearlyProfits = [];
+    // Data Keuntungan Bulanan
+    $monthlyProfitData = Transaction::getMonthlyProfit();
+    $monthlyLabels = [];
+    $monthlyProfits = [];
 
-        foreach ($yearlyProfitData as $data) {
-            $yearlyLabels[] = $data->year;
-            $yearlyProfits[] = $data->profit;
-        }
+    foreach ($monthlyProfitData as $data) {
+        $monthlyLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
+        $monthlyProfits[] = $data->profit;
+    }
 
-        $profit = Transaction::getTotalProfit();
+    // Data Keuntungan Tahunan
+    $yearlyProfitData = Transaction::getYearlyProfit();
+    $yearlyLabels = [];
+    $yearlyProfits = [];
 
-        $total_product = Product::all()->count();
-        $total_member = Member::all()->count();
+    foreach ($yearlyProfitData as $data) {
+        $yearlyLabels[] = $data->year;
+        $yearlyProfits[] = $data->profit;
+    }
 
-        // Hitung total pendapatan
-        $totalRevenue = Order::sum('total_price');
+    $profit = Transaction::getTotalProfit();
 
-        // Hitung total biaya berdasarkan harga beli produk
-        // $totalCost = OrderDetail::sum('purchase_price');
+    $total_product = Product::all()->count();
+    $total_member = Member::all()->count();
 
-        // Hitung persentase keuntungan
-        $profitPercentage = ($totalRevenue > 0) ? ($profit / $totalRevenue) * 100 : 0;
+    // Hitung total pendapatan
+    $totalRevenue = Order::sum('total_price');
 
-        $title = "Home";
-        return view('dashboard.index', compact('title', 'dailyLabels', 'dailyProfits', 'monthlyLabels', 'monthlyProfits', 'yearlyLabels', 'yearlyProfits', 'profit', 'total_product', 'total_member', 'profitPercentage'));
+    // Hitung persentase keuntungan
+    $profitPercentage = ($totalRevenue > 0) ? ($profit / $totalRevenue) * 100 : 0;
+
+    $title = "Home";
+    return view('dashboard.index', compact('title', 'dailyLabels', 'dailyProfits', 'weeklyLabels', 'weeklyProfits', 'monthlyLabels', 'monthlyProfits', 'yearlyLabels', 'yearlyProfits', 'profit', 'total_product', 'total_member', 'profitPercentage'));
     }
 }
