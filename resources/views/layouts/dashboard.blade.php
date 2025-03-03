@@ -375,7 +375,6 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @include('sweetalert::sweetalert')
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     @stack('scripts')
 
