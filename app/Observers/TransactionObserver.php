@@ -15,6 +15,12 @@ class TransactionObserver
     public function created(Transaction $transaction)
     {
         $orderDetails = $transaction->order->orderDetails;
+        $member = $transaction->member;
+
+        if ($member && $member->status === 'inactive') {
+            $member->status = 'active';
+            $member->save();
+        }
 
         foreach ($orderDetails as $orderDetail) {
             $product = $orderDetail->product;
