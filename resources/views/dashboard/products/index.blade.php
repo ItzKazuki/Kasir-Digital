@@ -77,7 +77,7 @@
                     <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
                         @if ($product->expired_at == null)
                             <p
-                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-red-600 bg-blue-100">
+                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100">
                                 tidak expired
                             </p>
                         @else

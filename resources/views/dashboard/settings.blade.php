@@ -29,8 +29,7 @@
                         </h3>
                     </div>
                     <div class="p-7">
-                        <form action="{{ route('dashboard.settings.update-user', ['user' => $user->id]) }}"
-                            method="POST">
+                        <form action="{{ route('dashboard.settings.update-user', ['user' => $user->id]) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
@@ -128,7 +127,7 @@
                                     Cancel
                                 </button>
                                 <button
-                                    class="flex justify-center rounded bg-blue-600 px-6 py-2 font-medium text-white hover:bg-opacity-90"
+                                    class="flex justify-center rounded bg-red-600 px-6 py-2 font-medium text-white hover:bg-opacity-90"
                                     type="submit">
                                     Save
                                 </button>
@@ -142,7 +141,7 @@
                     class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
                     <div class="border-b border-gray-300 px-7 py-4 dark:border-gray-300dark">
                         <h3 class="font-medium text-black dark:text-white">
-                            Your Photo
+                            Your Photo Profile
                         </h3>
                     </div>
                     <div class="p-7">
@@ -155,14 +154,22 @@
                             <div>
                                 <span class="mb-1 font-medium text-black dark:text-white">Edit your photo</span>
                                 <span class="flex gap-2">
-                                    <form id="update-profile-{{ $user->id }}" action="{{ route('dashboard.settings.delete-profile', ['user' => $user->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" onclick="showModal('update-profile-{{ $user->id }}')" class="text-sm text-gray-600 font-medium hover:text-blue-600">
-                                            Delete
-                                        </button>
-                                    </form>
-                                    {{-- <button class="text-sm text-gray-600 font-medium hover:text-blue-600">
+                                    @if ($user->profile_image)
+                                        <form id="update-profile-{{ $user->id }}"
+                                            action="{{ route('dashboard.settings.delete-profile', ['user' => $user->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                onclick="showModal('update-profile-{{ $user->id }}')"
+                                                class="text-sm text-gray-600 font-medium hover:text-red-600">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @else
+                                    <p class="text-sm font-medium text-red-600">Unggah Foto Profile!</p>
+                                    @endif
+                                    {{-- <button class="text-sm text-gray-600 font-medium hover:text-red-600">
                                             Update
                                         </button> --}}
                                 </span>
@@ -219,7 +226,7 @@
                                     Cancel
                                 </button>
                                 <button
-                                    class="flex justify-center rounded bg-blue-600 px-6 py-2 font-medium text-white hover:bg-opacity-90"
+                                    class="flex justify-center rounded bg-red-600 px-6 py-2 font-medium text-white hover:bg-opacity-90"
                                     type="submit">
                                     Save
                                 </button>
@@ -254,7 +261,8 @@
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                             <h3 class="text-base font-semibold text-gray-900" id="modal-title">Hapus Foto Profile?</h3>
-                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to delete this profile picture? This action
+                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to delete this profile picture?
+                                This action
                                 cannot be undone.</p>
                         </div>
                     </div>

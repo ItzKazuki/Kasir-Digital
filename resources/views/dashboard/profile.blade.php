@@ -38,7 +38,7 @@
                                 src="{{ auth()->user()->profile_image ? auth()->user()->profile_image : Avatar::create(auth()->user()->full_name)->toBase64() }}"
                                 alt="profile" />
                             <label for="profile"
-                                class="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-blue-600 text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2">
+                                class="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-red-600 text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2">
                                 <svg class="fill-current" width="14" height="14" viewBox="0 0 14 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
