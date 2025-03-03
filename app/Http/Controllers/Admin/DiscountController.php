@@ -18,7 +18,7 @@ class DiscountController extends Controller
     public function index()
     {
         $title = "Discounts";
-        $discounts = Discount::all();
+        $discounts = Discount::paginate(10);
         return view('dashboard.discounts.index', compact('title', 'discounts'));
     }
 

@@ -132,7 +132,7 @@
         </div>
 
         <div
-            class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
+            class="grid grid-cols-6 border-t border-b border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
             <div class="col-span-3 flex items-center">
                 <p class="font-medium">Nama Produk</p>
             </div>
@@ -155,11 +155,11 @@
 
         @foreach ($products as $product)
             <div
-                class="grid grid-cols-6 border-t border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
+                class="grid grid-cols-6 border-b border-gray-300 px-4 py-4.5 sm:grid-cols-9 md:px-6 2xl:px-7.5">
                 <div class="col-span-3 flex items-center">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div class="h-12.5 w-15 rounded-md">
-                            <img src="src/images/product/product-01.png" alt="Product" />
+                            <img src="{{ $product->product_image }}" alt="Product" />
                         </div>
                         <p class="font-medium text-black  ">
                             {{ $product->name }}
@@ -209,6 +209,10 @@
                 </div>
             </div>
         @endforeach
+        <!-- Pagination Links -->
+        <div class="my-4">
+            {{ $products->links() }}
+        </div>
     </div>
 @endsection
 

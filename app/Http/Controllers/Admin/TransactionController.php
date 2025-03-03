@@ -15,7 +15,7 @@ class TransactionController extends Controller
     public function index()
     {
         $title = "Transactions";
-        $transactions = Transaction::all();
+        $transactions = Transaction::with('order.member')->paginate(10);
         return view('dashboard.transactions.index', compact('title', 'transactions'));
     }
 

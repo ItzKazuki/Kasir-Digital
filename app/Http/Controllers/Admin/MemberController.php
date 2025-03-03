@@ -17,7 +17,7 @@ class MemberController extends Controller
     public function index()
     {
         $title = "Members";
-        $members = Member::all();
+        $members = Member::paginate(10);
         return view('dashboard.members.index', compact('title', 'members'));
     }
 

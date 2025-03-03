@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $title = "Categories";
-        $categories = Category::all();
+        $categories = Category::paginate(10);
         return view('dashboard.categories.index', compact('title', 'categories'));
     }
 

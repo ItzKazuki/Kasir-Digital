@@ -113,6 +113,10 @@
                     </div>
                 @endforeach
             </div>
+            <!-- Pagination Links -->
+            <div class="my-4">
+                {{ $members->links() }}
+            </div>
         </div>
     </div>
 @endsection

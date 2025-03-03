@@ -18,8 +18,7 @@
     <!-- Breadcrumb End -->
 
     <div class="flex flex-col gap-10">
-        <div
-            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md sm:px-7.5 xl:pb-1">
+        <div class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md sm:px-7.5 xl:pb-1">
             <div class="max-w-full overflow-x-auto">
                 <table class="w-full table-auto">
                     <thead>
@@ -54,7 +53,8 @@
                                     </h5>
                                     <p class="text-sm">Rp.
                                         {{ number_format($transaction->order->total_price, 0, ',', '.') }}
-                                        ({{ $transaction->order->total_items }} items)</p>
+                                        ({{ $transaction->order->total_items }} items)
+                                    </p>
                                 </td>
                                 <td class="border-b border-gray-200 px-4 py-5  ">
                                     <p class="text-black  ">
@@ -123,8 +123,11 @@
                     </tbody>
                 </table>
             </div>
+            <!-- Pagination Links -->
+            <div class="my-4">
+                {{ $transactions->links() }}
+            </div>
         </div>
-
     </div>
 @endsection
 

@@ -101,6 +101,10 @@
                     </div>
                 @endforeach
             </div>
+            <!-- Pagination Links -->
+            <div class="my-4">
+                {{ $categories->links() }}
+            </div>
         </div>
     </div>
 @endsection
