@@ -216,9 +216,9 @@
                             </div>
                         </li>
 
-                        <li>
+                    <li>
                             <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
-                                href="#">
+                                href="{{ route('dashboard.transactions.index') }}">
                                 <svg class="fill-current" width="18" height="18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -227,30 +227,7 @@
                                 </svg>
 
                                 Transaksi
-
-                                <svg class="absolute right-4 top-1/2 -translate-y-1/2 fill-current" width="20"
-                                    height="20" viewBox="0 0 20 20" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                        fill="" />
-                                </svg>
                             </a>
-                            <div
-                                class="translate transform overflow-hidden {{ request()->is('dashboard/transactions') ? '' : 'hidden' }}">
-                                <ul class="mb-5.5 mt-4 flex flex-col gap-2 pl-6">
-                                    <li>
-                                        <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions') ? 'text-red-600' : '' }} hover:text-red-600"
-                                            href="{{ route('dashboard.transactions.index') }}">Daftar Transaksi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="group relative flex items-center gap-2 rounded-md px-4 font-medium text-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions/create') ? 'text-red-600' : '' }} hover:text-red-600"
-                                            href="">Tambah Transaksi
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li>
                             <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/reports') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"

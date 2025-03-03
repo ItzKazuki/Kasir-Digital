@@ -9,6 +9,7 @@
 
     {{-- style internal or external --}}
     @vite('resources/css/app.css')
+    @stack('styles')
 
 </head>
 

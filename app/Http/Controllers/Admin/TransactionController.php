@@ -22,15 +22,18 @@ class TransactionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function print(Request $request, Transaction $transaction)
     {
-        //
+        $title = "Print Transaction " . $transaction->invoice_number;
+
+        // dd($transaction->cash);
+        return view('dashboard.transactions.struk', compact('title', 'transaction'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function pdf(Request $request, Transaction $transaction)
     {
         //
     }
@@ -40,23 +43,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
+        $title = "Detail Transaction";
+        return view('dashboard.transactions.show', compact('title', 'transaction'));
     }
 
     /**
@@ -68,5 +56,17 @@ class TransactionController extends Controller
 
         Sweetalert::success('berhasil menghapus transaction dengan id: ' . $transaction->id, 'Hapus Berhasil');
         return redirect()->route('dashboard.transactions.index');
+    }
+
+    public function search(Request $request, string $invoice)
+    {
+        $transaction = Transaction::findByInvoice($invoice)->first();
+
+        if (!$transaction) {
+            return abort(404);
+        }
+
+        $title = "Print Transaction " . $transaction->invoice_number;
+        return view('dashboard.transactions.struk', compact('title', 'transaction'));
     }
 }

@@ -47,15 +47,24 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::patch('/settings/profile/{user}', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
     Route::delete('/settings/profile/{user}', [SettingController::class, 'deleteProfile'])->name('settings.delete-profile');
 
-    Route::resource('users', UserController::class)->middleware(AdminMiddleware::class);
-    Route::resource('members', MemberController::class)->middleware(AdminMiddleware::class);
-    Route::resource('products', ProductController::class)->middleware(AdminMiddleware::class);
-    Route::resource('discounts', DiscountController::class)->middleware(AdminMiddleware::class);
-    Route::resource('categories', CategoryController::class)->middleware(AdminMiddleware::class);
-    Route::resource('transactions', TransactionController::class)->middleware(AdminMiddleware::class);
+    Route::group(['middleware' => [AdminMiddleware::class]], function () {
+        Route::resource('users', UserController::class);
+        Route::resource('members', MemberController::class);
+        Route::resource('products', ProductController::class);
+        Route::resource('discounts', DiscountController::class);
+        Route::resource('categories', CategoryController::class);
+
+        Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
+        Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+        Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
+        Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
+        Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+    });
 });
 
 Route::get('/kasir', function () {
     $title = "Home";
     return view('kasir.index2', compact('title'));
 });
+
+Route::get('/struk/{invoice}', [TransactionController::class, 'search'])->name('struk.search');

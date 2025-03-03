@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaction extends Model
 {
@@ -19,6 +21,19 @@ class Transaction extends Model
 
     public $timestamps = false;
 
+    //accessor untuk mendapatkan nomor invoice
+    // format INV-yyyymmdd-001
+    public function getInvoiceNumberAttribute()
+    {
+        $formatId = str_pad($this->id, 3, '0', STR_PAD_LEFT);
+        return 'INV-' . Carbon::parse($this->order->order_date)->format('Ymd') . '-' . $formatId;
+    }
+
+    public function getStrukUrlAttribute()
+    {
+        return route('struk.search', ['invoice' => $this->invoice_number]);
+    }
+
     // Relasi: Transaksi terkait dengan satu order
     public function order()
     {
@@ -29,6 +44,22 @@ class Transaction extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function scopeFindByInvoice(Builder $query, string $invoice)
+    {
+        // Pecah invoice jadi bagian-bagian
+        if (preg_match('/INV-(\d{8})-(\d+)/', $invoice, $matches)) {
+            $orderDate = date('Y-m-d', strtotime($matches[1])); // Format ke YYYY-MM-DD
+            $transactionId = (int) $matches[2]; // Konversi ke integer
+
+            return $query->where('transactions.id', $transactionId)
+                     ->whereHas('order', function ($q) use ($orderDate) {
+                         $q->whereDate('order_date', $orderDate);
+                     });
+        }
+
+        return $query; // Jika format salah, kembalikan query tanpa filter
     }
 
     public static function getTotalProfit()
