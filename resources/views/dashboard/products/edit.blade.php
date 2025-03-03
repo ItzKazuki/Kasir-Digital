@@ -177,26 +177,36 @@
                         </div>
                     </div>
 
-                    <div class="mb-4.5">
-                        <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
-                            Attach file <span class="text-red-600">*</span>
-                        </label>
-                        <input type="file" name="product_img"
-                            class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-white file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-red-600"
-                            required />
-                        @error('product_img')
-                            <div class="mt-1 text-red-600">
-                                <p class="text-xs">{{ $message }}</p>
+                    <div class="mb-4 flex flex-col gap-6 xl:flex-row">
+                        <div class="w-full">
+                            <div class="mb-4">
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Attach file <span class="text-red-600">*</span>
+                                </label>
+                                <input type="file" name="product_img" id="productImgInput"
+                                    class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-100 file:px-5 file:py-3 file:hover:bg-red-600 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-red-600"
+                                    required />
+                                @error('product_img')
+                                    <div class="mt-1 text-red-600">
+                                        <p class="text-xs">{{ $message }}</p>
+                                    </div>
+                                @enderror
                             </div>
-                        @enderror
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="mb-3 block text-sm font-medium text-gray-800 dark:text-white">
-                            Deskripsi
-                        </label>
-                        <textarea rows="6" placeholder="Masukan deskripsi mengenai produk"
-                            class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600"></textarea>
+                            <div>
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Deskripsi
+                                </label>
+                                <textarea rows="6" placeholder="Masukan deskripsi mengenai produk"
+                                    class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-red-600">{{ $product->description }}</textarea>
+                            </div>
+                        </div>
+                        <div class="w-full xl:w-1/4">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Preview Produk
+                            </label>
+                            <img id="previewUploadImage" class="w-full 
+                            rounded-lg border border-gray-300" src="{{ $product->product_image }}" alt="">
+                        </div>
                     </div>
 
                     <div class="px-30 flex flex-row gap-5 justify-center items-center">
@@ -214,3 +224,14 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.getElementById("productImgInput").addEventListener("change", function(event) {
+            const [file] = event.target.files;
+            if (file) {
+                document.getElementById("previewUploadImage").src = URL.createObjectURL(file);
+            }
+        });
+    </script>
+@endpush
