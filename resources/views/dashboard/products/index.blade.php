@@ -121,8 +121,14 @@
     </div> --}}
     <!-- ====== Table Two Start -->
     <div class="rounded-sm border border-gray-300 bg-white shadow-default dark:border-gray-300dark dark:bg-boxdark">
-        <div class="px-4 py-6 md:px-6 xl:px-7.5">
-            <h4 class="text-xl font-bold text-black dark:text-white">Top Products</h4>
+        <div class="flex justify-between items-center px-4 py-6 md:px-6 xl:px-7.5">
+            <h4 class="text-xl font-bold text-black dark:text-white">
+                Products
+            </h4>
+            <a href="{{ route('dashboard.products.create') }}"
+                class="flex font-bold justify-center rounded bg-red-600 px-6 py-2 text-white hover:bg-red-700">
+                Tambah Produk
+            </a>
         </div>
 
         <div
