@@ -18,7 +18,8 @@ class Transaction extends Model
         'total_price',
         'payment_method',
         'payment_status',
-        'cash'
+        'cash',
+        'cash_change'
     ];
 
     public $timestamps = false;
@@ -35,12 +36,6 @@ class Transaction extends Model
     {
         $formatId = str_pad($this->id, 3, '0', STR_PAD_LEFT);
         return 'INV-' . Carbon::parse($this->order->order_date)->format('Ymd') . '-' . $formatId;
-    }
-    
-    // mutator for auto calculte exchange
-    public function setCashChangeAttribute()
-    {
-        $this->attributes['cash_change'] = $this->attributes['cash'] - $this->order->total_price;
     }
 
     public function getStrukUrlAttribute()

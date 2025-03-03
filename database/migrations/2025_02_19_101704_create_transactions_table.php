@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('member_id')->nullable()->constrained('members')->onDelete('set null');
             $table->decimal('total_price', 15);
             $table->decimal('cash', 15);
-            $table->decimal('cash_change', 15, 2)->default(0);
+            $table->decimal('cash_change', 15, 2)->virtualAs('cash - total_price');
             $table->enum('payment_method', ['cash', 'debit', 'credit', 'ewallet']);
             $table->enum('payment_status', ['paid', 'unpaid', 'pending']);
             // $table->timestamps();
