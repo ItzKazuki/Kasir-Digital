@@ -167,7 +167,7 @@
                                             </button>
                                         </form>
                                     @else
-                                    <p class="text-sm font-medium text-red-600">Unggah Foto Profile!</p>
+                                        <p class="text-sm font-medium text-red-600">Unggah Foto Profile!</p>
                                     @endif
                                     {{-- <button class="text-sm text-gray-600 font-medium hover:text-red-600">
                                             Update
@@ -175,14 +175,15 @@
                                 </span>
                             </div>
                         </div>
-                        <form action="{{ route('dashboard.settings.update-profile', ['user' => $user->id]) }}"
+                        <form id="upload-profile-image" action="{{ route('dashboard.settings.update-profile', ['user' => $user->id]) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <div id="FileUpload"
                                 class="relative mb-5 block w-full cursor-pointer appearance-none rounded border border-dashed border-blue-600 bg-gray-200 px-4 py-4 dark:bg-meta-4 sm:py-7">
-                                <input type="file" accept="image/*" name="profile_img"
+                                <input type="hidden" name="profile_img" id="profile_img_base64">
+                                <input type="file" accept="image/*" id="inputImageProfile"
                                     class="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />
                                 <div class="flex flex-col items-center justify-center space-y-3">
                                     <span
@@ -222,7 +223,7 @@
                             <div class="flex justify-end gap-4.5">
                                 <button
                                     class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1 dark:border-gray-300dark dark:text-white"
-                                    type="submit">
+                                    type="button">
                                     Cancel
                                 </button>
                                 <button
@@ -239,6 +240,11 @@
         <!-- ====== Settings Section End -->
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+@endpush
 
 @push('modals')
     <!-- Modal -->
@@ -276,11 +282,38 @@
             </div>
         </div>
     </div>
+
+    <div id="cropImageModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideModal()"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-8 sm:pb-6">
+                    <div class="sm:flex sm:items-start gap-4">
+                        <div id="cropImageContainer">
+                            <img id="cropImage" src="https://avatars0.githubusercontent.com/u/3456749" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                    <button id="confirmCropImageBtn" type="button"
+                        class="w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Crop</button>
+                    <button onclick="document.getElementById('cropImageModal').classList.add('hidden')"
+                        class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('scripts')
     <script>
         let deleteFormId = '';
+        let modalCropImage = document.getElementById('cropImageModal');
+        let imageToCrop = document.getElementById('cropImage');
+        let cropper;
 
         function showModal(formId) {
             deleteFormId = formId;
@@ -294,6 +327,85 @@
         document.getElementById("confirmDeleteBtn").addEventListener("click", function() {
             if (deleteFormId) {
                 document.getElementById(deleteFormId).submit();
+            }
+        });
+
+        document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
+            canvas = cropper.getCroppedCanvas({
+                width: 350,
+                height: 350,
+            });
+
+            canvas.toBlob(function(blob) {
+                url = URL.createObjectURL(blob);
+                var reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = function() {
+                    var base64data = reader.result;
+                    document.getElementById('profile_img_base64').value = base64data;
+                    document.getElementById('cropImageModal').classList.add('hidden');
+                    document.getElementById('upload-profile-image').submit();
+                }
+
+            });
+        });
+
+        document.getElementById('inputImageProfile').addEventListener("change", e => {
+            const files = e.target.files;
+            const setImageToCroper = (url) => {
+                imageToCrop.src = url;
+                modalCropImage.classList.remove('hidden');
+            }
+
+            let reader;
+            let file;
+            let url;
+
+            if (files && files.length > 0) {
+                file = files[0];
+
+                if (url) {
+                    setImageToCroper(URL.createObjectURL(file));
+                } else {
+                    reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        setImageToCroper(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    if (!modalCropImage.classList.contains('hidden')) {
+                        cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 1,
+                            viewMode: 3,
+                            preview: '#cropImagePreviewContainer'
+                        });
+                    } else {
+                        if (cropper) {
+                            cropper.destroy();
+                            cropper = null;
+                        }
+                    }
+                }
+            }
+        });
+
+        observer.observe(modalCropImage, {
+            attributes: true
+        });
+
+        modalCropImage.addEventListener('transitionend', function(event) {
+            if (event.target === modalCropImage && modalCropImage.classList.contains('hidden')) {
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
             }
         });
     </script>

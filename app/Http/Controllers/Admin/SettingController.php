@@ -54,16 +54,23 @@ class SettingController extends Controller
     public function updateProfile(Request $request, User $user)
     {
         $request->validate([
-            'profile_img' => 'required|image|mimes:png,jpg|max:1024'
+            'profile_img' => 'required|string'
         ], [
             'profile_img.required' => 'Foto profil wajib diunggah.',
-            'profile_img.image' => 'File yang diunggah harus berupa gambar.',
-            'profile_img.mimes' => 'Format gambar harus PNG atau JPG.',
-            'profile_img.max' => 'Ukuran gambar tidak boleh lebih dari 1MB.'
+            'profile_img_base64.string' => 'Data gambar tidak valid.'
         ]);
 
-        $imageName = $request->user()->username . '-' . date('dmyHis') . '.' . $request->file('profile_img')->extension();
-        Storage::putFileAs('static/images/profiles', $request->file('profile_img'), $imageName);
+        // convert base64 image to file
+        $imageData = $request->input('profile_img');
+        $imageData = str_replace('data:image/png;base64,', '', $imageData);
+        $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+        $imageData = str_replace(' ', '+', $imageData);
+        $imageData = base64_decode($imageData);
+
+        // add filename
+        $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
+
+        Storage::put('static/images/profiles/' . $imageName, $imageData);
 
         // cek apakah sebelumnya ada/udh punya gambar belum
         // kalo udh hapus dulu, baru di save.
