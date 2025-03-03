@@ -57,7 +57,7 @@ class SettingController extends Controller
             'profile_img' => 'required|string'
         ], [
             'profile_img.required' => 'Foto profil wajib diunggah.',
-            'profile_img_base64.string' => 'Data gambar tidak valid.'
+            'profile_img.string' => 'Data gambar tidak valid.'
         ]);
 
         // convert base64 image to file

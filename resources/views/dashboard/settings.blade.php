@@ -21,8 +21,7 @@
         <!-- ====== Settings Section Start -->
         <div class="grid grid-cols-5 gap-8">
             <div class="col-span-5 xl:col-span-3">
-                <div
-                    class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
                     <div class="border-b border-gray-300 px-7 py-4  ">
                         <h3 class="font-medium text-black  ">
                             Personal Information
@@ -34,8 +33,8 @@
                             @method('PUT')
                             <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                                 <div class="w-full sm:w-1/2">
-                                    <label class="mb-3 block text-sm font-medium text-black  "
-                                        for="fullName">Full Name</label>
+                                    <label class="mb-3 block text-sm font-medium text-black  " for="fullName">Full
+                                        Name</label>
                                     <div class="relative">
                                         <span class="absolute left-4 top-4">
                                             <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20"
@@ -63,8 +62,8 @@
                                 </div>
 
                                 <div class="w-full sm:w-1/2">
-                                    <label class="mb-3 block text-sm font-medium text-black  "
-                                        for="phoneNumber">Phone Number</label>
+                                    <label class="mb-3 block text-sm font-medium text-black  " for="phoneNumber">Phone
+                                        Number</label>
                                     <input
                                         class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                         type="tel" pattern="08[0-9]{8,11}" name="phone_number" id="full_name"
@@ -78,8 +77,8 @@
                             </div>
 
                             <div class="mb-5.5">
-                                <label class="mb-3 block text-sm font-medium text-black  "
-                                    for="emailAddress">Email Address</label>
+                                <label class="mb-3 block text-sm font-medium text-black  " for="emailAddress">Email
+                                    Address</label>
                                 <div class="relative">
                                     <span class="absolute left-4 top-4">
                                         <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20"
@@ -107,8 +106,7 @@
                             </div>
 
                             <div class="mb-5.5">
-                                <label class="mb-3 block text-sm font-medium text-black  "
-                                    for="username">Username</label>
+                                <label class="mb-3 block text-sm font-medium text-black  " for="username">Username</label>
                                 <input
                                     class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none        "
                                     type="text" name="username" id="username" placeholder="yourname"
@@ -137,8 +135,7 @@
                 </div>
             </div>
             <div class="col-span-5 xl:col-span-2">
-                <div
-                    class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
                     <div class="border-b border-gray-300 px-7 py-4  ">
                         <h3 class="font-medium text-black  ">
                             Your Photo Profile
@@ -175,13 +172,13 @@
                                 </span>
                             </div>
                         </div>
-                        <form id="upload-profile-image" action="{{ route('dashboard.settings.update-profile', ['user' => $user->id]) }}"
+                        <form id="upload-profile-image"
+                            action="{{ route('dashboard.settings.update-profile', ['user' => $user->id]) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <div id="FileUpload"
-                                class="relative mb-5 block w-full cursor-pointer appearance-none rounded border border-dashed border-blue-600 bg-gray-200 px-4 py-4   sm:py-7">
+                                class="relative mb-5 block w-full cursor-pointer appearance-none rounded border border-dashed border-blue-600 bg-gray-200 px-4 py-4 sm:py-7">
                                 <input type="hidden" name="profile_img" id="profile_img_base64">
                                 <input type="file" accept="image/*" id="inputImageProfile"
                                     class="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />
