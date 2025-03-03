@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
-            $table->decimal('price', 15, 2);
+            $table->decimal('price', 15);
             $table->integer('stock');
             $table->date('expired_at')->nullable();
             $table->string('image_url')->nullable();

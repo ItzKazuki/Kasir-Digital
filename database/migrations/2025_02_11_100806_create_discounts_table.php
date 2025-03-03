@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['percentage', 'fixed']);
-            $table->decimal('value', 15, 2);
+            $table->decimal('value', 15);
             $table->date('start_date');
             $table->date('end_date');
             $table->enum('status', ['active', 'inactive'])->default('active');
