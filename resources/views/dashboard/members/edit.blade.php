@@ -22,7 +22,7 @@
         <div class="rounded-sm border border-gray-300 bg-white shadow-md dark:border-gray-300dark dark:bg-boxdark">
             <div class="border-b border-gray-300 px-6 py-4 dark:border-gray-300dark">
                 <h3 class="font-medium text-black dark:text-white">
-                    Buat Member Baru
+                    Edit Member {{ $member->full_name }}
                 </h3>
             </div>
             <form action="{{ route('dashboard.members.update', ['member' => $member->id]) }}" method="POST">
