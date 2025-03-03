@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Category;
+use App\Models\Discount;
+use App\Models\OrderDetail;
+use App\Observers\ProductObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +23,14 @@ class Product extends Model
         'stock',
         'image_url',
         'description',
+        'estimasi_keuntungan',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::observe(ProductObserver::class);
+    }
 
     // Accessor untuk membuat field baru namun field lamanya tidak berubah
     public function getProductImageAttribute()
