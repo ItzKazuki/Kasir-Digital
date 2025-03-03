@@ -31,7 +31,6 @@ class TransactionFactory extends Factory
             'payment_method' => 'cash',
             'payment_status' => $this->faker->randomElement(['paid', 'unpaid', 'pending']),
             'cash' => $cash,
-            'cash_change' =>  $cash - $order->total_price,
         ];
     }
 }
