@@ -152,7 +152,7 @@ class ProductController extends Controller
         Storage::delete('static/images/products/' . $product->image_url);
         $product->delete();
 
-        Sweetalert::success('berhasil menghapus product dengan id: ' . $product->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus produk ' . $product->name, 'Hapus Berhasil');
         return back();
     }
 }

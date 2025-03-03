@@ -84,7 +84,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        Sweetalert::success('berhasil menghapus kategori dengan id: ' . $category->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus kategori ' . $category->name, 'Hapus Berhasil');
         return back();
     }
 }

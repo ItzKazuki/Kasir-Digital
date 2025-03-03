@@ -96,7 +96,7 @@ class MemberController extends Controller
     {
         $member->delete();
 
-        Sweetalert::success('berhasil menghapus member dengan id: ' . $member->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus member dengan nama: ' . $member->full_name, 'Hapus Berhasil');
         return back();
     }
 }

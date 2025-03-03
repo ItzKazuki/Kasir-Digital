@@ -54,7 +54,7 @@ class TransactionController extends Controller
     {
         $transaction->delete();
 
-        Sweetalert::success('berhasil menghapus transaction dengan id: ' . $transaction->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus transaction dengan nomor invoice: ' . $transaction->invoice_number, 'Hapus Berhasil');
         return redirect()->route('dashboard.transactions.index');
     }
 

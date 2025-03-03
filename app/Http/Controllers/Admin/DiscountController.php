@@ -95,7 +95,7 @@ class DiscountController extends Controller
     {
         $discount->delete();
 
-        Sweetalert::success('berhasil menghapus diskon dengan id: ' . $discount->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus diskon ' . $discount->name, 'Hapus Berhasil');
         return back();
     }
 }

@@ -68,7 +68,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        Sweetalert::success('berhasil menghapus user dengan id: ' . $user->id, 'Hapus Berhasil');
+        Sweetalert::success('berhasil menghapus user ' . $user->full_name, 'Hapus Berhasil');
         return back();
     }
 }
