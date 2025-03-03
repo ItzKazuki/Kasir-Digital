@@ -66,7 +66,7 @@
 
                         <div class="flex items-center justify-center p-2 xl:p-5">
                             <p class="font-medium text-black dark:text-white">
-                                {{ number_format($member->point, 2, ',', '.') }}</p>
+                                {{ number_format($member->point, 0, ',', '.') }}</p>
                         </div>
 
                         <div class="flex items-center justify-center p-2 xl:p-5">

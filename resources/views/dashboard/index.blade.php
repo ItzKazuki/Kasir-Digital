@@ -71,7 +71,7 @@
             <div class="mt-4 flex items-end justify-between">
                 <div>
                     <h4 class="text-3xl font-bold text-black dark:text-white">
-                        {{ 'Rp ' . number_format($profit, 2, ',', '.') }}
+                        {{ 'Rp ' . number_format($profit, 0, ',', '.') }}
                     </h4>
                     <span class="text-sm font-medium">Total Profit</span>
                 </div>
