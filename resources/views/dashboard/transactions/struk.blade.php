@@ -40,7 +40,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>QTY</th>
+                    <th>Qty</th>
                     <th>Item</th>
                     <th>Price</th>
                 </tr>

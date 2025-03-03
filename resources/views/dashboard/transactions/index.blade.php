@@ -19,7 +19,7 @@
 
     <div class="flex flex-col gap-10">
         <div
-            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md     sm:px-7.5 xl:pb-1">
+            class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md sm:px-7.5 xl:pb-1">
             <div class="max-w-full overflow-x-auto">
                 <table class="w-full table-auto">
                     <thead>
@@ -27,16 +27,16 @@
                             <th class="min-w-[220px] px-4 py-4 font-medium text-black  ">
                                 Invoice No
                             </th>
-                            <th class="min-w-[220px] px-4 py-4 font-medium text-black   xl:pl-11">
+                            <th class="min-w-[220px] px-4 py-4 font-medium text-black xl:pl-11">
                                 Package
                             </th>
-                            <th class="min-w-[150px] px-4 py-4 font-medium text-black  ">
+                            <th class="min-w-[150px] px-4 py-4 font-medium text-black">
                                 Invoice date
                             </th>
-                            <th class="min-w-[120px] px-4 py-4 font-medium text-black  ">
+                            <th class="min-w-[120px] px-4 py-4 font-medium text-black">
                                 Status
                             </th>
-                            <th class="px-4 py-4 font-medium text-black  ">
+                            <th class="px-4 py-4 font-medium text-black">
                                 Actions
                             </th>
                         </tr>
@@ -44,11 +44,11 @@
                     <tbody>
                         @foreach ($transactions as $transaction)
                             <tr>
-                                <td class="border-b border-gray-200 px-4 py-5 pl-9   xl:pl-11">
+                                <td class="border-b border-gray-200 px-4 py-5 pl-9 xl:pl-11">
                                     <h5 class="font-medium text-black  ">{{ $transaction->invoice_number }}
                                     </h5>
                                 </td>
-                                <td class="border-b border-gray-200 px-4 py-5 pl-9   xl:pl-11">
+                                <td class="border-b border-gray-200 px-4 py-5 pl-9 xl:pl-11">
                                     <h5 class="font-medium text-black  ">
                                         {{ $transaction->order->member ? $transaction->order->member->full_name : 'Non Member' }}
                                     </h5>
