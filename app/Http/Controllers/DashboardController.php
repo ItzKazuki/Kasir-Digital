@@ -15,57 +15,65 @@ class DashboardController extends Controller
     public function index()
     {
         // Data Keuntungan Harian
-    $dailyProfitData = Transaction::getDailyProfit();
-    $dailyLabels = [];
-    $dailyProfits = [];
+        $dailyProfitData = Transaction::getDailyProfit();
+        $dailyLabels = [];
+        $dailyProfits = [];
+        $dailySales = [];
 
-    foreach ($dailyProfitData as $data) {
-        $dailyLabels[] = $data->date;
-        $dailyProfits[] = $data->profit;
-    }
+        foreach ($dailyProfitData as $data) {
+            $dailyLabels[] = $data->date;
+            $dailyProfits[] = $data->profit;
+        }
 
-    // Data Keuntungan Mingguan
-    $weeklyProfitData = Transaction::getWeeklyProfit();
-    $weeklyLabels = [];
-    $weeklyProfits = [];
+        $dailySalesData = Transaction::getDailySales();
+        foreach ($dailySalesData as $data) {
+            $dailySales[] = $data->sales;
+        }
 
-    foreach ($weeklyProfitData as $data) {
-        $weeklyLabels[] = 'Week ' . $data->week . ' ' . $data->year;
-        $weeklyProfits[] = $data->profit;
-    }
+        // Data Keuntungan Mingguan
+        $weeklyProfitData = Transaction::getWeeklyProfit();
+        $weeklyLabels = [];
+        $weeklyProfits = [];
+        $weeklySales = [];
 
-    // Data Keuntungan Bulanan
-    $monthlyProfitData = Transaction::getMonthlyProfit();
-    $monthlyLabels = [];
-    $monthlyProfits = [];
+        foreach ($weeklyProfitData as $data) {
+            $weeklyLabels[] = 'Week ' . $data->week . ' ' . $data->year;
+            $weeklyProfits[] = $data->profit;
+        }
 
-    foreach ($monthlyProfitData as $data) {
-        $monthlyLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
-        $monthlyProfits[] = $data->profit;
-    }
+        $weeklySalesData = Transaction::getWeeklySales();
+        foreach ($weeklySalesData as $data) {
+            $weeklySales[] = $data->sales;
+        }
 
-    // Data Keuntungan Tahunan
-    $yearlyProfitData = Transaction::getYearlyProfit();
-    $yearlyLabels = [];
-    $yearlyProfits = [];
+        // Data Keuntungan Bulanan
+        $monthlyProfitData = Transaction::getMonthlyProfit();
+        $monthlyLabels = [];
+        $monthlyProfits = [];
+        $monthlySales = [];
 
-    foreach ($yearlyProfitData as $data) {
-        $yearlyLabels[] = $data->year;
-        $yearlyProfits[] = $data->profit;
-    }
+        foreach ($monthlyProfitData as $data) {
+            $monthlyLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
+            $monthlyProfits[] = $data->profit;
+        }
 
-    $profit = Transaction::getTotalProfit();
+        $monthlySalesData = Transaction::getMonthlySales();
+        foreach ($monthlySalesData as $data) {
+            $monthlySales[] = $data->sales;
+        }
 
-    $total_product = Product::all()->count();
-    $total_member = Member::all()->count();
+        $profit = Transaction::getTotalProfit();
 
-    // Hitung total pendapatan
-    $totalRevenue = Order::sum('total_price');
+        $total_product = Product::all()->count();
+        $total_member = Member::all()->count();
 
-    // Hitung persentase keuntungan
-    $profitPercentage = ($totalRevenue > 0) ? ($profit / $totalRevenue) * 100 : 0;
+        // Hitung total pendapatan
+        $totalRevenue = Order::sum('total_price');
 
-    $title = "Home";
-    return view('dashboard.index', compact('title', 'dailyLabels', 'dailyProfits', 'weeklyLabels', 'weeklyProfits', 'monthlyLabels', 'monthlyProfits', 'yearlyLabels', 'yearlyProfits', 'profit', 'total_product', 'total_member', 'profitPercentage'));
+        // Hitung persentase keuntungan
+        $profitPercentage = ($totalRevenue > 0) ? ($profit / $totalRevenue) * 100 : 0;
+
+        $title = "Home";
+        return view('dashboard.index', compact('title', 'dailyLabels', 'dailyProfits', 'dailySales', 'weeklyLabels', 'weeklyProfits', 'weeklySales', 'monthlyLabels', 'monthlyProfits', 'monthlySales', 'profit', 'total_product', 'total_member', 'profitPercentage'));
     }
 }

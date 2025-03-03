@@ -227,7 +227,7 @@
                 var weeklyBtn = document.getElementById("weekBtn");
                 var profitChart;
 
-                function updateChart(labels, data, label) {
+                function updateChart(labels, profitData, salesData, profitLabel, salesLabel) {
                     if (profitChart) {
                         profitChart.destroy();
                     }
@@ -236,13 +236,22 @@
                         type: "line",
                         data: {
                             labels: labels,
-                            datasets: [{
-                                label: label,
-                                data: data,
-                                backgroundColor: "rgba(255, 99, 132, 0.5)",
-                                borderColor: "rgba(255, 99, 132, 1)",
-                                borderWidth: 1
-                            }]
+                            datasets: [
+                                {
+                                    label: profitLabel,
+                                    data: profitData,
+                                    backgroundColor: "rgb(220, 38, 38)",
+                                    borderColor: "rgb(220, 38, 38)",
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: salesLabel,
+                                    data: salesData,
+                                    backgroundColor: "rgb(252, 165, 165)",
+                                    borderColor: "rgb(252, 165, 165)",
+                                    borderWidth: 1
+                                }
+                            ]
                         }
                     });
                 }
@@ -251,32 +260,25 @@
                     monthlyBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.remove("bg-white", "shadow-card");
                     dailyBtn.classList.add("bg-white", "shadow-card");
-                    updateChart(@json($dailyLabels), @json($dailyProfits),
-                        "Keuntungan Harian (Rp)");
+                    updateChart(@json($dailyLabels), @json($dailyProfits), @json($dailySales), "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
                 });
 
                 weeklyBtn.addEventListener("click", function() {
-                    // Update chart with weekly data
-                    // You need to provide weeklyLabels and weeklyProfits from the server
                     dailyBtn.classList.remove("bg-white", "shadow-card");
                     monthlyBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.add("bg-white", "shadow-card");
-                    updateChart(@json($weeklyLabels), @json($weeklyProfits),
-                        "Keuntungan Mingguan (Rp)");
+                    updateChart(@json($weeklyLabels), @json($weeklyProfits), @json($weeklySales), "Keuntungan Mingguan (Rp)", "Penjualan Mingguan (Rp)");
                 });
 
                 monthlyBtn.addEventListener("click", function() {
-                    // Update chart with monthly data
-                    // You need to provide monthlyLabels and monthlyProfits from the server
                     dailyBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.remove("bg-white", "shadow-card");
-                    monthlyBtn.classList.add("bg-white", "shadow-card");    
-                    updateChart(@json($monthlyLabels), @json($monthlyProfits),
-                        "Keuntungan Bulanan (Rp)");
+                    monthlyBtn.classList.add("bg-white", "shadow-card");
+                    updateChart(@json($monthlyLabels), @json($monthlyProfits), @json($monthlySales), "Keuntungan Bulanan (Rp)", "Penjualan Bulanan (Rp)");
                 });
 
                 // Initialize chart with daily data by default
-                updateChart(@json($dailyLabels), @json($dailyProfits), "Keuntungan Harian (Rp)");
+                updateChart(@json($dailyLabels), @json($dailyProfits), @json($dailySales), "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
             });
         </script>
     @endpush

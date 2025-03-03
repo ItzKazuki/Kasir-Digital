@@ -138,4 +138,39 @@ class Transaction extends Model
             ->orderBy('week', 'asc')
             ->get();
     }
+
+    public static function getDailySales()
+    {
+        return self::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('transactions.payment_status', 'paid')
+            ->selectRaw('DATE(orders.order_date) as date, SUM(order_details.total_price) as sales')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+    }
+
+    public static function getWeeklySales()
+    {
+        return self::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('transactions.payment_status', 'paid')
+            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week, SUM(order_details.total_price) as sales')
+            ->groupBy('year', 'week')
+            ->orderBy('year', 'asc')
+            ->orderBy('week', 'asc')
+            ->get();
+    }
+
+    public static function getMonthlySales()
+    {
+        return self::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+            ->where('transactions.payment_status', 'paid')
+            ->selectRaw('MONTH(orders.order_date) as month, YEAR(orders.order_date) as year, SUM(order_details.total_price) as sales')
+            ->groupBy('month', 'year')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+    }
 }
