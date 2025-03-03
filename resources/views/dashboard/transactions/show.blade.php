@@ -12,10 +12,10 @@
         <nav>
             <ol class="flex items-center gap-2">
                 <li>
-                    <a class="font-medium" href="index.html">Dashboard /</a>
+                    <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
                 <li class="font-medium">Transaksi /</li>
-                <li class="font-medium text-blue-600"><a
+                <li class="font-medium text-red-600"><a
                         href="{{ route('dashboard.transactions.show', ['transaction' => $transaction->id]) }}">{{ $transaction->invoice_number }}</a>
                 </li>
             </ol>
@@ -110,8 +110,8 @@
                         <hr>
                         <p class="thanks">Terima Kasih</p>
                         <p class="link">Akses struk digital dibawah ini</p>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ $transaction->struk_url }}" alt=""
-                            class="center link" width="70" />
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ $transaction->struk_url }}"
+                            alt="" class="center link" width="70" />
                     </div>
                     <button type="button"
                         onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"

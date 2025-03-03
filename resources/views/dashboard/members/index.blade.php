@@ -1,5 +1,21 @@
 @extends('layouts.dashboard')
 @section('content')
+    <!-- Breadcrumb Start -->
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 class="text-2xl font-bold text-black dark:text-white">
+            Daftar Member
+        </h2>
+
+        <nav>
+            <ol class="flex items-center gap-2">
+                <li>
+                    <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
+                </li>
+                <li class="font-medium text-red-600">Member</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Breadcrumb End -->
     <div class="flex flex-col gap-10">
         <!-- ====== Table One Start -->
         <div
@@ -77,7 +93,8 @@
                                 </span>
                             </a>
                             <form id="delete-member-{{ $member->id }}"
-                                action="{{ route('dashboard.members.destroy', ['member' => $member->id]) }}" method="post">
+                                action="{{ route('dashboard.members.destroy', ['member' => $member->id]) }}"
+                                method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" onclick="showModal('delete-member-{{ $member->id }}')"

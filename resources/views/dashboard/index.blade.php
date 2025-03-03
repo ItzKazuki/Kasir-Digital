@@ -1,5 +1,20 @@
 @extends('layouts.dashboard')
 @section('content')
+    <!-- Breadcrumb Start -->
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 class="text-2xl font-bold text-black dark:text-white">
+            Statistik Penjualan
+        </h2>
+
+        <nav>
+            <ol class="flex items-center gap-2">
+                <li>
+                    <a class="font-medium text-red-600" href="{{ route('dashboard.index') }}">Dashboard</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Breadcrumb End -->
     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7 ">
         <!-- Card Item Start -->
         {{-- <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
@@ -110,8 +125,7 @@
         <!-- Card Item End -->
 
         <!-- Card Item Start -->
-        <div
-            class="rounded-sm border border-gray-100  bg-white px-7 py-6 shadow-md dark:border-strokedark dark:bg-boxdark">
+        <div class="rounded-sm border border-gray-100  bg-white px-7 py-6 shadow-md dark:border-strokedark dark:bg-boxdark">
             <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-red-100">
                 <svg class="fill-current text-red-800" width="22" height="18" viewBox="0 0 22 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">

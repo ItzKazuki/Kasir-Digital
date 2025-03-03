@@ -1,5 +1,21 @@
 @extends('layouts.dashboard')
 @section('content')
+    <!-- Breadcrumb Start -->
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 class="text-2xl font-bold text-black dark:text-white">
+            Daftar Produk
+        </h2>
+
+        <nav>
+            <ol class="flex items-center gap-2">
+                <li>
+                    <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
+                </li>
+                <li class="font-medium text-red-600">Produk</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Breadcrumb End -->
     <!-- ====== Table One Start -->
     <div
         class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md dark:border-gray-300dark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -61,7 +77,7 @@
                     <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
                         @if ($product->expired_at == null)
                             <p
-                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100">
+                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium text-red-600 bg-blue-100">
                                 tidak expired
                             </p>
                         @else
@@ -102,7 +118,6 @@
                 </div>
             @endforeach
         </div>
-    </div>
     </div>
 @endsection
 
