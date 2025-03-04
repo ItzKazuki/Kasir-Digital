@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Wavey\Sweetalert\Sweetalert;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -40,6 +41,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|string|in:admin,kasir',
+            'profile_img' => 'nullable|string'
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.string' => 'Nama lengkap harus berupa string.',
@@ -62,16 +64,35 @@ class UserController extends Controller
             'role.required' => 'Role wajib diisi.',
             'role.string' => 'Role harus berupa string.',
             'role.in' => 'Role harus salah satu dari: admin, kasir.',
+            'profile_img.string' => 'Data gambar tidak valid.'
         ]);
 
-        User::create([
+        $userData = [
             'full_name' => $request->full_name,
             'no_telp' => $request->phone_number,
             'email' => $request->email,
             'username' => $request->username,
             'password' => bcrypt($request->password),
             'role' => $request->role,
-        ]);
+        ];
+
+        if ($request->profile_img) {
+            // convert base64 image to file
+            $imageData = $request->input('profile_img');
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $imageData = base64_decode($imageData);
+
+            // add filename
+            $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
+
+            $userData['profile_img'] = $imageName;
+
+            Storage::put('static/images/profiles/' . $imageName, $imageData);
+        }
+
+        User::create($userData);
 
         Sweetalert::success('Pengguna baru berhasil dibuat', 'Buat Berhasil');
         return redirect()->route('dashboard.users.index');
@@ -106,6 +127,7 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => 'nullable|string|min:8',
             'role' => 'required|string|in:admin,kasir',
+            'profile_img' => 'nullable|string'
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.string' => 'Nama lengkap harus berupa string.',
@@ -127,9 +149,10 @@ class UserController extends Controller
             'role.required' => 'Role wajib diisi.',
             'role.string' => 'Role harus berupa string.',
             'role.in' => 'Role harus salah satu dari: admin, kasir.',
+            'profile_img.string' => 'Data gambar tidak valid.'
         ]);
 
-        $data = [
+        $userData = [
             'full_name' => $request->full_name,
             'no_telp' => $request->phone_number,
             'email' => $request->email,
@@ -138,10 +161,30 @@ class UserController extends Controller
         ];
 
         if ($request->password) {
-            $data['password'] = $request->password;
+            $userData['password'] = $request->password;
         }
 
-        $user->update($data);
+        if ($request->profile_img) {
+            if ($user->profile_img != null) {
+                Storage::delete('static/images/profiles/' . $user->profile_img);
+            }
+
+            // convert base64 image to file
+            $imageData = $request->input('profile_img');
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $imageData = base64_decode($imageData);
+
+            // add filename
+            $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
+
+            $userData['profile_img'] = $imageName;
+
+            Storage::put('static/images/profiles/' . $imageName, $imageData);
+        }
+
+        $user->update($userData);
 
         Sweetalert::success('Detail pengguna berhasil diperbarui', 'Update Berhasil');
         return redirect()->route('dashboard.users.index');
