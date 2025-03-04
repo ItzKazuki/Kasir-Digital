@@ -71,15 +71,25 @@
         <hr>
         <p class="thanks">Terima Kasih</p>
         <p class="link">Akses struk digital di bawah ini</p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ $transaction->struk_url }}" alt="" class="center link"
-            width="70" />
+        <div id="qrcode" class="center link"></div>
+
     </div>
 
     <div class="download-button">
         <button onclick="printStruk()">Download Struk</button>
     </div>
 
+    <script src="{{ asset('vendor/davidshimjs-qrcodejs-04f46c6/qrcode.js') }}"></script>
     <script>
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "{{ $transaction->struk_url }}",
+            width: 130,
+            height: 130,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
         function printStruk() {
             printJS({
                 printable: 'receipt',
