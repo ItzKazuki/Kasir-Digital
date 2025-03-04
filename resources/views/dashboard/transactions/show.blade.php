@@ -215,8 +215,7 @@
                         <hr>
                         <p class="thanks">Terima Kasih</p>
                         <p class="link">Akses struk digital dibawah ini</p>
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ $transaction->struk_url }}"
-                            alt="" class="center link" width="70" />
+                        <div id="qrcode" class="center link"></div>
                     </div>
                     <button type="button"
                         onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
@@ -232,7 +231,17 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('vendor/davidshimjs-qrcodejs-04f46c6/qrcode.js') }}"></script>
     <script>
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "{{ $transaction->struk_url }}",
+            width: 130,
+            height: 130,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
         function cetakStruk(url) {
             // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
             var newWindow = window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
