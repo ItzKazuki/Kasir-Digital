@@ -47,6 +47,17 @@ class ProductController extends Controller
             'stock' => 'required',
             'expired_at' => 'nullable|date',
             'product_img' => 'required|string',
+        ], [
+            'name_product.required' => 'Nama produk wajib diisi.',
+            'name_product.min' => 'Nama produk harus minimal 3 karakter.',
+            'category_id.required' => 'Kategori produk wajib diisi.',
+            'category_id.exists' => 'Kategori produk tidak valid.',
+            'price.required' => 'Harga produk wajib diisi.',
+            'price.numeric' => 'Harga produk harus berupa angka.',
+            'stock.required' => 'Stok produk wajib diisi.',
+            'expired_at.date' => 'Tanggal kedaluwarsa harus berupa tanggal yang valid.',
+            'product_img.required' => 'Gambar produk wajib diisi.',
+            'product_img.string' => 'Gambar produk harus berupa string.'
         ]);
 
         // convert base64 image to file
@@ -116,6 +127,17 @@ class ProductController extends Controller
             'stock' => 'required',
             'expired_at' => 'nullable|date',
             'product_img' => 'required|string',
+        ], [
+            'name_product.required' => 'Nama produk wajib diisi.',
+            'name_product.min' => 'Nama produk harus minimal 3 karakter.',
+            'category_id.required' => 'Kategori produk wajib diisi.',
+            'category_id.exists' => 'Kategori produk tidak valid.',
+            'price.required' => 'Harga produk wajib diisi.',
+            'price.numeric' => 'Harga produk harus berupa angka.',
+            'stock.required' => 'Stok produk wajib diisi.',
+            'expired_at.date' => 'Tanggal kedaluwarsa harus berupa tanggal yang valid.',
+            'product_img.required' => 'Gambar produk wajib diisi.',
+            'product_img.string' => 'Gambar produk harus berupa string.'
         ]);
 
         $product->name = $productDetail['name_product'];

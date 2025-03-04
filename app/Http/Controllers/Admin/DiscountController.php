@@ -43,6 +43,17 @@ class DiscountController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => ['required', Rule::enum(StatusDiscount::class)]
+        ], [
+            'name.required' => 'Nama diskon wajib diisi.',
+            'name.min' => 'Nama diskon harus minimal 3 karakter.',
+            'type.required' => 'Tipe diskon wajib diisi.',
+            'value.required' => 'Nilai diskon wajib diisi.',
+            'value.numeric' => 'Nilai diskon harus berupa angka.',
+            'start_date.required' => 'Tanggal mulai diskon wajib diisi.',
+            'start_date.date' => 'Tanggal mulai diskon harus berupa tanggal yang valid.',
+            'end_date.required' => 'Tanggal berakhir diskon wajib diisi.',
+            'end_date.date' => 'Tanggal berakhir diskon harus berupa tanggal yang valid.',
+            'status.required' => 'Status diskon wajib diisi.'
         ]);
 
         Discount::create($request->all());
@@ -80,6 +91,17 @@ class DiscountController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'status' => ['required', Rule::enum(StatusDiscount::class)]
+        ], [
+            'name.required' => 'Nama diskon wajib diisi.',
+            'name.min' => 'Nama diskon harus minimal 3 karakter.',
+            'type.required' => 'Tipe diskon wajib diisi.',
+            'value.required' => 'Nilai diskon wajib diisi.',
+            'value.numeric' => 'Nilai diskon harus berupa angka.',
+            'start_date.required' => 'Tanggal mulai diskon wajib diisi.',
+            'start_date.date' => 'Tanggal mulai diskon harus berupa tanggal yang valid.',
+            'end_date.required' => 'Tanggal berakhir diskon wajib diisi.',
+            'end_date.date' => 'Tanggal berakhir diskon harus berupa tanggal yang valid.',
+            'status.required' => 'Status diskon wajib diisi.'
         ]);
 
         $discount->update($request->all());

@@ -19,18 +19,18 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $customMessages = [
-            'full_name.required' => 'Full name is required.',
-            'full_name.min' => 'Full name must be at least 3 characters.',
-            'username.required' => 'Username is required.',
-            'username.unique' => 'This username is already taken.',
-            'username.min' => 'Username must be at least 3 characters.',
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please provide a valid email address.',
-            'email.dns' => 'The email domain must have valid DNS records.',
-            'phone_number.required' => 'Phone number is required.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least 3 characters.',
-            'password.confirmed' => 'Password confirmation does not match.',
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+            'full_name.min' => 'Nama lengkap harus minimal 3 karakter.',
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username ini sudah digunakan.',
+            'username.min' => 'Username harus minimal 3 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Silakan masukkan alamat email yang valid.',
+            'email.dns' => 'Domain email harus memiliki catatan DNS yang valid.',
+            'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password harus minimal 3 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ];
 
         $users = $request->validate([

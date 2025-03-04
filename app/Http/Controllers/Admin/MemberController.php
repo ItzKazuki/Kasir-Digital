@@ -41,6 +41,16 @@ class MemberController extends Controller
             'point' => 'required|numeric',
             'email' => 'required|email:dns',
             'status' => ['required', Rule::enum(MemberStatus::class)]
+        ], [
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+            'full_name.min' => 'Nama lengkap harus minimal 3 karakter.',
+            'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'phone_number.numeric' => 'Nomor telepon harus berupa angka.',
+            'point.required' => 'Poin wajib diisi.',
+            'point.numeric' => 'Poin harus berupa angka.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email harus berupa alamat email yang valid.',
+            'status.required' => 'Status member wajib diisi.'
         ]);
 
         Member::create(array_merge($memberDetail, [
@@ -79,6 +89,16 @@ class MemberController extends Controller
             'point' => 'required|numeric',
             'email' => 'required|email:dns',
             'status' => ['required', Rule::enum(MemberStatus::class)]
+        ], [
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+            'full_name.min' => 'Nama lengkap harus minimal 3 karakter.',
+            'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'phone_number.numeric' => 'Nomor telepon harus berupa angka.',
+            'point.required' => 'Poin wajib diisi.',
+            'point.numeric' => 'Poin harus berupa angka.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email harus berupa alamat email yang valid.',
+            'status.required' => 'Status member wajib diisi.'
         ]);
 
         $member->update(array_merge($memberDetail, [

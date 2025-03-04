@@ -23,12 +23,12 @@ class ResetPasswordController extends Controller
     public function update(Request $request)
     {
         $customMessages = [
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please provide a valid email address.',
-            'email.dns' => 'The email domain must have valid DNS records.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least 3 characters.',
-            'password.confirmed' => 'Password confirmation does not match.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Silakan masukkan alamat email yang valid.',
+            'email.dns' => 'Domain email harus memiliki catatan DNS yang valid.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password harus minimal 3 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ];
 
         $request->validate([

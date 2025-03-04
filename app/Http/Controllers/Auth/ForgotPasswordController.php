@@ -22,9 +22,9 @@ class ForgotPasswordController extends Controller
     public function sendResetLinkEmail(Request $request)
     {
         $customMessages = [
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please provide a valid email address.',
-            'email.dns' => 'The email domain must have valid DNS records.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Silakan masukkan alamat email yang valid.',
+            'email.dns' => 'Domain email harus memiliki catatan DNS yang valid.',
         ];
 
         $request->validate([
@@ -42,23 +42,5 @@ class ForgotPasswordController extends Controller
             Sweetalert::success('Silahkan cek email anda untuk reset password', 'Berhasil Reset Password');
             return redirect()->route('auth.login');
         }
-
-        // $user = User::where('email', $request->email)->first();
-
-        // if (isset($user)) {
-        //     $token = $user->createToken();
-
-        //     DB::table('password_resets')->insert([
-        //         'email' => $request->email,
-        //         'token' => $token,
-        //         'created_at' => Carbon::now()
-        //     ]);
-
-        //     Sweetalert::success('Silahkan cek email anda untuk reset password', 'Berhasil Reset Password');
-        //     return redirect()->route('auth.login');
-        // } else {
-        //     Sweetalert::success('Silahkan cek email anda untuk reset password', 'Berhasil Reset Password');
-        //     return redirect()->route('auth.login');
-        // }
     }
 }

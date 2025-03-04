@@ -36,6 +36,10 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|unique:categories,name',
             'description' => 'string'
+        ], [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.unique' => 'Nama kategori sudah ada.',
+            'description.string' => 'Deskripsi harus berupa teks.'
         ]);
 
         Category::create($request->all());
@@ -69,6 +73,10 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|unique:categories,name,' . $category->id,
             'description' => 'string'
+        ], [
+            'name.required' => 'Nama kategori wajib diisi.',
+            'name.unique' => 'Nama kategori sudah ada.',
+            'description.string' => 'Deskripsi harus berupa teks.'
         ]);
 
         $category->update($request->all());
