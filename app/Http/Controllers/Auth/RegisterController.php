@@ -22,8 +22,8 @@ class RegisterController extends Controller
             'full_name' => 'required|min:3',
             'username' => 'required|unique:users,username|min:3',
             'email' => 'required|email:dns',
-            'phone_number' => 'required',
-            'password' => 'required|min:3|confirmed',
+            'phone_number' => 'required|numeric',
+            'password' => 'required|min:8|confirmed',
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.min' => 'Nama lengkap harus minimal 3 karakter.',
@@ -34,8 +34,9 @@ class RegisterController extends Controller
             'email.email' => 'Silakan masukkan alamat email yang valid.',
             'email.dns' => 'Domain email harus memiliki catatan DNS yang valid.',
             'phone_number.required' => 'Nomor telepon wajib diisi.',
+            'phone_number.numeric' => 'Nomor telepon harus berupa angka.',
             'password.required' => 'Password wajib diisi.',
-            'password.min' => 'Password harus minimal 3 karakter.',
+            'password.min' => 'Password harus minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
