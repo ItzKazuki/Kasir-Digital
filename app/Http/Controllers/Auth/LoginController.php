@@ -17,18 +17,16 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-        $customMessages = [
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:3',
+        ], [
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Silakan masukkan alamat email yang valid.',
             'email.dns' => 'Domain email harus memiliki catatan DNS yang valid.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password harus minimal 3 karakter.',
-        ];
-
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:3',
-        ], $customMessages);
+        ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

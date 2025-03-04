@@ -18,7 +18,13 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        $customMessages = [
+        $users = $request->validate([
+            'full_name' => 'required|min:3',
+            'username' => 'required|unique:users,username|min:3',
+            'email' => 'required|email:dns',
+            'phone_number' => 'required',
+            'password' => 'required|min:3|confirmed',
+        ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.min' => 'Nama lengkap harus minimal 3 karakter.',
             'username.required' => 'Username wajib diisi.',
@@ -31,15 +37,7 @@ class RegisterController extends Controller
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password harus minimal 3 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
-        ];
-
-        $users = $request->validate([
-            'full_name' => 'required|min:3',
-            'username' => 'required|unique:users,username|min:3',
-            'email' => 'required|email:dns',
-            'phone_number' => 'required',
-            'password' => 'required|min:3|confirmed',
-        ], $customMessages);
+        ]);
 
         // create user and redirect to login with success
         User::create(array_merge($users, [
