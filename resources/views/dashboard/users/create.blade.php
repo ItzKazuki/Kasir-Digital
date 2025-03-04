@@ -193,9 +193,9 @@
     </div>
 @endsection
 
-@push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+ @push('styles')
+    <link rel="stylesheet" href="{{ asset('vendor/cropperjs/cropper.css') }}" />
+    <script src="{{ asset('vendor/cropperjs/cropper.js') }}"></script>
 @endpush
 
 @push('modals')
