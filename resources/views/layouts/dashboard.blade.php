@@ -8,7 +8,7 @@
     <title>Kasir Digital | {{ $title }}</title>
 
     {{-- style internal or external --}}
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
 </head>
@@ -372,14 +372,14 @@
     @stack('modals')
 
     {{-- script untuk alert atau yang lain --}}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @include('sweetalert::sweetalert')
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
-
     @stack('scripts')
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // trigger sweet alert
+            @include('sweetalert::sweetalert');
+
             setTimeout(function() {
                 document.getElementById("loading").style.display = "none";
             }, 1000); // Menghilangkan elemen setelah 1 detik
