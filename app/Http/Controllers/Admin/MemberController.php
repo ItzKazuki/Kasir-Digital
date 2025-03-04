@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\MemberStatus;
 use App\Models\Member;
+use App\Enums\MemberStatus;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
+use App\Notifications\MemberCreatedNotification;
 
 class MemberController extends Controller
 {
@@ -53,9 +54,12 @@ class MemberController extends Controller
             'status.required' => 'Status member wajib diisi.'
         ]);
 
-        Member::create(array_merge($memberDetail, [
+        $member = Member::create(array_merge($memberDetail, [
             'no_telp' => $memberDetail['phone_number']
         ]));
+
+         // Kirim notifikasi ke member baru
+         $member->notify(new MemberCreatedNotification($member));
 
         Sweetalert::success('berhasil menabah member baru', 'Tambah Member Berhasil!');
         return back();
