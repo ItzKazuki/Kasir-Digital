@@ -59,22 +59,25 @@
                     <h3 class="mb-1.5 text-2xl font-medium text-black  ">
                         {{ auth()->user()->full_name }}
                     </h3>
-                    <p class="font-medium">{{ ucfirst(auth()->user()->role) }}</p>
+                    <p
+                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 font-medium {{ auth()->user()->role == 'admin' ? 'text-yellow-600 bg-yellow-100' : 'text-blue-600 bg-blue-100' }}">
+                                {{ ucfirst(auth()->user()->role) }}
+                            </p>
                     <div
                         class="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-gray-300 py-2.5 shadow-1    ">
                         <div
                             class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4   xsm:flex-row">
-                            <span class="font-semibold text-black  ">259</span>
+                            <span class="font-semibold text-black  ">0</span>
                             <span class="text-sm">Product</span>
                         </div>
                         <div
                             class="flex flex-col items-center justify-center gap-1 border-r border-gray-300 px-4   xsm:flex-row">
-                            <span class="font-semibold text-black  ">129K</span>
+                            <span class="font-semibold text-black  ">{{ auth()->user()->orders->count() }}</span>
                             <span class="text-sm">Transaction</span>
                         </div>
-                        <div class="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                            <span class="font-semibold text-black  ">2K</span>
-                            <span class="text-sm">Following</span>
+                        <div class="flex flex-col items-center justify-center gap-1 px-2 xsm:flex-row">
+                            <span class="font-semibold text-black  ">{{ auth()->user()->created_at->format('d M Y') }}</span>
+                            <span class="text-sm">Didaftarkan Pada</span>
                         </div>
                     </div>
                 </div>
