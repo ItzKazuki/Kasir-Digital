@@ -17,7 +17,7 @@ trait GenerateStrukPdf
             $height = $height + ($transaction->order->orderDetails()->count() * 5);
         }
 
-        Pdf::view('dashboard.transactions.struk', compact('transaction'))
+        Pdf::view('layouts.struk', compact('transaction'))
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->noSandbox()

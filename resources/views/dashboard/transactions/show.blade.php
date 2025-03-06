@@ -172,51 +172,7 @@
                     </p>
                 </div>
                 <div class="p-6 flex flex-col items-center justify-center">
-                    <div id="receipt" class="receipt">
-                        <img src="{{ asset('static/logo-340x180.png') }}" width="200" class="center" alt="">
-                        <p>Jln. Lorem ipsum dolor sit amet</p>
-                        <p>No. 66 Cakung, Jakarta Timur, Jakarta</p>
-                        <p>No. Telp 08123456789</p>
-                        <hr>
-                        <p>{{ \Carbon\Carbon::parse($transaction->order->created_at)->locale('id')->translatedFormat('l, d F Y H:i') }}
-                            WIB</p>
-                        <hr>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Qty</th>
-                                    <th>Item</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($transaction->order->orderDetails as $orderDetail)
-                                    <tr>
-                                        <td class="qty">{{ $orderDetail->quantity }}</td>
-                                        <td style="text-align: left;">{{ $orderDetail->product->name }}</td>
-                                        <td>Rp. {{ number_format($orderDetail->product->price, 0, ',', '.') }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <hr>
-                        <div class="total">
-                            <span>Total</span>
-                            <span>{{ number_format($transaction->order->total_price, 0, ',', '.') }}</span>
-                        </div>
-                        <div class="uang">
-                            <span>Uang</span>
-                            <span>{{ number_format($transaction->cash, 0, ',', '.') }}</span>
-                        </div>
-                        <div class="kembalian">
-                            <span>Kembalian</span>
-                            <span>{{ number_format($transaction->cash_change, 0, ',', '.') }}</span>
-                        </div>
-                        <hr>
-                        <p class="thanks">Terima Kasih</p>
-                        <p class="link">Akses struk digital dibawah ini</p>
-                        <div id="qrcode" class="center link"></div>
-                    </div>
+                    @include('dashboard.transactions.struk')
                     <button type="button"
                         onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
                         class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">

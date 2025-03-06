@@ -30,7 +30,7 @@ class TransactionController extends Controller
     {
         $title = "Print Transaction " . $transaction->invoice_number;
 
-        return view('dashboard.transactions.struk', compact('title', 'transaction'));
+        return view('layouts.struk', compact('title', 'transaction'));
     }
 
     /**
