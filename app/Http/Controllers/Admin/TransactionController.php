@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\GeneratesStrukPdf;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
-use Spatie\LaravelPdf\Facades\Pdf;
-use Spatie\Browsershot\Browsershot;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Spatie\LaravelPdf\Enums\Orientation;
 
 class TransactionController extends Controller
 {
+    use GeneratesStrukPdf;
+
     /**
      * Display a listing of the resource.
      */
@@ -41,23 +41,7 @@ class TransactionController extends Controller
         $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
         if (!file_exists($strukPath)) {
-            $height = 150;
-
-            if ($transaction->order->orderDetails()->count() > 1) {
-                $height = $height + ($transaction->order->orderDetails()->count() * 5);
-            }
-
-            Pdf::view('dashboard.transactions.struk', compact('transaction'))
-                ->withBrowsershot(function (Browsershot $browsershot) {
-                    $browsershot
-                        ->noSandbox()
-                        ->setNodeBinary(config('app.node.path'))
-                        ->setNpmBinary(config('app.node.npm'));
-                })
-                ->disk('local')
-                ->orientation(Orientation::Portrait)
-                ->paperSize(96, $height, 'mm')
-                ->save('/static/struk/' . $transaction->invoice_number . '.pdf');
+            $this->generateStrukPdf($transaction);
         }
 
         return response()->download($strukPath);
