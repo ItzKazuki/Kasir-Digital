@@ -125,4 +125,9 @@ return [
 
     'version' => env('APP_VERSION', '1.0.0'),
 
+    'node' => [
+        'path' => env('NODE_PATH', '/usr/bin/node'),
+        'npm' => env('NPM_PATH', '/usr/bin/npm'),
+    ],
+
 ];
