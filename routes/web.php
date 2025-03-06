@@ -67,4 +67,4 @@ Route::get('/kasir', function () {
     return view('kasir.index2', compact('title'));
 });
 
-Route::get('/struk/{invoice}', [TransactionController::class, 'search'])->name('struk.search');
+Route::get('/struk/{invoice}', [TransactionController::class, 'streamStruk'])->name('struk.search');

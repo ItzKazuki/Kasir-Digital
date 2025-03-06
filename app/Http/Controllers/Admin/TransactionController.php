@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
+use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\Browsershot\Browsershot;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Spatie\LaravelPdf\Enums\Orientation;
 
 class TransactionController extends Controller
 {
@@ -26,7 +30,6 @@ class TransactionController extends Controller
     {
         $title = "Print Transaction " . $transaction->invoice_number;
 
-        // dd($transaction->cash);
         return view('dashboard.transactions.struk', compact('title', 'transaction'));
     }
 
@@ -35,7 +38,29 @@ class TransactionController extends Controller
      */
     public function pdf(Request $request, Transaction $transaction)
     {
-        //
+        $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
+
+        if (!file_exists($strukPath)) {
+            $height = 150;
+
+            if ($transaction->order->orderDetails()->count() > 1) {
+                $height = $height + ($transaction->order->orderDetails()->count() * 5);
+            }
+
+            Pdf::view('dashboard.transactions.struk', compact('transaction'))
+                ->withBrowsershot(function (Browsershot $browsershot) {
+                    $browsershot
+                        ->noSandbox()
+                        ->setNodeBinary(config('app.node.path'))
+                        ->setNpmBinary(config('app.node.npm'));
+                })
+                ->disk('local')
+                ->orientation(Orientation::Portrait)
+                ->paperSize(96, $height, 'mm')
+                ->save('/static/struk/' . $transaction->invoice_number . '.pdf');
+        }
+
+        return response()->download($strukPath);
     }
 
     /**
@@ -58,15 +83,18 @@ class TransactionController extends Controller
         return redirect()->route('dashboard.transactions.index');
     }
 
-    public function search(Request $request, string $invoice)
+    public function streamStruk(string $invoice)
     {
         $transaction = Transaction::findByInvoice($invoice)->first();
+        $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
-        if (!$transaction) {
+        if (!$transaction || !file_exists($strukPath)) {
             return abort(404);
         }
 
-        $title = "Print Transaction " . $transaction->invoice_number;
-        return view('dashboard.transactions.struk', compact('title', 'transaction'));
+        return response()->file($strukPath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
+        ]);
     }
 }
