@@ -130,4 +130,11 @@ return [
         'npm' => env('NPM_PATH', '/usr/bin/npm'),
     ],
 
+    'address' => env('APP_ADDRES_STORE', ''),
+
+    'fonnte' => [
+        'token' => env('FONNTE_WHATSAPP_TOKEN', ''),
+        'phone_number' => env('FONNTE_WHATSAPP_NUMBER', '08123456789')
+    ]
+
 ];
