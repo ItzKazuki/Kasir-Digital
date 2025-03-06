@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
 use App\Models\Transaction;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Orientation;
 
-trait GeneratesStrukPdf
+trait GenerateStrukPdf
 {
     public function generateStrukPdf(Transaction $transaction)
     {

@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\StoreBase64Image;
+use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Wavey\Sweetalert\Sweetalert;
 
 class SettingController extends Controller
 {
+    use StoreBase64Image;
+
     public function index(Request $request)
     {
         $title = "Settings";
@@ -60,23 +63,15 @@ class SettingController extends Controller
             'profile_img.string' => 'Data gambar tidak valid.'
         ]);
 
-        // convert base64 image to file
-        $imageData = $request->input('profile_img');
-        $imageData = str_replace('data:image/png;base64,', '', $imageData);
-        $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-        $imageData = str_replace(' ', '+', $imageData);
-        $imageData = base64_decode($imageData);
-
-        // add filename
-        $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
-
-        Storage::put('static/images/profiles/' . $imageName, $imageData);
-
         // cek apakah sebelumnya ada/udh punya gambar belum
         // kalo udh hapus dulu, baru di save.
         if ($user->profile_img != null) {
             Storage::delete('static/images/profiles/' . $user->profile_img);
         }
+
+        // add filename
+        $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
+        $this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'));
 
         // update image profile
         $user->profile_img = $imageName;

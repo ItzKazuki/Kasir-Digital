@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Wavey\Sweetalert\Sweetalert;
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Discount;
+use Illuminate\Http\Request;
+use App\Traits\StoreBase64Image;
+use Wavey\Sweetalert\Sweetalert;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    use StoreBase64Image;
+
     /**
      * Display a listing of the resource.
      */
@@ -60,16 +64,9 @@ class ProductController extends Controller
             'product_img.string' => 'Gambar produk harus berupa string.'
         ]);
 
-        // convert base64 image to file
-        $imageData = $request->input('product_img');
-        $imageData = str_replace('data:image/png;base64,', '', $imageData);
-        $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-        $imageData = str_replace(' ', '+', $imageData);
-        $imageData = base64_decode($imageData);
-
         // upload image products
         $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.png';
-        Storage::put('static/images/products/' . $imageName, $imageData);
+        $this->storeBase64Image('static/images/products/' . $imageName, $request->input('product_img'));
 
         $dataProduk = [
             'name' => $productDetail['name_product'],
@@ -152,16 +149,9 @@ class ProductController extends Controller
                 Storage::delete('static/images/products/' . $product->image_url);
             }
 
-            // convert base64 image to file
-            $imageData = $request->input('product_img');
-            $imageData = str_replace('data:image/png;base64,', '', $imageData);
-            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-            $imageData = str_replace(' ', '+', $imageData);
-            $imageData = base64_decode($imageData);
-
             // upload new image products
             $imageName = str_replace(' ', '-', $productDetail['name_product']) . '-' . date('dmyHis') . '.png';
-            Storage::put('static/images/products/' . $imageName, $imageData);
+            $this->storeBase64Image('static/images/products/' . $imageName, $request->input('product_img'));
             $product->image_url = $imageName;
         }
 

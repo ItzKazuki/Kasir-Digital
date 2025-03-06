@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\GeneratesStrukPdf;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
+use App\Traits\GenerateStrukPdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
-    use GeneratesStrukPdf;
+    use GenerateStrukPdf;
 
     /**
      * Display a listing of the resource.
