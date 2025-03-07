@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Order;
 use App\Models\Member;
+use App\Models\OrderDetail;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,18 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         $order = Order::inRandomOrder()->first() ?? Order::factory()->create();
-        $cash = '1200000';
+
+        // Check if the order has order details, if not, create some
+        if ($order->orderDetails()->count() == 0) {
+            $order->orderDetails()->createMany(
+            OrderDetail::factory()->count($this->faker->numberBetween(1, 5))->make()->toArray()
+            );
+            // Recalculate total price after adding order details
+            $order->total_price = $order->orderDetails->sum('total_price');
+            $order->save();
+        }
+
+        $cash = $this->faker->numberBetween($order->total_price + 100000, $order->total_price + 250000);
 
         return [
             'order_id' => $order->id,
