@@ -17,7 +17,99 @@
     </div>
     <!-- Breadcrumb End -->
 
-    <div class="flex flex-col gap-10">
+    <div class=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7">
+        <!-- Card Item Start -->
+        <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="20" height="22" viewBox="0 0 20 22" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M11.7531 16.4312C10.3781 16.4312 9.27808 17.5312 9.27808 18.9062C9.27808 20.2812 10.3781 21.3812 11.7531 21.3812C13.1281 21.3812 14.2281 20.2812 14.2281 18.9062C14.2281 17.5656 13.0937 16.4312 11.7531 16.4312ZM11.7531 19.8687C11.2375 19.8687 10.825 19.4562 10.825 18.9406C10.825 18.425 11.2375 18.0125 11.7531 18.0125C12.2687 18.0125 12.6812 18.425 12.6812 18.9406C12.6812 19.4219 12.2343 19.8687 11.7531 19.8687Z"
+                        fill="" />
+                    <path
+                        d="M5.22183 16.4312C3.84683 16.4312 2.74683 17.5312 2.74683 18.9062C2.74683 20.2812 3.84683 21.3812 5.22183 21.3812C6.59683 21.3812 7.69683 20.2812 7.69683 18.9062C7.69683 17.5656 6.56245 16.4312 5.22183 16.4312ZM5.22183 19.8687C4.7062 19.8687 4.2937 19.4562 4.2937 18.9406C4.2937 18.425 4.7062 18.0125 5.22183 18.0125C5.73745 18.0125 6.14995 18.425 6.14995 18.9406C6.14995 19.4219 5.73745 19.8687 5.22183 19.8687Z"
+                        fill="" />
+                    <path
+                        d="M19.0062 0.618744H17.15C16.325 0.618744 15.6031 1.23749 15.5 2.06249L14.95 6.01562H1.37185C1.0281 6.01562 0.684353 6.18749 0.443728 6.46249C0.237478 6.73749 0.134353 7.11562 0.237478 7.45937C0.237478 7.49374 0.237478 7.49374 0.237478 7.52812L2.36873 13.9562C2.50623 14.4375 2.9531 14.7812 3.46873 14.7812H12.9562C14.2281 14.7812 15.3281 13.8187 15.5 12.5469L16.9437 2.26874C16.9437 2.19999 17.0125 2.16562 17.0812 2.16562H18.9375C19.35 2.16562 19.7281 1.82187 19.7281 1.37499C19.7281 0.928119 19.4187 0.618744 19.0062 0.618744ZM14.0219 12.3062C13.9531 12.8219 13.5062 13.2 12.9906 13.2H3.7781L1.92185 7.56249H14.7094L14.0219 12.3062Z"
+                        fill="" />
+                </svg>
+            </div>
+
+            <div class="mt-4 flex items-end justify-between">
+                <div>
+                    <h4 class="text-3xl font-bold text-green-600  ">
+                        {{ 'Rp ' . number_format($income, 0, ',', '.') }}
+                    </h4>
+                    <span class="text-sm font-medium">Uang Masuk</span>
+                </div>
+            </div>
+        </div>
+        <!-- Card Item End -->
+
+        <!-- Card Item Start -->
+        <div class="rounded-sm border border-gray-100 bg-white px-7 py-6 shadow-md">
+            <div class="flex h-11 w-11.5 items-center justify-center rounded-full bg-red-100">
+                <svg class="fill-current text-red-600" width="22" height="22" viewBox="0 0 22 22" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M21.1063 18.0469L19.3875 3.23126C19.2157 1.71876 17.9438 0.584381 16.3969 0.584381H5.56878C4.05628 0.584381 2.78441 1.71876 2.57816 3.23126L0.859406 18.0469C0.756281 18.9063 1.03128 19.7313 1.61566 20.3844C2.20003 21.0375 2.99066 21.3813 3.85003 21.3813H18.1157C18.975 21.3813 19.8 21.0031 20.35 20.3844C20.9 19.7656 21.2094 18.9063 21.1063 18.0469ZM19.2157 19.3531C18.9407 19.6625 18.5625 19.8344 18.15 19.8344H3.85003C3.43753 19.8344 3.05941 19.6625 2.78441 19.3531C2.50941 19.0438 2.37191 18.6313 2.44066 18.2188L4.12503 3.43751C4.19378 2.71563 4.81253 2.16563 5.56878 2.16563H16.4313C17.1532 2.16563 17.7719 2.71563 17.875 3.43751L19.5938 18.2531C19.6282 18.6656 19.4907 19.0438 19.2157 19.3531Z"
+                        fill="" />
+                    <path
+                        d="M14.3345 5.29375C13.922 5.39688 13.647 5.80938 13.7501 6.22188C13.7845 6.42813 13.8189 6.63438 13.8189 6.80625C13.8189 8.35313 12.547 9.625 11.0001 9.625C9.45327 9.625 8.1814 8.35313 8.1814 6.80625C8.1814 6.6 8.21577 6.42813 8.25015 6.22188C8.35327 5.80938 8.07827 5.39688 7.66577 5.29375C7.25327 5.19063 6.84077 5.46563 6.73765 5.87813C6.6689 6.1875 6.63452 6.49688 6.63452 6.80625C6.63452 9.2125 8.5939 11.1719 11.0001 11.1719C13.4064 11.1719 15.3658 9.2125 15.3658 6.80625C15.3658 6.49688 15.3314 6.1875 15.2626 5.87813C15.1595 5.46563 14.747 5.225 14.3345 5.29375Z"
+                        fill="" />
+                </svg>
+            </div>
+
+            <div class="mt-4 flex items-end justify-between">
+                <div>
+                    <h4 class="text-3xl font-bold text-red-600  ">
+                        {{ '-Rp ' . number_format($outcome, 0, ',', '.') }}
+                    </h4>
+                    <span class="text-sm font-medium">Uang Keluar</span>
+                </div>
+            </div>
+        </div>
+        <!-- Card Item End -->
+    </div>
+
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <h2 class="text-lg font-bold text-black  ">
+            Filter Transaksi
+        </h2>
+
+        <form action="" method="get">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                    <label for="start_date" class="text-sm font-medium text-gray-700">Start Date</label>
+                    <input type="date" name="start_date"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
+                        value="{{ request('start_date') }}">
+                </div>
+
+                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                    <label for="end_date" class="text-sm font-medium text-gray-700">End Date</label>
+                    <input type="date" name="end_date" id="end_date"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
+                        value="{{ request('end_date') }}">
+                </div>
+
+                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                    <label for="payment_status" class="text-sm font-medium text-gray-700">Payment Status</label>
+                    <select name="payment_status" id="payment_status"
+                        class="relative z-20 w-full rounded border border-gray-300 bg-white px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600">
+                        <option value="">All</option>
+                        <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                        <option value="unpaid" {{ request('payment_status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                        <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending
+                        </option>
+                    </select>
+                </div>
+                <button type="submit" class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-4 flex flex-col gap-10">
         <div class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md sm:px-7.5 xl:pb-1">
             <div class="max-w-full overflow-x-auto">
                 <table class="w-full table-auto">
@@ -88,8 +180,9 @@
                                             <button type="button"
                                                 onclick="showModal('delete-transaction-{{ $transaction->id }}')"
                                                 class="hover:text-red-600">
-                                                <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18"
-                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <svg class="fill-current" width="18" height="18"
+                                                    viewBox="0 0 18 18" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M13.7535 2.47502H11.5879V1.9969C11.5879 1.15315 10.9129 0.478149 10.0691 0.478149H7.90352C7.05977 0.478149 6.38477 1.15315 6.38477 1.9969V2.47502H4.21914C3.40352 2.47502 2.72852 3.15002 2.72852 3.96565V4.8094C2.72852 5.42815 3.09414 5.9344 3.62852 6.1594L4.07852 15.4688C4.13477 16.6219 5.09102 17.5219 6.24414 17.5219H11.7004C12.8535 17.5219 13.8098 16.6219 13.866 15.4688L14.3441 6.13127C14.8785 5.90627 15.2441 5.3719 15.2441 4.78127V3.93752C15.2441 3.15002 14.5691 2.47502 13.7535 2.47502ZM7.67852 1.9969C7.67852 1.85627 7.79102 1.74377 7.93164 1.74377H10.0973C10.2379 1.74377 10.3504 1.85627 10.3504 1.9969V2.47502H7.70664V1.9969H7.67852ZM4.02227 3.96565C4.02227 3.85315 4.10664 3.74065 4.24727 3.74065H13.7535C13.866 3.74065 13.9785 3.82502 13.9785 3.96565V4.8094C13.9785 4.9219 13.8941 5.0344 13.7535 5.0344H4.24727C4.13477 5.0344 4.02227 4.95002 4.02227 4.8094V3.96565ZM11.7285 16.2563H6.27227C5.79414 16.2563 5.40039 15.8906 5.37227 15.3844L4.95039 6.2719H13.0785L12.6566 15.3844C12.6004 15.8625 12.2066 16.2563 11.7285 16.2563Z"
                                                         fill="" />
@@ -105,7 +198,8 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}" class="hover:text-red-600">
+                                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}"
+                                            class="hover:text-red-600">
                                             <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
