@@ -16,11 +16,29 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $title = "Transactions";
-        $transactions = Transaction::with('order.member')->paginate(10);
-        return view('dashboard.transactions.index', compact('title', 'transactions'));
+
+        $query = Transaction::with('order.member');
+
+        if ($request->start_date && $request->end_date) {
+            $query->whereHas('order', function ($q) use ($request) {
+                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
+            });
+        }
+
+        if ($request->payment_status) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        $transactions = $query->paginate(10)->appends(request()->query());
+
+        $income = Transaction::where('payment_status', 'paid')->sum('cash');
+        $outcome = Transaction::where('payment_status', 'paid')->sum('cash_change');
+
+
+        return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
 
     /**
