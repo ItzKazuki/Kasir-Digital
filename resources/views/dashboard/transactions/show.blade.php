@@ -78,13 +78,20 @@
                                     <h3 class="font-bold text-md py-2">Total Harga</h3>
                                     <p>Rp. {{ number_format($transaction->total_price, 0, ',', '.') }}</p>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-md py-2">Uang Masuk</h3>
-                                    <p class="text-green-600">Rp. {{ number_format($transaction->cash, 0, ',', '.') }}</p>
+                                <div class="flex gap-8">
+                                    <div>
+                                        <h3 class="font-bold text-md py-2">Uang Masuk</h3>
+                                        <p class="text-green-600">Rp. {{ number_format($transaction->cash, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-md py-2">Uang Keluar</h3>
+                                        <p class="text-red-600">- Rp. {{ number_format($transaction->cash_change, 0, ',', '.') }}
+                                        </p>
+                                    </div>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-md py-2">Uang Keluar</h3>
-                                    <p class="text-red-600">Rp. {{ number_format($transaction->cash_change, 0, ',', '.') }}
+                                    <h3 class="font-bold text-md py-2">Nama Kasir</h3>
+                                    <p class="text-black">{{ $transaction->order->user->full_name }}
                                     </p>
                                 </div>
                             </div>
