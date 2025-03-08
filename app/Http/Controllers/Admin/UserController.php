@@ -120,6 +120,11 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if ($user->role === 'admin') {
+            Sweetalert::error('Tidak dapat mengedit pengguna dengan peran admin', 'Edit Gagal');
+            return redirect()->route('dashboard.users.index');
+        }
+
         $request->validate([
             'full_name' => 'required|string|max:255',
             'phone_number' => 'required|string|regex:/08[0-9]{8,11}/',
@@ -195,6 +200,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->role === 'admin') {
+            Sweetalert::error('Tidak dapat menghapus pengguna dengan peran admin', 'Edit Gagal');
+            return redirect()->route('dashboard.users.index');
+        }
+
         $user->delete();
 
         Sweetalert::success('berhasil menghapus user ' . $user->full_name, 'Hapus Berhasil');

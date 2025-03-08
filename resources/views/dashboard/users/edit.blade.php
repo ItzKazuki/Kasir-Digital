@@ -31,7 +31,6 @@
                             </h3>
                         </div>
                         <div class="p-7">
-
                             <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                                 <div class="w-full sm:w-1/2">
                                     <label class="mb-3 block text-sm font-medium text-black" for="fullName">Full
