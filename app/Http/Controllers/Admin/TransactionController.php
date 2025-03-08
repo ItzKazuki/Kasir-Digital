@@ -99,4 +99,18 @@ class TransactionController extends Controller
             'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
         ]);
     }
+
+    public function updateStatusPayment(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:unpaid,pending,paid'
+        ]);
+
+        $transaction->update([
+            'payment_status' => $request->payment_status
+        ]);
+
+        Sweetalert::success('berhasil mengubah status pembayaran', 'Update Status Pembayaran');
+        return redirect()->route('dashboard.transactions.show', $transaction);
+    }
 }

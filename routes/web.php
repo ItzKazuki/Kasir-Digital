@@ -59,6 +59,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
         Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
         Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+        Route::put('transactions/{transaction}/payment/update-status', [TransactionController::class, 'updateStatusPayment'])->name('transactions.payment.updateStatus');
     });
 });
 

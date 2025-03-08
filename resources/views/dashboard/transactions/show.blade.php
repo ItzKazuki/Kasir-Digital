@@ -173,11 +173,26 @@
                 </div>
                 <div class="p-6 flex flex-col items-center justify-center">
                     @include('dashboard.transactions.struk')
-                    <button type="button"
-                        onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
-                        class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                        Download Struk
-                    </button>
+                    @if ($transaction->payment_status == 'unpaid' || $transaction->payment_status == 'pending')
+                        <form
+                            action="{{ route('dashboard.transactions.payment.updateStatus', ['transaction' => $transaction->id]) }}"
+                            method="post" class="w-full">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="payment_status" value="paid">
+                            <button type="submit"
+                                class="flex w-full justify-center rounded bg-green-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                                Selesaikan Pembayaran
+                            </button>
+                        </form>
+                    @else
+                        <button type="button"
+                            onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
+                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                            Print Struk
+                        </button>
+                    @endif
+
                 </div>
             </div>
 
@@ -197,7 +212,7 @@
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
         });
-        
+
         function cetakStruk(url) {
             // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
             var newWindow = window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
