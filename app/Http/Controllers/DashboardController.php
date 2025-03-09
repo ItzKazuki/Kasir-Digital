@@ -92,7 +92,7 @@ class DashboardController extends Controller
         $profit = Transaction::getTotalProfit();
 
         $total_product = Product::all()->count();
-        $total_member = Member::all()->count();
+        $total_member = Member::all()->groupBy('status');
 
         // Hitung total pendapatan
         $totalRevenue = Transaction::sum('total_price');
