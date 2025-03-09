@@ -14,51 +14,78 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Data Keuntungan Harian
+        // Get filter parameters from request
+        $revenueStart = request('revenue_start');
+        $revenueEnd = request('revenue_end');
+        $saleStart = request('sale_start');
+        $saleEnd = request('sale_end');
+
         $dailyProfitData = Transaction::getDailyProfit();
-        $dailyLabels = [];
-        $dailyProfits = [];
+        $dailySalesData = Transaction::getDailySales();
+        $weeklyProfitData = Transaction::getWeeklyProfit();
+        $weeklySalesData = Transaction::getWeeklySales();
+        $monthlyProfitData = Transaction::getMonthlyProfit();
+        $monthlyProfitData = Transaction::getMonthlyProfit();
+        $monthlySalesData = Transaction::getMonthlySales();
+
+        // Data Keuntungan Harian
+        $dailyProfitLabels = [];
+        $dailySalesLabels = [];
         $dailySales = [];
+        $dailyProfits = [];
+        // Data Keuntungan Mingguan
+        $weeklyProfitLabels = [];
+        $weeklySalesLabels = [];
+        $weeklySales = [];
+        $weeklyProfits = [];
+        // Data Keuntungan Bulanan
+        $monthlyProfitLabels = [];
+        $monthlySalesLabels = [];
+        $monthlySales = [];
+        $monthlyProfits = [];
+
+        // Apply filters to the data if provided
+        if ($revenueStart && $revenueEnd) {
+            $dailyProfitData = $dailyProfitData->whereBetween('date', [$revenueStart, $revenueEnd]);
+            $weeklyProfitData = $weeklyProfitData->whereBetween('date', [$revenueStart, $revenueEnd]);
+            $monthlyProfitData = $monthlyProfitData->whereBetween('date', [$revenueStart, $revenueEnd]);
+        }
+
+        if ($saleStart && $saleEnd) {
+            $dailySalesData = $dailySalesData->whereBetween('date', [$saleStart, $saleEnd]);
+            $weeklySalesData = $weeklySalesData->whereBetween('date', [$saleStart, $saleEnd]);
+            $monthlySalesData = $monthlySalesData->whereBetween('date', [$saleStart, $saleEnd]);
+        }
+
+        // dd($weeklyProfitData);
 
         foreach ($dailyProfitData as $data) {
-            $dailyLabels[] = $data->date;
+            $dailyProfitLabels[] = $data->date;
             $dailyProfits[] = $data->profit;
         }
 
-        $dailySalesData = Transaction::getDailySales();
         foreach ($dailySalesData as $data) {
+            $dailySalesLabels[] = $data->date;
             $dailySales[] = $data->sales;
         }
 
-        // Data Keuntungan Mingguan
-        $weeklyProfitData = Transaction::getWeeklyProfit();
-        $weeklyLabels = [];
-        $weeklyProfits = [];
-        $weeklySales = [];
-
         foreach ($weeklyProfitData as $data) {
-            $weeklyLabels[] = 'Week ' . $data->week . ' ' . $data->year;
+            $weeklyProfitLabels[] = 'Week ' . $data->week . ' ' . $data->year;
             $weeklyProfits[] = $data->profit;
         }
 
-        $weeklySalesData = Transaction::getWeeklySales();
         foreach ($weeklySalesData as $data) {
+            $weeklySalesLabels[] = 'Week ' . $data->week . ' ' . $data->year;
             $weeklySales[] = $data->sales;
         }
 
-        // Data Keuntungan Bulanan
-        $monthlyProfitData = Transaction::getMonthlyProfit();
-        $monthlyLabels = [];
-        $monthlyProfits = [];
-        $monthlySales = [];
-
         foreach ($monthlyProfitData as $data) {
-            $monthlyLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
+            $monthlyProfitLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
             $monthlyProfits[] = $data->profit;
         }
 
-        $monthlySalesData = Transaction::getMonthlySales();
         foreach ($monthlySalesData as $data) {
+            $monthlySalesLabels[] = date("F", mktime(0, 0, 0, $data->month, 1)) . ' ' . $data->year;
             $monthlySales[] = $data->sales;
         }
 
@@ -68,12 +95,17 @@ class DashboardController extends Controller
         $total_member = Member::all()->count();
 
         // Hitung total pendapatan
-        $totalRevenue = Order::sum('total_price');
+        $totalRevenue = Transaction::sum('total_price');
 
         // Hitung persentase keuntungan
-        $profitPercentage = ($totalRevenue > 0) ? ($profit / $totalRevenue) * 100 : 0;
+        $profitPercentage = ($totalRevenue > 0) ? round($profit / $totalRevenue) : 0;
 
         $title = "Home";
-        return view('dashboard.index', compact('title', 'dailyLabels', 'dailyProfits', 'dailySales', 'weeklyLabels', 'weeklyProfits', 'weeklySales', 'monthlyLabels', 'monthlyProfits', 'monthlySales', 'profit', 'total_product', 'total_member', 'profitPercentage'));
+        return view('dashboard.index', compact(
+            'title', 'profit', 'total_product', 'total_member', 'profitPercentage',
+            'dailyProfitLabels', 'dailySalesLabels', 'dailySales', 'dailyProfits',
+            'weeklyProfitLabels', 'weeklySalesLabels', 'weeklySales', 'weeklyProfits',
+            'monthlyProfitLabels', 'monthlySalesLabels', 'monthlySales', 'monthlyProfits'
+        ));
     }
 }

@@ -137,7 +137,7 @@
     <div class="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7">
         <!-- ====== Chart One Start -->
         <div
-            class="col-span-12 rounded-sm border border-gray-300 bg-white px-5 pb-5 pt-7.5 shadow-default   sm:px-7 xl:col-span-8">
+            class="col-span-12 rounded-sm border border-gray-300 bg-white px-5 pb-5 pt-7.5 shadow-default sm:px-7 xl:col-span-8">
             <div class="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
                 <div class="flex w-full flex-wrap gap-3 sm:gap-5">
                     <div class="flex min-w-47.5">
@@ -175,6 +175,10 @@
                             class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card">
                             Month
                         </button>
+                        <button id="yearBtn"
+                            class="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card">
+                            Year
+                        </button>
                     </div>
                 </div>
             </div>
@@ -182,6 +186,65 @@
                 <canvas id="dailyProfitChart" class="-ml-5"></canvas>
             </div>
         </div>
+
+        <!-- ====== Chart Two Start -->
+        <div class="col-span-12 rounded-sm border border-gray-300 bg-white p-7 shadow-default xl:col-span-4">
+            <div class="mb-4 justify-between gap-4 sm:flex">
+                <div>
+                    <h4 class="text-xl font-bold text-black">
+                        Filter Data
+                    </h4>
+                </div>
+            </div>
+
+            <form method="GET">
+                <h5 class="text-lg font-bold mb-2">Keuntungan</h5>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black  ">
+                        Mulai Pada
+                    </label>
+                    <input type="date" name="revenue_start" value="{{ request('revenue_start') }}"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                </div>
+
+                <div class="mt-2">
+                    <label class="mb-2 block text-sm font-medium text-black  ">
+                        Sampai Dengan
+                    </label>
+                    <input type="date" name="revenue_end" value="{{ request('revenue_end') }}"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                </div>
+
+                <h5 class="text-lg font-bold mb-2 mt-2">Penjualan</h5>
+                <div>
+                    <label class="mb-2 block text-sm font-medium text-black  ">
+                        Mulai Pada
+                    </label>
+                    <input type="date" name="sale_start" value="{{ request('sale_start') }}"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                </div>
+
+                <div class="mt-2 mb-4">
+                    <label class="mb-2 block text-sm font-medium text-black  ">
+                        Sampai Dengan
+                    </label>
+                    <input type="date" name="sale_end" value="{{ request('sale_end') }}"
+                        class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
+                </div>
+                <div class="flex w-full mt-2">
+                    <button type="submit"
+                        class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                        Cari
+                    </button>
+                    <button type="button" onclick="window.location.href='{{ route('dashboard.index') }}'"
+                        class="flex w-1/3 justify-center rounded bg-gray-300 text-black p-3 font-medium hover:bg-opacity-90">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ====== Chart Two End -->
     </div>
 
     @push('scripts')
@@ -189,11 +252,12 @@
             document.addEventListener("DOMContentLoaded", function() {
                 var dailyCtx = document.getElementById("dailyProfitChart").getContext("2d");
                 var dailyBtn = document.getElementById("dayBtn");
-                var monthlyBtn = document.getElementById("monthBtn");
                 var weeklyBtn = document.getElementById("weekBtn");
+                var monthlyBtn = document.getElementById("monthBtn");
+                var yearBtn = document.getElementById("yearBtn");
                 var profitChart;
 
-                function updateChart(labels, profitData, salesData, profitLabel, salesLabel) {
+                function updateChart(labelsProfit, labelsSales, profitData, salesData, profitLabel, salesLabel) {
                     if (profitChart) {
                         profitChart.destroy();
                     }
@@ -201,18 +265,22 @@
                     profitChart = new Chart(dailyCtx, {
                         type: "line",
                         data: {
-                            labels: labels,
-                            datasets: [
-                                {
+                            datasets: [{
                                     label: profitLabel,
-                                    data: profitData,
+                                    data: profitData.map((value, index) => ({
+                                        x: labelsProfit[index],
+                                        y: value
+                                    })),
                                     backgroundColor: "rgb(220, 38, 38)",
                                     borderColor: "rgb(220, 38, 38)",
                                     borderWidth: 1
                                 },
                                 {
                                     label: salesLabel,
-                                    data: salesData,
+                                    data: salesData.map((value, index) => ({
+                                        x: labelsSales[index],
+                                        y: value
+                                    })),
                                     backgroundColor: "rgb(252, 165, 165)",
                                     borderColor: "rgb(252, 165, 165)",
                                     borderWidth: 1
@@ -222,29 +290,49 @@
                     });
                 }
 
+                console.log(@json($weeklySales))
+
                 dailyBtn.addEventListener("click", function() {
                     monthlyBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.remove("bg-white", "shadow-card");
+                    yearBtn.classList.remove("bg-white", "shadow-card");
                     dailyBtn.classList.add("bg-white", "shadow-card");
-                    updateChart(@json($dailyLabels), @json($dailyProfits), @json($dailySales), "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
+                    updateChart(@json($dailyProfitLabels), @json($dailySalesLabels),
+                        @json($dailyProfits), @json($dailySales),
+                        "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
                 });
 
                 weeklyBtn.addEventListener("click", function() {
                     dailyBtn.classList.remove("bg-white", "shadow-card");
                     monthlyBtn.classList.remove("bg-white", "shadow-card");
+                    yearBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.add("bg-white", "shadow-card");
-                    updateChart(@json($weeklyLabels), @json($weeklyProfits), @json($weeklySales), "Keuntungan Mingguan (Rp)", "Penjualan Mingguan (Rp)");
+                    updateChart(@json($weeklyProfitLabels), @json($weeklySalesLabels),
+                        @json($weeklyProfits),
+                        @json($weeklySales), "Keuntungan Mingguan (Rp)", "Penjualan Mingguan (Rp)");
                 });
 
                 monthlyBtn.addEventListener("click", function() {
                     dailyBtn.classList.remove("bg-white", "shadow-card");
                     weeklyBtn.classList.remove("bg-white", "shadow-card");
+                    yearBtn.classList.remove("bg-white", "shadow-card");
                     monthlyBtn.classList.add("bg-white", "shadow-card");
-                    updateChart(@json($monthlyLabels), @json($monthlyProfits), @json($monthlySales), "Keuntungan Bulanan (Rp)", "Penjualan Bulanan (Rp)");
+                    updateChart(@json($monthlyProfitLabels), @json($monthlySalesLabels),
+                        @json($monthlyProfits),
+                        @json($monthlySales), "Keuntungan Bulanan (Rp)", "Penjualan Bulanan (Rp)");
+                });
+
+                yearBtn.addEventListener("click", function() {
+                    dailyBtn.classList.remove("bg-white", "shadow-card");
+                    weeklyBtn.classList.remove("bg-white", "shadow-card");
+                    monthlyBtn.classList.remove("bg-white", "shadow-card");
+                    yearBtn.classList.add("bg-white", "shadow-card");
+                    // Add logic for yearly data if available
                 });
 
                 // Initialize chart with daily data by default
-                updateChart(@json($dailyLabels), @json($dailyProfits), @json($dailySales), "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
+                updateChart(@json($dailyProfitLabels), @json($dailySalesLabels), @json($dailyProfits),
+                    @json($dailySales), "Keuntungan Harian (Rp)", "Penjualan Harian (Rp)");
             });
         </script>
     @endpush
