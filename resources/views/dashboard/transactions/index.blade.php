@@ -72,45 +72,44 @@
         <!-- Card Item End -->
     </div>
 
-    <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h2 class="text-lg font-bold text-black  ">
-            Filter Transaksi
-        </h2>
-
-        <form action="" method="get">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
-                    <label for="start_date" class="text-sm font-medium text-gray-700">Start Date</label>
-                    <input type="date" name="start_date"
-                        class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
-                        value="{{ request('start_date') }}">
-                </div>
-
-                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
-                    <label for="end_date" class="text-sm font-medium text-gray-700">End Date</label>
-                    <input type="date" name="end_date" id="end_date"
-                        class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
-                        value="{{ request('end_date') }}">
-                </div>
-
-                <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
-                    <label for="payment_status" class="text-sm font-medium text-gray-700">Payment Status</label>
-                    <select name="payment_status" id="payment_status"
-                        class="relative z-20 w-full rounded border border-gray-300 bg-white px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600">
-                        <option value="">All</option>
-                        <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
-                        <option value="unpaid" {{ request('payment_status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
-                        <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending
-                        </option>
-                    </select>
-                </div>
-                <button type="submit" class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Filter</button>
-            </div>
-        </form>
-    </div>
-
     <div class="mt-4 flex flex-col gap-10">
         <div class="rounded-sm border border-gray-300 bg-white px-5 pb-2.5 pt-6 shadow-md sm:px-7.5 xl:pb-1">
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <h2 class="text-lg font-bold text-black  ">
+                    Filter Transaksi
+                </h2>
+        
+                <form action="" method="get">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                        <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                            <label for="start_date" class="text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="date" name="start_date"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
+                                value="{{ request('start_date') }}">
+                        </div>
+        
+                        <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                            <label for="end_date" class="text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" name="end_date" id="end_date"
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-white px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white"
+                                value="{{ request('end_date') }}">
+                        </div>
+        
+                        <div class="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
+                            <label for="payment_status" class="text-sm font-medium text-gray-700">Payment Status</label>
+                            <select name="payment_status" id="payment_status"
+                                class="relative z-20 w-full rounded border border-gray-300 bg-white px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600">
+                                <option value="">All</option>
+                                <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Paid</option>
+                                <option value="unpaid" {{ request('payment_status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                                <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Filter</button>
+                    </div>
+                </form>
+            </div>
             <div class="max-w-full overflow-x-auto">
                 <table class="w-full table-auto">
                     <thead>
