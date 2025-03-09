@@ -20,7 +20,7 @@ class OrderDetailFactory extends Factory
     {
         return [
             'order_id' => Order::inRandomOrder()->value('id') ?? Order::factory(),
-            'product_id' => Product::inRandomOrder()->value('id') ?? Product::factory(),
+            'product_id' => Product::inRandomOrder()->value('id'),
             'quantity' => 1,
             'total_price' => Product::inRandomOrder()->value('price'),
             'created_at' => now(),
