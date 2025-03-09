@@ -22,13 +22,16 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $order = Order::inRandomOrder()->first() ?? Order::factory()->create();
+        $order =  Order::factory()->create();
+        $orderItems = OrderDetail::factory()->count($this->faker->numberBetween(1, 7))->make()->toArray();
+
+        foreach ($orderItems as &$orderItem) {
+            unset($orderItem['product']);
+        }
 
         // Check if the order has order details, if not, create some
         if ($order->orderDetails()->count() == 0) {
-            $order->orderDetails()->createMany(
-            OrderDetail::factory()->count($this->faker->numberBetween(1, 5))->make()->toArray()
-            );
+            $order->orderDetails()->createMany($orderItems);
             // Recalculate total price after adding order details
             $order->total_price = $order->orderDetails->sum('total_price');
             $order->save();
