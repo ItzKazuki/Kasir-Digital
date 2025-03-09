@@ -103,9 +103,9 @@ class Transaction extends Model
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->join('products', 'order_details.product_id', '=', 'products.id')
             ->where('transactions.payment_status', 'paid')
-            ->selectRaw('MONTH(orders.order_date) as month, YEAR(orders.order_date) as year,
+            ->selectRaw('MONTH(orders.order_date) as month, YEAR(orders.order_date) as year, DATE(orders.order_date) as date,
                              SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
-            ->groupBy('month', 'year')
+            ->groupBy('month', 'year', 'date')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')
             ->get();
@@ -118,9 +118,9 @@ class Transaction extends Model
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->join('products', 'order_details.product_id', '=', 'products.id')
             ->where('transactions.payment_status', 'paid')
-            ->selectRaw('YEAR(orders.order_date) as year,
+            ->selectRaw('YEAR(orders.order_date) as year, DATE(orders.order_date) as date,
                              SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
-            ->groupBy('year')
+            ->groupBy('year', 'date')
             ->orderBy('year', 'asc')
             ->get();
     }
@@ -131,9 +131,9 @@ class Transaction extends Model
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->join('products', 'order_details.product_id', '=', 'products.id')
             ->where('transactions.payment_status', 'paid')
-            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week,
+            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week, DATE(orders.order_date) as date,
                          SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
-            ->groupBy('year', 'week')
+            ->groupBy('year', 'week', 'date')
             ->orderBy('year', 'asc')
             ->orderBy('week', 'asc')
             ->get();
@@ -155,8 +155,8 @@ class Transaction extends Model
         return self::join('orders', 'transactions.order_id', '=', 'orders.id')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->where('transactions.payment_status', 'paid')
-            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week, SUM(order_details.total_price) as sales')
-            ->groupBy('year', 'week')
+            ->selectRaw('YEAR(orders.order_date) as year, WEEK(orders.order_date) as week, DATE(orders.order_date) as date, SUM(order_details.total_price) as sales')
+            ->groupBy('year', 'week', 'date')
             ->orderBy('year', 'asc')
             ->orderBy('week', 'asc')
             ->get();
@@ -167,8 +167,8 @@ class Transaction extends Model
         return self::join('orders', 'transactions.order_id', '=', 'orders.id')
             ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->where('transactions.payment_status', 'paid')
-            ->selectRaw('MONTH(orders.order_date) as month, YEAR(orders.order_date) as year, SUM(order_details.total_price) as sales')
-            ->groupBy('month', 'year')
+            ->selectRaw('MONTH(orders.order_date) as month, YEAR(orders.order_date) as year, DATE(orders.order_date) as date, SUM(order_details.total_price) as sales')
+            ->groupBy('month', 'year', 'date')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')
             ->get();
