@@ -59,7 +59,7 @@ class DiscountController extends Controller
         Discount::create($request->all());
 
         Sweetalert::success('berhasil menabah diskon baru', 'Tambah Diskon Berhasil!');
-        return back();
+        return redirect()->route('dashboard.discounts.index');
     }
 
     /**
@@ -107,7 +107,7 @@ class DiscountController extends Controller
         $discount->update($request->all());
 
         Sweetalert::success('berhasil ubah detail diskon', 'Ubah Diskon Berhasil!');
-        return back();
+        return redirect()->route('dashboard.discounts.index');
     }
 
     /**
@@ -118,6 +118,6 @@ class DiscountController extends Controller
         $discount->delete();
 
         Sweetalert::success('berhasil menghapus diskon ' . $discount->name, 'Hapus Berhasil');
-        return back();
+        return redirect()->route('dashboard.discounts.index');
     }
 }

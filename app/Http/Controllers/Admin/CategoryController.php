@@ -45,7 +45,7 @@ class CategoryController extends Controller
         Category::create($request->all());
 
         Sweetalert::success('berhasil menabah kategori baru', 'Tambah Kategori Berhasil!');
-        return back();
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -82,7 +82,7 @@ class CategoryController extends Controller
         $category->update($request->all());
 
         Sweetalert::success('berhasil mengubah kategori baru', 'Ubah Kategori Berhasil!');
-        return back();
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -93,6 +93,6 @@ class CategoryController extends Controller
         $category->delete();
 
         Sweetalert::success('berhasil menghapus kategori ' . $category->name, 'Hapus Berhasil');
-        return back();
+        return redirect()->route('dashboard.categories.index');
     }
 }
