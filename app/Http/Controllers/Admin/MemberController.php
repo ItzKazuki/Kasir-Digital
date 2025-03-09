@@ -58,7 +58,7 @@ class MemberController extends Controller
         ]));
 
         Sweetalert::success('berhasil menabah member baru', 'Tambah Member Berhasil!');
-        return back();
+        return redirect()->back();
     }
 
     /**
@@ -106,7 +106,7 @@ class MemberController extends Controller
         ]));
 
         Sweetalert::success('berhasil mengubah detail member', 'Ubah Member Berhasil!');
-        return back();
+        return redirect()->route('dashboard.members.index');
     }
 
     /**
@@ -117,6 +117,6 @@ class MemberController extends Controller
         $member->delete();
 
         Sweetalert::success('berhasil menghapus member dengan nama: ' . $member->full_name, 'Hapus Berhasil');
-        return back();
+        return redirect()->route('dashboard.members.index');
     }
 }
