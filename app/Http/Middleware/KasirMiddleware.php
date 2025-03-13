@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Wavey\Sweetalert\Sweetalert;
 
 class KasirMiddleware
 {
@@ -20,6 +21,7 @@ class KasirMiddleware
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Anda tidak memiliki akses!');
+        Sweetalert::error('You are not authorized to access this page', 'Unauthorized');
+        return redirect()->route('dashboard.index');
     }
 }
