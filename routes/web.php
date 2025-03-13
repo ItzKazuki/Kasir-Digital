@@ -15,6 +15,10 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Kasir\CartController;
+use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
+use App\Http\Controllers\Kasir\ProductController as KasirProductController;
+use App\Http\Middleware\KasirMiddleware;
 
 Route::get('/', function () {
     return redirect()->route('auth.login');
@@ -47,12 +51,22 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::patch('/settings/profile/{user}', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
     Route::delete('/settings/profile/{user}', [SettingController::class, 'deleteProfile'])->name('settings.delete-profile');
 
+    Route::resource('products', ProductController::class);
+    Route::resource('discounts', DiscountController::class);
+    Route::resource('categories', CategoryController::class);
+
+    Route::group(['middleware' => [KasirMiddleware::class], 'prefix' => 'kasir', 'as' => 'kasir.'], function() {
+        Route::get('products', [KasirProductController::class, 'index'])->name('products.index');
+        Route::post('cart/products/{product}/add', [CartController::class, 'storeCart'])->name('cart.store');
+        Route::post('cart/products/{cartProductId}/remove', [CartController::class, 'removeItemCart'])->name('cart.removeItem');
+        Route::post('cart/products/{cartProductId}/increment', [CartController::class, 'incrementItemCart'])->name('cart.incrementItem');
+        Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
+        Route::get('cart/products/show', [CartController::class, 'showCart'])->name('cart.show');
+    });
+
     Route::group(['middleware' => [AdminMiddleware::class]], function () {
         Route::resource('users', UserController::class);
         Route::resource('members', MemberController::class);
-        Route::resource('products', ProductController::class);
-        Route::resource('discounts', DiscountController::class);
-        Route::resource('categories', CategoryController::class);
 
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
         Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
