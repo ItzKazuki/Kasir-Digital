@@ -17,7 +17,7 @@ class CartController extends Controller
             'cartItems' => $itemsCart,
             'subtotal' => number_format($subTotalWithoutConditions, 0, ',', '.')
         ] : [
-            'data' => 'Cart is empty'
+            'message' => 'Cart is empty'
         ]);
     }
 

@@ -8,11 +8,14 @@ use Joelwmale\Cart\Cart;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Traits\GenerateStrukPdf;
 use App\Http\Controllers\Controller;
 use App\Notifications\TransactionCreatedNotification;
 
 class TransactionController extends Controller
 {
+    use GenerateStrukPdf;
+
     /**
      * Display a listing of the resource.
      */
