@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea868e293882cd572e75356258e1b8f2",
+    "content-hash": "9d6ea1ac12dd6bb156043d1c1dab0a7a",
     "packages": [
         {
             "name": "brick/math",
@@ -1197,6 +1197,76 @@
                 }
             ],
             "time": "2025-02-01T07:28:26+00:00"
+        },
+        {
+            "name": "joelwmale/laravel-cart",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joelwmale/laravel-cart.git",
+                "reference": "e810eb4ef48ed651f9c1d3aaa13f797e500fca3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joelwmale/laravel-cart/zipball/e810eb4ef48ed651f9c1d3aaa13f797e500fca3c",
+                "reference": "e810eb4ef48ed651f9c1d3aaa13f797e500fca3c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/auth": "^10.0|^11.0|^12.0",
+                "illuminate/container": "^10.0|^11.0|^12.0",
+                "illuminate/database": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/validation": "^10.0|^11.0|^12.0",
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "larapack/dd": "dev-master",
+                "laravel/pint": "^1.21",
+                "mockery/mockery": "^1.6",
+                "pestphp/pest": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Cart": "Joelwmale\\Cart\\Facades\\CartFacade"
+                    },
+                    "providers": [
+                        "Joelwmale\\Cart\\CartServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joelwmale\\Cart\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Darryl Fernandez",
+                    "email": "engrdarrylfernandez@gmail.com"
+                },
+                {
+                    "name": "Joel Male",
+                    "email": "joel@joelmale.com"
+                }
+            ],
+            "description": "A cart implementation for Laravel",
+            "keywords": [
+                "cart",
+                "laravel",
+                "shopping cart"
+            ],
+            "support": {
+                "issues": "https://github.com/joelwmale/laravel-cart/issues",
+                "source": "https://github.com/joelwmale/laravel-cart/tree/1.2.0"
+            },
+            "time": "2025-02-25T06:55:44+00:00"
         },
         {
             "name": "laravel/framework",

@@ -27,15 +27,16 @@
     <div class="grid grid-cols-1 gap-9 sm:grid-cols-3">
         <div class="flex flex-col gap-9 col-span-2">
             <!-- Contact Form -->
-            @if ($transaction->member)
-                <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
-                    <div class="border-b border-gray-300 px-6 py-4 flex justify-between">
-                        <h3 class="font-medium text-black">
-                            Detail Order
-                        </h3>
 
-                    </div>
-                    <div class="flex px-6">
+            <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+                <div class="border-b border-gray-300 px-6 py-4 flex justify-between">
+                    <h3 class="font-medium text-black">
+                        Detail Order
+                    </h3>
+
+                </div>
+                <div class="flex px-6">
+                    @if ($transaction->member)
                         <div class="p-2 w-full xl:w-1/2">
                             <div class="border-b border-gray-200 pb-2">
                                 <h1 class="font-bold text-lg">Detail Member</h1>
@@ -62,49 +63,50 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 w-full xl:w-1/2">
-                            <div class="border-b border-gray-200 pb-2">
-                                <h1 class="font-bold text-lg">Detail Transaksi</h1>
+                    @endif
+                    <div class="p-2 w-full xl:w-1/2">
+                        <div class="border-b border-gray-200 pb-2">
+                            <h1 class="font-bold text-lg">Detail Transaksi</h1>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div>
+                                <h3 class="font-bold text-md py-2">Metode Pembayaran</h3>
+                                <p
+                                    class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium border border-gray-600 bg-gray-100">
+                                    {{ $transaction->payment_method }}
+                                </p>
                             </div>
-                            <div class="flex flex-col gap-2">
+                            <div>
+                                <h3 class="font-bold text-md py-2">Total Harga</h3>
+                                <p>Rp. {{ number_format($transaction->total_price, 0, ',', '.') }}</p>
+                            </div>
+                            <div class="flex gap-8">
                                 <div>
-                                    <h3 class="font-bold text-md py-2">Metode Pembayaran</h3>
-                                    <p
-                                        class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium border border-gray-600 bg-gray-100">
-                                        {{ $transaction->payment_method }}
+                                    <h3 class="font-bold text-md py-2">Uang Masuk</h3>
+                                    <p class="text-green-600">Rp. {{ number_format($transaction->cash, 0, ',', '.') }}</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-md py-2">Uang Keluar</h3>
+                                    <p class="text-red-600">- Rp.
+                                        {{ number_format($transaction->cash_change, 0, ',', '.') }}
                                     </p>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-md py-2">Total Harga</h3>
-                                    <p>Rp. {{ number_format($transaction->total_price, 0, ',', '.') }}</p>
-                                </div>
-                                <div class="flex gap-8">
-                                    <div>
-                                        <h3 class="font-bold text-md py-2">Uang Masuk</h3>
-                                        <p class="text-green-600">Rp. {{ number_format($transaction->cash, 0, ',', '.') }}</p>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-md py-2">Uang Keluar</h3>
-                                        <p class="text-red-600">- Rp. {{ number_format($transaction->cash_change, 0, ',', '.') }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-md py-2">Nama Kasir</h3>
-                                    <p class="text-black">{{ $transaction->order->user->full_name }}
-                                    </p>
-                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-md py-2">Nama Kasir</h3>
+                                <p class="text-black">{{ $transaction->order->user->full_name }}
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="p-6.5">
-                        <button
-                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                            Send Invoice
-                        </button>
-                    </div>
                 </div>
-            @endif
+                <div class="p-6.5">
+                    <button
+                        class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                        Send Invoice
+                    </button>
+                </div>
+            </div>
             <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
                 <div class="border-b border-gray-300 px-6.5 py-4 flex justify-between">
                     <h3 class="font-medium text-black  ">

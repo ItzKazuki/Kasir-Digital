@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers\Kasir;
 
-use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class KasirDashboardController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $categoryName = request('category');
+        if ($categoryName) {
+            $products = Product::whereHas('category', function ($query) use ($categoryName) {
+            $query->where('name', $categoryName);
+            })->get();
+        } else {
+            $products = Product::all();
+        }
+        $categories = Category::all();
+
+        return view('kasir.index', compact('products', 'categories'));
     }
 
     /**
