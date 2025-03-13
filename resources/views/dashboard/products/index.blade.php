@@ -131,8 +131,7 @@
             </a>
         </div>
 
-        <div
-            class="grid grid-cols-6 border-t border-b border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
+        <div class="grid grid-cols-6 border-t border-b border-gray-300 px-4 py-4.5   sm:grid-cols-9 md:px-6 2xl:px-7.5">
             <div class="col-span-3 flex items-center">
                 <p class="font-medium">Nama Produk</p>
             </div>
@@ -154,12 +153,12 @@
         </div>
 
         @foreach ($products as $product)
-            <div
-                class="grid grid-cols-6 border-b border-gray-300 px-4 py-4.5 sm:grid-cols-9 md:px-6 2xl:px-7.5">
+            <div class="grid grid-cols-6 border-b border-gray-300 px-4 py-4.5 sm:grid-cols-9 md:px-6 2xl:px-7.5">
                 <div class="col-span-3 flex items-center">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                         <div class="h-12.5 w-15 rounded-md">
-                            <img src="{{ $product->product_image }}" alt="Product" />
+                            <img src="{{ $product->product_image }}" alt="Product"
+                                onclick="addToCart({{ $product->id }})" />
                         </div>
                         <p class="font-medium text-black  ">
                             {{ $product->name }}
@@ -255,6 +254,28 @@
 
 @push('scripts')
     <script>
+        function addToCart(productId) {
+            fetch(`/dashboard/cart/products/${productId}/add`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Product added to cart successfully!');
+                    } else {
+                        alert('Failed to add product to cart.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        }
+        
         let deleteFormId = '';
 
         function showModal(formId) {
