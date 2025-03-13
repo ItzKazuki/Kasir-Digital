@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Wavey\Sweetalert\Sweetalert;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,6 +21,7 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/')->with('error', 'Anda tidak memiliki akses!');
+        Sweetalert::error('You are not authorized to access this page', 'Unauthorized');
+        return redirect()->route('dashboard.index');
     }
 }
