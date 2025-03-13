@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Kasir;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Traits\GenerateStrukPdf;
 use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
+    use GenerateStrukPdf;
+
     /**
      * Display a listing of the resource.
      */
@@ -48,7 +51,7 @@ class TransactionController extends Controller
     {
         //
     }
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -83,6 +86,9 @@ class TransactionController extends Controller
             'payment_method' => 'cash',
             'total_price' => $order->total_price
         ]);
+
+        // save a struct do local storage laravel
+        $this->generateStrukPdf($transaction);
 
         // hapus item cart
         \Cart::clear();

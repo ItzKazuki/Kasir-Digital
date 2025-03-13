@@ -181,7 +181,7 @@
                                 <p class="text-gray-700">
                                     Rp. {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
-                                <p class="text-gray-500">
+                                <p id="product-{{ $product->id }}-stock" class="text-gray-500">
                                     Stok: {{ $product->stock }}
                                 </p>
                             </div>
@@ -201,12 +201,15 @@
             <button id="close-cart" class="text-red-500">✖</button>
         </div>
         <div class="" id="cart">
-            <div class="p-4 overflow-y-auto flex-1" id="containerCart"></div>
-            <div class="p-4 bg-white sticky bottom-0">
-                <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
-                <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
-                    Transaksi</button>
+            <div id="cartContent">
+                <div class="p-4 overflow-y-auto flex-1" id="containerCart"></div>
+                <div class="p-4 bg-white sticky bottom-0">
+                    <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
+                    <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
+                        Transaksi</button>
+                </div>
             </div>
+            <div id="emptyCartMessage" class="p-4 text-center text-gray-500 hidden">Cart Kosong</div>
         </div>
 
         <div class="hidden p-4" id="transactionConfirm">
@@ -223,18 +226,18 @@
                 </div>
             </div>
             <div class="mb-4">
-                <p id="totalBelanja" class="text-black">Total Belanja: Rp. 10.000</p>
-                <p id="pajak" class="text-black">Pajak: Rp. 0,00</p>
-                <p id="diskon" class="text-black">Diskon: Rp. 0,00</p>
+                <p id="totalBelanja" class="text-black">Total Belanja: Rp. 0</p>
+                <p id="pajak" class="text-black">Pajak: Rp. 0</p>
+                <p id="diskon" class="text-black">Diskon: Rp. 0</p>
             </div>
             <hr class="border-gray-400 mb-4">
             <div class="mb-4">
-                <label id="uangMasuk" class="block text-black mb-2 font-bold text-xl">Uang:</label>
+                <label id="uangMasuk" class="block text-black mb-2 font-bold text-xl">Uang: Rp. 0</label>
                 <input id="uang" type="number" class="w-full p-2 border border-gray-400 rounded-lg"
                     placeholder="">
             </div>
             <div class="mb-4">
-                <p id="uangKeluar" class="text-black">Kembalian:</p>
+                <p id="uangKeluar" class="text-black">Kembalian: Rp. 0</p>
             </div>
             <div class="mb-4 bg-white sticky bottom-0">
                 <div class="mb-4 flex items-center">
@@ -250,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="createTransaction()" class="bg-red-500 text-white w-full py-2 rounded-lg">Bayar
+                <button onclick="createTransaction()" id="createTransaction" class="bg-red-500 text-white w-full py-2 rounded-lg">Bayar
                     Sekarang</button>
             </div>
         </div>
@@ -302,6 +305,14 @@
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
+
+                if (resCart.data.message == "Cart is empty") {
+                    document.getElementById('emptyCartMessage').classList.remove('hidden');
+                    document.getElementById('cartContent').classList.add('hidden');
+                } else {
+                    document.getElementById('emptyCartMessage').classList.add('hidden');
+                    document.getElementById('cartContent').classList.remove('hidden');
+                }
                 containerCart.innerHTML = ''; // Clear the existing content
                 subtotalCart.innerHTML =
                     `Total Transaksi: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
@@ -377,6 +388,11 @@
             return;
         }
 
+        const createTransactionButton = document.getElementById('createTransaction');
+        createTransactionButton.disabled = true;
+        createTransactionButton.classList.add('cursor-not-allowed');
+        createTransactionButton.innerText = 'Memproses transaksi';
+
         axios.post('/dashboard/kasir/transactions/add', {
                 total: totalBelanja,
                 cash: uangMasuk,
@@ -412,6 +428,15 @@
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
+
+                if (resCart.data.message == "Cart is empty") {
+                    document.getElementById('emptyCartMessage').classList.remove('hidden');
+                    document.getElementById('cartContent').classList.add('hidden');
+                } else {
+                    document.getElementById('emptyCartMessage').classList.add('hidden');
+                    document.getElementById('cartContent').classList.remove('hidden');
+                }
+
                 containerCart.innerHTML = ''; // Clear the existing content
                 subtotalCart.innerHTML = `Total Transaksi: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
                 document.getElementById('totalBelanja').innerText =
