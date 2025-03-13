@@ -38,7 +38,7 @@ class TransactionController extends Controller
         $income = Transaction::where('payment_status', 'paid')->sum('cash');
         $outcome = Transaction::where('payment_status', 'paid')->sum('cash_change');
 
-        return view('dashboard.kasir.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
+        return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
 
     /**
@@ -48,13 +48,49 @@ class TransactionController extends Controller
     {
         //
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        // buat transaksi baru di sini, yang pertama pasti ambi item item cart nya
+        $itemCart = \Cart::getContent();
+
+        // buat order baru
+        $order = $request->user()->orders()->create([
+            'order_date' => now(),
+            'status' => 'unpaid'
+        ]);
+
+        // buat orderItems berdasarkan item cart
+        foreach ($itemCart as $item) {
+            $order->orderDetails()->create([
+                'product_id' => $item->id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'total_price' => $item->price * $item->quantity
+            ]);
+        }
+
+        $order->total_price = $order->orderDetails->sum('total_price');
+        $order->save();
+
+        // buat transaksi
+        $transaction = $order->transaction()->create([
+            'cash' => $request->cash,
+            'payment_status' => 'paid',
+            'payment_method' => 'cash',
+            'total_price' => $order->total_price
+        ]);
+
+        // hapus item cart
+        \Cart::clear();
+
+        return response()->json([
+            'message' => 'Transaction success',
+            'redirect' => route('dashboard.transactions.show', $transaction->id)
+        ]);
     }
 
     /**

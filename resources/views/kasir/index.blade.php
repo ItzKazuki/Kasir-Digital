@@ -41,6 +41,12 @@
                                 </a>
                             </li>
                         @endforeach
+                        <li>
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-bold text-medium duration-300 ease-in-out hover:bg-red-200"
+                                href="{{ route('dashboard.index') }}">
+                                Kembali ke Dashboard
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -194,11 +200,59 @@
             <h2 class="text-lg font-semibold">Keranjang</h2>
             <button id="close-cart" class="text-red-500">✖</button>
         </div>
-        <div class="p-4 overflow-y-auto flex-1" id="containerCart">
+        <div class="" id="cart">
+            <div class="p-4 overflow-y-auto flex-1" id="containerCart"></div>
+            <div class="p-4 bg-white sticky bottom-0">
+                <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
+                <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
+                    Transaksi</button>
+            </div>
         </div>
-        <div class="p-4 bg-white sticky bottom-0">
-            <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
-            <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses Transaksi</button>
+
+        <div class="hidden p-4" id="transactionConfirm">
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-black">Member</label>
+                    <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
+                </div>
+                <div class="flex">
+                    <input type="text" class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
+                    <button class="bg-red-500 text-white p-3 rounded-r-lg">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-4">
+                <p id="totalBelanja" class="text-black">Total Belanja: Rp. 10.000</p>
+                <p id="pajak" class="text-black">Pajak: Rp. 0,00</p>
+                <p id="diskon" class="text-black">Diskon: Rp. 0,00</p>
+            </div>
+            <hr class="border-gray-400 mb-4">
+            <div class="mb-4">
+                <label id="uangMasuk" class="block text-black mb-2 font-bold text-xl">Uang:</label>
+                <input id="uang" type="number" class="w-full p-2 border border-gray-400 rounded-lg"
+                    placeholder="">
+            </div>
+            <div class="mb-4">
+                <p id="uangKeluar" class="text-black">Kembalian:</p>
+            </div>
+            <div class="mb-4 bg-white sticky bottom-0">
+                <div class="mb-4 flex items-center">
+                    <label class="block text-black mb-2 flex-grow">Metode Pembayaran</label>
+                    <div class="relative w-1/2">
+                        <select class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
+                            <option>Cash</option>
+                            <option>Qris</option>
+                            <option>Debit Card</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="createTransaction()" class="bg-red-500 text-white w-full py-2 rounded-lg">Bayar
+                    Sekarang</button>
+            </div>
         </div>
     </aside>
 
@@ -246,9 +300,13 @@
     document.addEventListener('DOMContentLoaded', function() {
         axios.get('/dashboard/kasir/cart/products/show')
             .then(resCart => {
+                const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
                 containerCart.innerHTML = ''; // Clear the existing content
-                subtotalCart.innerHTML = `Total Transaksi: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
+                subtotalCart.innerHTML =
+                    `Total Transaksi: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
+                document.getElementById('totalBelanja').innerText =
+                    `Total Belanja: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
                 Object.values(resCart.data.cartItems).forEach(item => {
                     const cartItem = `
                         <div class="bg-gray-200 p-4 rounded-lg flex items-center mb-4 relative">
@@ -277,6 +335,78 @@
             });
     });
 
+    document.getElementById('uang').addEventListener('change', kalkulasiUang);
+
+    function kalkulasiUang(e) {
+        const uangMasuk = parseFloat(e.target.value);
+        const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
+            '').replace(/\./g, ''));
+        const uangKeluar = uangMasuk - totalBelanja;
+
+        document.getElementById('uangMasuk').innerText = `Uang: Rp. ${uangMasuk.toLocaleString('id-ID')}`;
+        if (uangKeluar < 0) {
+            document.getElementById('uangKeluar').innerHTML =
+                `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
+        } else {
+            document.getElementById('uangKeluar').innerText = `Kembalian: Rp. ${uangKeluar.toLocaleString('id-ID')}`;
+        }
+    }
+
+    function processTransaction() {
+        const cart = document.getElementById('cart');
+        const processTransaction = document.getElementById('transactionConfirm');
+
+        cart.classList.add('hidden');
+        cart.classList.remove('block');
+        processTransaction.classList.add('block');
+        processTransaction.classList.remove('hidden');
+    }
+
+    function createTransaction() {
+        const uangMasuk = parseFloat(document.getElementById('uang').value);
+        const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
+            '').replace(/\./g, ''));
+        const uangKeluar = uangMasuk - totalBelanja;
+
+        if (uangKeluar < 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Uang Kurang',
+                text: `Uang yang dimasukkan kurang Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}`,
+            });
+            return;
+        }
+
+        axios.post('/dashboard/kasir/transactions/add', {
+                total: totalBelanja,
+                cash: uangMasuk,
+            })
+            .then(response => {
+                if (response.data.redirect) {
+                    window.location.href = response.data.redirect;
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Transaksi berhasil dibuat!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    window.location.reload();
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Terjadi kesalahan saat membuat transaksi',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            });
+
+    }
+
     function fetchCartItem() {
         axios.get('/dashboard/kasir/cart/products/show')
             .then(resCart => {
@@ -284,6 +414,8 @@
                 const subtotalCart = document.getElementById('subtotalCart');
                 containerCart.innerHTML = ''; // Clear the existing content
                 subtotalCart.innerHTML = `Total Transaksi: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
+                document.getElementById('totalBelanja').innerText =
+                    `Total Belanja: Rp. ${resCart.data.subtotal.toLocaleString('id-ID')}`;
                 Object.values(resCart.data.cartItems).forEach(item => {
                     const cartItem = `
                                 <div class="bg-gray-200 p-4 rounded-lg flex items-center mb-4 relative">

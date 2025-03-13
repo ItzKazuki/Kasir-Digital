@@ -62,6 +62,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::post('cart/products/{cartProductId}/increment', [CartController::class, 'incrementItemCart'])->name('cart.incrementItem');
         Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
         Route::get('cart/products/show', [CartController::class, 'showCart'])->name('cart.show');
+
+        Route::post('transactions/add', [KasirTransactionController::class, 'store'])->name('transactions.store');
+        Route::get('transactions', [KasirTransactionController::class, 'index'])->name('transactions.index');
     });
 
     Route::group(['middleware' => [AdminMiddleware::class]], function () {
@@ -69,12 +72,13 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::resource('members', MemberController::class);
 
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
-        Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
-        Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
-        Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
         Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
         Route::put('transactions/{transaction}/payment/update-status', [TransactionController::class, 'updateStatusPayment'])->name('transactions.payment.updateStatus');
     });
+
+    Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+    Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
+    Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
 });
 
 Route::get('/kasir', function () {
