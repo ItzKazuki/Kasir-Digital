@@ -254,7 +254,8 @@
                             </span>
 
                             <span class="h-12 w-12 rounded-full">
-                                <img class="rounded-full aspect-square object-cover" src="{{ auth()->user()->profile_image ? auth()->user()->profile_image : Avatar::create(auth()->user()->full_name)->toBase64() }}"
+                                <img class="rounded-full aspect-square object-cover"
+                                    src="{{ auth()->user()->profile_image ? auth()->user()->profile_image : Avatar::create(auth()->user()->full_name)->toBase64() }}"
                                     alt="User" />
                             </span>
 
@@ -332,12 +333,27 @@
             </div>
         </main>
 
+        <!-- Footer -->
+        <footer class="bg-white shadow-inner mt-auto">
+            <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 flex justify-between items-center">
+                <div class="text-gray-600">
+                    &copy; 2025{{ date('Y') != 2025 ? ' - ' . date('Y') : '' }} Kasir Digital. All rights reserved. <a href="https://github.com/ItzKazuki/Kasir-Digital/pull/10" class="text-red-600"> v{{ config('app.version') }}</a>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-red-600">Privacy Policy</a>
+                    <a href="#" class="text-gray-600 hover:text-red-600">Terms of Service</a>
+                    <a href="#" class="text-gray-600 hover:text-red-600">Contact Us</a>
+                </div>
+            </div>
+        </footer>
+
     </div>
 
     <!-- Modal -->
     <div id="logoutConfirmModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
-        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideLogoutModal()"></div>
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideLogoutModal()">
+        </div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
             <div
@@ -353,8 +369,10 @@
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Kamu Yakin Mau Keluar?</h3>
-                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to leave this website? This action
+                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Kamu Yakin Mau Keluar?
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-2">Are you sure you want to leave this website? This
+                                action
                                 cannot be undone.</p>
                         </div>
                     </div>
@@ -416,7 +434,7 @@
         }
 
         document.getElementById("confirmLogoutBtn").addEventListener("click", function() {
-                document.getElementById('logoutForm').submit();
+            document.getElementById('logoutForm').submit();
         });
     </script>
 
