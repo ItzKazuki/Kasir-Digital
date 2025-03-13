@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('barcode')->unique()->nullable();
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('discount_id')->nullable()->constrained('discounts')->onDelete('set null');
-            $table->double('price');
+            $table->decimal('price', 15);
             $table->integer('stock');
+            $table->date('expired_at')->nullable();
             $table->string('image_url')->nullable();
             $table->text('description')->nullable();
-            $table->double('estimasi_keuntungan')->virtualAs('price * stock');
+            $table->decimal('estimasi_keuntungan', 15, 2);
             $table->timestamps();
         });
     }

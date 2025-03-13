@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('full_name');
             $table->string('no_telp')->unique();
-            $table->double('point')->default(0);
+            $table->decimal('point', 15, 2)->default(0);
             $table->string('email')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();

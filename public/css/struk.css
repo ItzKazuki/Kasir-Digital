@@ -1,0 +1,102 @@
+
+.receipt {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    /* width: 100%; */
+    max-width: 300px;
+}
+.receipt p {
+    text-align: center;
+    margin: 4px 0;
+    font-size: 12px;
+}
+.receipt hr {
+    border: none;
+    border-top: 1px dashed #000;
+    margin: 12px 0;
+}
+.receipt table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+.receipt th,
+.receipt td {
+    padding: 2px 0;
+}
+.receipt th {
+    text-align: left;
+}
+.receipt td {
+    text-align: right;
+}
+.receipt td.qty {
+    text-align: left;
+}
+.receipt .total,
+.receipt .uang,
+.receipt .kembalian {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+    font-size: 12px;
+}
+.receipt .total span,
+.receipt .uang span,
+.receipt .kembalian span {
+    font-weight: bold;
+}
+.receipt .thanks {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 4px;
+    font-size: 12px;
+}
+.receipt .link {
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 10px;
+}
+.download-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 16px;
+}
+.download-button button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.download-button button:hover {
+    background-color: #45a049;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+@media print {
+    body {
+        background-color: white;
+    }
+    .receipt {
+        box-shadow: none;
+        border: none;
+        /* page-break-inside: avoid; */
+        /* width: 100%; */
+        /* max-width: none; */
+    }
+    .download-button {
+        display: none;
+    }
+}
