@@ -91,6 +91,13 @@
                                         {{ number_format($transaction->cash_change, 0, ',', '.') }}
                                     </p>
                                 </div>
+                                @if ($transaction->point_usage)
+                                <div>
+                                    <h3 class="font-bold text-md py-2">Point Digunakan</h3>
+                                    <p class="text-red-600">- {{ number_format($transaction->point_usage, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                                @endif
                             </div>
                             <div>
                                 <h3 class="font-bold text-md py-2">Nama Kasir</h3>
