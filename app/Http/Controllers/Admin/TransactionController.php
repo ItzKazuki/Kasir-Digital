@@ -26,6 +26,10 @@ class TransactionController extends Controller
             $query->whereHas('order', function ($q) use ($request) {
                 $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
             });
+        } else {
+            // urutkan data $query berdasarkan asc dari order_date
+            $query->join('orders', 'transactions.order_id', '=', 'orders.id')
+                ->orderBy('orders.order_date', 'DESC');
         }
 
         if ($request->payment_status) {
