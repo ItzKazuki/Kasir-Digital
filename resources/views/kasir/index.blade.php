@@ -14,8 +14,11 @@
 
 <body class="flex h-screen overflow-hidden bg-gray-100">
 
-    <div id="loadingProcessTransaction" class="fixed left-0 top-0 z-999999 h-screen w-screen items-center flex-col justify-center bg-white" style="display: none;">
-        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-red-600 border-t-transparent"></div>
+    <div id="loadingProcessTransaction"
+        class="fixed left-0 top-0 z-999999 h-screen w-screen items-center flex-col justify-center bg-white"
+        style="display: none;">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-red-600 border-t-transparent">
+        </div>
         <p class="mt-4 font-bold text-xl">Memproses Transaksi</p>
     </div>
 
@@ -225,8 +228,10 @@
                     <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
                 </div>
                 <div class="flex">
-                    <input id="phone_number_member" type="text" class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
-                    <button class="bg-red-500 text-white p-3 rounded-r-lg">
+                    <input id="phone_number_member" type="text"
+                        class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
+                    <button id="searchMemberBtn" class="bg-red-500 text-white p-3 rounded-r-lg"
+                        onclick="searchMember()">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -249,8 +254,9 @@
                 <div class="mb-4 flex items-center">
                     <label class="block text-black mb-2 flex-grow">Metode Pembayaran</label>
                     <div class="relative w-1/2">
-                        <select id="metode_pembayaran" class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
-                            <option value="cash" >Cash</option>
+                        <select id="metode_pembayaran"
+                            class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
+                            <option value="cash">Cash</option>
                             <option value="qris">Qris</option>
                             <option value="debit">Debit Card</option>
                         </select>
@@ -259,7 +265,8 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="createTransaction()" id="createTransaction" class="bg-red-500 text-white w-full py-2 rounded-lg">Bayar
+                <button onclick="createTransaction()" id="createTransaction"
+                    class="bg-red-500 text-white w-full py-2 rounded-lg">Bayar
                     Sekarang</button>
             </div>
         </div>
@@ -354,6 +361,46 @@
 
     document.getElementById('uang').addEventListener('change', kalkulasiUang);
 
+    function searchMember() {
+        const phoneNumber = document.getElementById('phone_number_member').value;
+        if (!phoneNumber) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Nomor telepon tidak boleh kosong',
+            });
+            return;
+        }
+
+        axios.post(`/dashboard/kasir/members/search`, {
+                phone: phoneNumber
+            })
+            .then(response => {
+                if (response.data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Member Ditemukan',
+                        text: `Member: ${response.data.full_name}`,
+                    });
+                    document.getElementById('phone_number_member').readOnly = true;
+                    document.querySelector('#searchMemberBtn').disabled = true;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Member Tidak Ditemukan',
+                        text: 'Member dengan nomor telepon tersebut tidak ditemukan',
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Terjadi kesalahan saat mencari member',
+                });
+            });
+    }
+
     function kalkulasiUang(e) {
         const uangMasuk = parseFloat(e.target.value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
@@ -424,7 +471,8 @@
                 }
             })
             .catch(error => {
-                let message = error.response.data.message ? error.response.data.message : 'Terjadi kesalahan saat membuat transaksi';
+                let message = error.response.data.message ? error.response.data.message :
+                    'Terjadi kesalahan saat membuat transaksi';
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal',

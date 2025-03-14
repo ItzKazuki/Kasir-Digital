@@ -63,6 +63,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
         Route::get('cart/products/show', [CartController::class, 'showCart'])->name('cart.show');
 
+        Route::post('members/search', [KasirTransactionController::class, 'searchMember'])->name('member.search');
+
         Route::post('transactions/add', [KasirTransactionController::class, 'store'])->name('transactions.store');
         Route::get('transactions', [KasirTransactionController::class, 'index'])->name('transactions.index');
     });

@@ -47,11 +47,13 @@ class TransactionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Search member by phone number.
      */
-    public function create()
+    public function searchMember(Request $request)
     {
-        //
+        $member = Member::where('no_telp', $request->phone)->first();
+        
+        return response()->json($member);
     }
 
     /**
