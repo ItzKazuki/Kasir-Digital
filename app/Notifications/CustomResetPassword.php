@@ -38,7 +38,7 @@ class CustomResetPassword extends Notification
     {
         return (new MailMessage)
             ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example')) // Override sender name
-            ->subject('Reset Password Notification - Kasir Digital')
+            ->subject('Reset Password Notification')
             ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.')
             ->action('Reset Password', route('auth.reset-password', ['token' => $this->token]))
             ->line('Jika Anda tidak meminta reset password, abaikan email ini.');
