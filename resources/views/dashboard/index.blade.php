@@ -111,7 +111,7 @@
                 </div>
 
                 <span class="flex items-center gap-1 text-sm font-medium text-red-500">
-                    inactive {{ $total_member['inactive']->count() }}
+                    inactive {{ isset($total_member['inactive']) ? $total_member['inactive']->count() : 0 }}
                 </span>
             </div>
         </div>
