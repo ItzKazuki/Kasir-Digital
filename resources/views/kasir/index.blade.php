@@ -191,7 +191,7 @@
                                     Rp. {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
                                 <p id="product-{{ $product->id }}-stock" class="text-gray-500">
-                                    Stok: {{ $product->stock }}
+                                    Stok: @if($product->stock <= 0) <span class="text-red-600 font-bold">Habis</span> @else {{ $product->stock }} @endif
                                 </p>
                             </div>
                         </div>
@@ -471,6 +471,8 @@
                 }
             })
             .catch(error => {
+                document.getElementById('loadingProcessTransaction').style.display = 'none';
+
                 let message = error.response.data.message ? error.response.data.message :
                     'Terjadi kesalahan saat membuat transaksi';
                 Swal.fire({
