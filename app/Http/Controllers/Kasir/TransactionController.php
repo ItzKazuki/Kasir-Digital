@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Traits\GenerateStrukPdf;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Notifications\TransactionCreatedNotification;
 
