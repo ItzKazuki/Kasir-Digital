@@ -92,7 +92,7 @@ class TransactionController extends Controller
                 $product = Product::find($item->id);
 
                 // Cek apakah quantity orderItem lebih besar dari stock produk
-                if ($item->quantity > $product->stock) {
+                if ($product->stock < $item->quantity) {
                     // Rollback transaksi jika quantity lebih besar dari stock
                     DB::rollBack();
                     return response()->json([
