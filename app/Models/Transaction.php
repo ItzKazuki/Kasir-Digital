@@ -19,7 +19,8 @@ class Transaction extends Model
         'payment_method',
         'payment_status',
         'cash',
-        'cash_change'
+        'cash_change',
+        'point_usage'
     ];
 
     public $timestamps = false;
