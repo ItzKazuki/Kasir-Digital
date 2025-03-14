@@ -36,7 +36,7 @@
 
                 </div>
                 <div class="flex px-6">
-                    @if ($transaction->member)
+                    @if ($transaction->order->member)
                         <div class="p-2 w-full xl:w-1/2">
                             <div class="border-b border-gray-200 pb-2">
                                 <h1 class="font-bold text-lg">Detail Member</h1>
