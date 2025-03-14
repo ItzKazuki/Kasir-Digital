@@ -46,9 +46,12 @@ class MemberSeeder extends Seeder
 
         foreach ($members as $memberData) {
             Member::create(array_merge($memberData, [
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subMonths(rand(1, 12)),
                 'updated_at' => Carbon::now(),
             ]));
         }
+
+        $memberCount = Member::count();
+        $this->command->info("Successfully added {$memberCount} members to the database.");
     }
 }

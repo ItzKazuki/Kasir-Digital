@@ -59,5 +59,9 @@ class CategoryProductSeeder extends Seeder
         foreach ($products as $productData) {
             Product::create(array_merge($productData, ['discount_id' => null, 'image_url' => null]));
         }
+
+        $categoryCount = Category::count();
+        $productCount = Product::count();
+        $this->command->info("Successfully added {$categoryCount} categories and {$productCount} products to the database.");
     }
 }

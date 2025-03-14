@@ -34,5 +34,8 @@ class UserSedder extends Seeder
                 'updated_at' => Carbon::now(),
             ]));
         }
+
+        $userCount = User::count();
+        $this->command->info("Successfully added {$userCount} users to the database.");
     }
 }
