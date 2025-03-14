@@ -37,12 +37,12 @@ class AccountCreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
-        ->subject('Akun Berhasil Dibuat')
-        ->line('Halo, ' . $this->user->full_name)
-        ->line('Akun Anda telah berhasil dibuat. Silakan login untuk mengakses aplikasi.')
-        ->action('Login', route('auth.login'))
-        ->line('Terima kasih telah menggunakan aplikasi kami!');
+            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
+            ->subject('Akun Berhasil Dibuat')
+            ->line('Halo, ' . $this->user->full_name)
+            ->line('Akun Anda telah berhasil dibuat. Silakan login untuk mengakses aplikasi.')
+            ->action('Login', route('auth.login'))
+            ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
 
     /**
