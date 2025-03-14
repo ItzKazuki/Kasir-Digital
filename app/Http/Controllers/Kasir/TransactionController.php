@@ -115,9 +115,22 @@ class TransactionController extends Controller
             $order->total_price = $order->orderDetails->sum('total_price');
             $order->save();
 
+            if ($request->use_point && $request->use_point == true) {
+                if (isset($member) && $member->point > 0) {
+                    $pointsToUse = min($member->point, $order->total_price);
+                    $order->total_price -= $pointsToUse;
+                    $member->point -= $pointsToUse;
+                    $member->save();
+                } else {
+                    return response()->json([
+                        'message' => 'Transaction failed, member has insufficient points'
+                    ], 400);
+                }
+            }
+
             // Buat transaksi
             $transaction = $order->transaction()->create([
-                'cash' => $request->cash,
+                'cash' => $request->cash ?? 0,
                 'payment_status' => $request->metode_pembayaran == "cash" ? 'paid' : 'pending',
                 'payment_method' => $request->metode_pembayaran,
                 'total_price' => $order->total_price

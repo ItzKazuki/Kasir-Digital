@@ -191,7 +191,11 @@
                                     Rp. {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
                                 <p id="product-{{ $product->id }}-stock" class="text-gray-500">
-                                    Stok: @if($product->stock <= 0) <span class="text-red-600 font-bold">Habis</span> @else {{ $product->stock }} @endif
+                                    Stok: @if ($product->stock <= 0)
+                                        <span class="text-red-600 font-bold">Habis</span>
+                                    @else
+                                        {{ $product->stock }}
+                                    @endif
                                 </p>
                             </div>
                         </div>
@@ -227,13 +231,23 @@
                     <label class="block text-black">Member</label>
                     <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
                 </div>
-                <div class="flex">
+                <div class="flex mb-2">
                     <input id="phone_number_member" type="text"
                         class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
                     <button id="searchMemberBtn" class="bg-red-500 text-white p-3 rounded-r-lg"
                         onclick="searchMember()">
                         <i class="fas fa-search"></i>
                     </button>
+                </div>
+                <div id="point-member" class="items-center justify-between" style="display: none;">
+                    <label for="use_points" id="current-point" class="mr-2 text-black">Gunakan Poin:</label>
+                    <div class="relative inline-block w-11 h-5">
+                        <input id="point-components" type="checkbox"
+                            class="peer appearance-none w-11 h-5 bg-slate-100 checked:bg-red-600 rounded-full cursor-pointer transition-colors duration-300" />
+                        <label for="point-components"
+                            class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300 peer-checked:translate-x-6 peer-checked:border-red-600 cursor-pointer">
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="mb-4">
@@ -243,8 +257,9 @@
             </div>
             <hr class="border-gray-400 mb-4">
             <div class="mb-4">
-                <label id="uangMasuk" class="block text-black mb-2 font-bold text-xl">Uang: Rp. 0</label>
-                <input id="uang" type="number" class="w-full p-2 border border-gray-400 rounded-lg"
+                <label id="uangMasuk" class="block text-black font-bold text-xl">Uang: Rp. 0</label>
+                <label id="uangKurang" class="hidden text-red-600 font-bold text-sm">Uang Kurang: Rp. 0</label>
+                <input id="uang" type="number" class="w-full p-2 mt-2 border border-gray-400 rounded-lg"
                     placeholder="">
             </div>
             <div class="mb-4">
@@ -377,11 +392,15 @@
             })
             .then(response => {
                 if (response.data) {
+                    let point = parseInt(response.data.point);
                     Swal.fire({
                         icon: 'success',
                         title: 'Member Ditemukan',
                         text: `Member: ${response.data.full_name}`,
                     });
+                    document.getElementById('point-member').style.display = 'flex';
+                    document.getElementById('current-point').innerText =
+                        `Gunakan Poin (${point.toLocaleString('id-ID')}):`;
                     document.getElementById('phone_number_member').readOnly = true;
                     document.querySelector('#searchMemberBtn').disabled = true;
                 } else {
@@ -405,9 +424,14 @@
         const uangMasuk = parseFloat(e.target.value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const uangKeluar = uangMasuk - totalBelanja;
+        let uangKeluar;
 
         document.getElementById('uangMasuk').innerText = `Uang: Rp. ${uangMasuk.toLocaleString('id-ID')}`;
+        if (document.getElementById('point-components').checked) {
+            uangKeluar = uangMasuk + parseFloat(document.getElementById('uangKurang').innerText.replace('Uang Kurang: Rp. ', '').replace(/\./g, ''));
+        } else {
+            uangKeluar = uangMasuk - totalBelanja;
+        }
         if (uangKeluar < 0) {
             document.getElementById('uangKeluar').innerHTML =
                 `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
@@ -415,6 +439,33 @@
             document.getElementById('uangKeluar').innerText = `Kembalian: Rp. ${uangKeluar.toLocaleString('id-ID')}`;
         }
     }
+
+    document.getElementById('point-components').addEventListener('change', function() {
+        const usePoint = this.checked;
+        const pointValue = parseInt(document.getElementById('current-point').innerText.replace('Gunakan Poin (',
+            '').replace('):', '').replace(/\./g, ''));
+        const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace(
+            'Total Belanja: Rp. ', '').replace(/\./g, ''));
+        const remainingAmount = pointValue - totalBelanja;
+
+        if (usePoint) {
+            if (remainingAmount >= 0) {
+                document.getElementById('uangMasuk').innerText = 'Uang: GRATIS';
+                document.getElementById('uangKeluar').innerText = 'Kembalian: GRATIS';
+                document.getElementById('uang').value = '';
+                document.getElementById('uang').disabled = true;
+            } else {
+                document.getElementById('uangKurang').classList.remove('hidden');
+                document.getElementById('uangKurang').innerText = `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
+                document.getElementById('uang').value = '';
+                document.getElementById('uang').disabled = false;
+            }
+        } else {
+            document.getElementById('uangMasuk').innerText = 'Uang: Rp. 0';
+            document.getElementById('uangKeluar').innerText = 'Kembalian: Rp. 0';
+            document.getElementById('uang').disabled = false;
+        }
+    });
 
     function processTransaction() {
         const cart = document.getElementById('cart');
@@ -448,13 +499,16 @@
         createTransactionButton.classList.add('cursor-not-allowed');
         createTransactionButton.innerText = 'Memproses transaksi';
 
+        const usePoint = document.getElementById('point-components').checked;
+
         document.getElementById('loadingProcessTransaction').style.display = 'flex';
 
         axios.post('/dashboard/kasir/transactions/add', {
                 total: totalBelanja,
                 cash: uangMasuk,
                 no_telp_member: member,
-                metode_pembayaran: paymentMethod
+                metode_pembayaran: paymentMethod,
+                use_point: usePoint
             })
             .then(response => {
                 if (response.data.redirect) {
@@ -472,6 +526,11 @@
             })
             .catch(error => {
                 document.getElementById('loadingProcessTransaction').style.display = 'none';
+
+                const createTransactionButton = document.getElementById('createTransaction');
+                createTransactionButton.disabled = false;
+                createTransactionButton.classList.remove('cursor-not-allowed');
+                createTransactionButton.innerText = 'Bayar Sekarang';
 
                 let message = error.response.data.message ? error.response.data.message :
                     'Terjadi kesalahan saat membuat transaksi';
