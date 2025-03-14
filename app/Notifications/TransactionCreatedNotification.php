@@ -41,6 +41,7 @@ class TransactionCreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
             ->subject('Transaksi Berhasil Dibuat')
             ->line('Halo, ' . $this->member->full_name)
             ->line('Transaksi Anda telah berhasil dibuat.')
