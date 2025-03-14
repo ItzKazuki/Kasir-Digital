@@ -149,7 +149,7 @@
                         </li>
 
                         <li>
-                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out {{ request()->is('dashboard/transactions*') ? 'text-red-600 bg-red-50' : '' }} hover:bg-red-100"
+                            <a class="group relative flex items-center gap-2 rounded-sm px-4 py-2 font-medium text-dark bg-dark duration-300 ease-in-out hover:bg-red-100"
                                 href="{{ route('dashboard.kasir.products.index') }}">
                                 <i class="fas fa-solid fa-plus"></i>
 
