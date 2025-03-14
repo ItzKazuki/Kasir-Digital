@@ -252,6 +252,7 @@
             </div>
             <div class="mb-4">
                 <p id="totalBelanja" class="text-black">Total Belanja: Rp. 0</p>
+                <p id="penggunaanPoin" class="text-black hidden">Penggunaan Poin: 0</p>
                 <p id="pajak" class="text-black">Pajak: Rp. 0</p>
                 <p id="diskon" class="text-black">Diskon: Rp. 0</p>
             </div>
@@ -424,17 +425,21 @@
         const uangMasuk = parseFloat(e.target.value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         let uangKeluar;
 
         document.getElementById('uangMasuk').innerText = `Uang: Rp. ${uangMasuk.toLocaleString('id-ID')}`;
+        document.getElementById('uangKurang').classList.add('hidden');
+
         if (document.getElementById('point-components').checked) {
-            uangKeluar = uangMasuk + parseFloat(document.getElementById('uangKurang').innerText.replace('Uang Kurang: Rp. ', '').replace(/\./g, ''));
+            uangKeluar = uangMasuk - (totalBelanja - penggunaanPoin);
         } else {
             uangKeluar = uangMasuk - totalBelanja;
         }
+
         if (uangKeluar < 0) {
             document.getElementById('uangKeluar').innerHTML =
-                `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
+            `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
         } else {
             document.getElementById('uangKeluar').innerText = `Kembalian: Rp. ${uangKeluar.toLocaleString('id-ID')}`;
         }
@@ -457,6 +462,9 @@
             } else {
                 document.getElementById('uangKurang').classList.remove('hidden');
                 document.getElementById('uangKurang').innerText = `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
+
+                document.getElementById('penggunaanPoin').classList.remove('hidden');
+                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointValue.toLocaleString('id-ID');
                 document.getElementById('uang').value = '';
                 document.getElementById('uang').disabled = false;
             }
@@ -482,8 +490,15 @@
         const member = parseInt(document.getElementById('phone_number_member').value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const uangKeluar = uangMasuk - totalBelanja;
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         const paymentMethod = document.getElementById('metode_pembayaran').value;
+        let uangKeluar;
+
+        if (document.getElementById('point-components').checked) {
+            uangKeluar = uangMasuk - (totalBelanja - penggunaanPoin);
+        } else {
+            uangKeluar = uangMasuk - totalBelanja;
+        }
 
         if (uangKeluar < 0) {
             Swal.fire({
