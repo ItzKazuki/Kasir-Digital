@@ -2,21 +2,27 @@
 
 namespace App\Notifications;
 
+use App\Models\Member;
+use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class TransactionCreatedNotification extends Notification
 {
     use Queueable;
 
+    private $transaction;
+    private $member;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Transaction $transaction, Member $member)
     {
-        //
+        $this->transaction = $transaction;
+        $this->member = $member;
     }
 
     /**
@@ -35,9 +41,13 @@ class TransactionCreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->from(env('MAIL_INFO_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
+            ->subject('Transaksi Berhasil Dibuat')
+            ->line('Halo, ' . $this->member->full_name)
+            ->line('Transaksi Anda telah berhasil dibuat.')
+            ->line('Poin Anda sekarang bertambah menjadi: ' . $this->member->points)
+            ->action('Lihat Transaksi', route('struk.search', $this->transaction->invoice_number))
+            ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
 
     /**
