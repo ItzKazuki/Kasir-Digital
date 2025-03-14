@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Kasir;
 
+use App\Models\Member;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Traits\GenerateStrukPdf;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
@@ -57,46 +59,87 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        // buat transaksi baru di sini, yang pertama pasti ambi item item cart nya
-        $itemCart = \Cart::getContent();
+        // Mulai DB transaction
+        DB::beginTransaction();
 
-        // buat order baru
-        $order = $request->user()->orders()->create([
-            'order_date' => now(),
-            'status' => 'unpaid'
-        ]);
+        try {
+            // Ambil item-item cart
+            $itemCart = \Cart::getContent();
 
-        // buat orderItems berdasarkan item cart
-        foreach ($itemCart as $item) {
-            $order->orderDetails()->create([
-                'product_id' => $item->id,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
-                'total_price' => $item->price * $item->quantity
+            $orderData = [
+                'order_date' => now(),
+            ];
+
+            if($request->no_telp_member) {
+                $member = Member::where('no_telp', $request->no_telp_member)->first();
+
+                if ($member) {
+                    $orderData['member_id'] = $member->id;
+                }
+            }
+
+            // Buat order baru
+            $order = $request->user()->orders()->create($orderData);
+
+            // Buat orderItems berdasarkan item cart
+            foreach ($itemCart as $item) {
+                $product = Product::find($item->id);
+
+                // Cek apakah quantity orderItem lebih besar dari stock produk
+                if ($item->quantity > $product->stock) {
+                    // Rollback transaksi jika quantity lebih besar dari stock
+                    DB::rollBack();
+                    return response()->json([
+                        'message' => 'Transaction failed, product stock is insufficient'
+                    ], 400);
+                }
+
+                $order->orderDetails()->create([
+                    'product_id' => $item->id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'total_price' => $item->price * $item->quantity
+                ]);
+
+                // Kurangi stock produk
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+
+            $order->total_price = $order->orderDetails->sum('total_price');
+            $order->save();
+
+            // Buat transaksi
+            $transaction = $order->transaction()->create([
+                'cash' => $request->cash,
+                'payment_status' => $request->metode_pembayaran == "cash" ? 'paid' : 'pending',
+                'payment_method' => $request->metode_pembayaran,
+                'total_price' => $order->total_price
             ]);
+
+            // Generate struk PDF
+            $this->generateStrukPdf($transaction);
+
+            // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
+
+            // Hapus item cart
+            \Cart::clear();
+
+            // Commit DB transaction
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Transaction success',
+                'redirect' => route('dashboard.transactions.show', $transaction->id)
+            ]);
+        } catch (\Exception $e) {
+            // Rollback DB transaction jika terjadi error
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Transaction failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $order->total_price = $order->orderDetails->sum('total_price');
-        $order->save();
-
-        // buat transaksi
-        $transaction = $order->transaction()->create([
-            'cash' => $request->cash,
-            'payment_status' => 'paid',
-            'payment_method' => 'cash',
-            'total_price' => $order->total_price
-        ]);
-
-        // save a struct do local storage laravel
-        $this->generateStrukPdf($transaction);
-
-        // hapus item cart
-        \Cart::clear();
-
-        return response()->json([
-            'message' => 'Transaction success',
-            'redirect' => route('dashboard.transactions.show', $transaction->id)
-        ]);
     }
 
     /**

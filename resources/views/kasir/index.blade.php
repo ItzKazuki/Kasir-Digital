@@ -13,6 +13,12 @@
 </head>
 
 <body class="flex h-screen overflow-hidden bg-gray-100">
+
+    <div id="loadingProcessTransaction" class="fixed left-0 top-0 z-999999 h-screen w-screen items-center flex-col justify-center bg-white" style="display: none;">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-red-600 border-t-transparent"></div>
+        <p class="mt-4 font-bold text-xl">Memproses Transaksi</p>
+    </div>
+
     <!-- Sidebar Kiri -->
     <aside
         class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-md lg:static lg:translate-x-0">
@@ -219,7 +225,7 @@
                     <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
                 </div>
                 <div class="flex">
-                    <input type="text" class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
+                    <input id="phone_number_member" type="text" class="flex-grow p-2 border border-gray-400 rounded-l-lg" placeholder="">
                     <button class="bg-red-500 text-white p-3 rounded-r-lg">
                         <i class="fas fa-search"></i>
                     </button>
@@ -243,10 +249,10 @@
                 <div class="mb-4 flex items-center">
                     <label class="block text-black mb-2 flex-grow">Metode Pembayaran</label>
                     <div class="relative w-1/2">
-                        <select class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
-                            <option>Cash</option>
-                            <option>Qris</option>
-                            <option>Debit Card</option>
+                        <select id="metode_pembayaran" class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
+                            <option value="cash" >Cash</option>
+                            <option value="qris">Qris</option>
+                            <option value="debit">Debit Card</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                             <i class="fas fa-chevron-down"></i>
@@ -375,9 +381,11 @@
 
     function createTransaction() {
         const uangMasuk = parseFloat(document.getElementById('uang').value);
+        const member = parseInt(document.getElementById('phone_number_member').value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
         const uangKeluar = uangMasuk - totalBelanja;
+        const paymentMethod = document.getElementById('metode_pembayaran').value;
 
         if (uangKeluar < 0) {
             Swal.fire({
@@ -393,9 +401,13 @@
         createTransactionButton.classList.add('cursor-not-allowed');
         createTransactionButton.innerText = 'Memproses transaksi';
 
+        document.getElementById('loadingProcessTransaction').style.display = 'flex';
+
         axios.post('/dashboard/kasir/transactions/add', {
                 total: totalBelanja,
                 cash: uangMasuk,
+                no_telp_member: member,
+                metode_pembayaran: paymentMethod
             })
             .then(response => {
                 if (response.data.redirect) {
@@ -412,10 +424,11 @@
                 }
             })
             .catch(error => {
+                let message = error.response.data.message ? error.response.data.message : 'Terjadi kesalahan saat membuat transaksi';
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal',
-                    text: 'Terjadi kesalahan saat membuat transaksi',
+                    text: message,
                     timer: 1500,
                     showConfirmButton: false
                 });
