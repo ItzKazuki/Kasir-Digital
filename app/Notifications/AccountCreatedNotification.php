@@ -12,7 +12,7 @@ class AccountCreatedNotification extends Notification
     use Queueable;
 
     private $user;
-    
+
     /**
      * Create a new notification instance.
      */
@@ -41,7 +41,7 @@ class AccountCreatedNotification extends Notification
         ->subject('Akun Berhasil Dibuat')
         ->line('Halo, ' . $this->user->full_name)
         ->line('Akun Anda telah berhasil dibuat. Silakan login untuk mengakses aplikasi.')
-        ->action('Login', url('/login'))
+        ->action('Login', route('auth.login'))
         ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
 
