@@ -148,6 +148,7 @@ class TransactionController extends Controller
 
         // Jika berhasil, kembalikan pesan sukses
         return response()->json([
+            'status' => 'success',
             'message' => 'Pesan berhasil dikirim!',
             'data' => $response['data']
         ]);
