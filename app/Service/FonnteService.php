@@ -48,7 +48,7 @@ class FonnteService
         ];
     }
 
-    public function sendWhatsAppMessage($phoneNumber, $message, $deviceToken)
+    public function sendWhatsAppMessage($phoneNumber, $message)
     {
         return $this->makeRequest(self::ENDPOINTS['send_message'], [
             'target'  => $phoneNumber,
