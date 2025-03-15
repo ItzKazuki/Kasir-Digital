@@ -4,14 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Wavey\Sweetalert\Sweetalert;
+use App\Service\FonnteService;
 use App\Traits\GenerateStrukPdf;
+use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
     use GenerateStrukPdf;
+
+    protected $fonnteService;
+
+    public function __construct(FonnteService $fonnteService)
+    {
+        $this->fonnteService = $fonnteService;
+    }
 
     /**
      * Display a listing of the resource.
@@ -116,5 +124,32 @@ class TransactionController extends Controller
 
         Sweetalert::success('berhasil mengubah status pembayaran', 'Update Status Pembayaran');
         return redirect()->route('dashboard.transactions.show', $transaction);
+    }
+
+    public function sendWhatsappMessage(Request $request, Transaction $transaction)
+    {
+        // Validasi input untuk memastikan target dan pesan ada dan valid
+        $request->validate([
+            'phone'    => 'required|string',
+        ]);
+
+        // Ambil target dan pesan dari body request
+        $target         = $request->input('phone');
+        $message        = "Terimakasih telah berbelanja di " . config('app.name') . ". Struk dapat di akses disini " . route('struk.search', $transaction->invoice_number);
+        // Kirim pesan menggunakan FonnteService
+        $response = $this->fonnteService->sendWhatsAppMessage($target, $message);
+
+        // Periksa apakah API Fonnte mengembalikan status false
+        if (!$response['status'] || (isset($response['data']['status']) && !$response['data']['status'])) {
+            // Jika terjadi error atau status false, kembalikan pesan error
+            $errorReason = $response['data']['reason'] ?? 'Unknown error occurred';
+            return response()->json(['message' => 'Error', 'error' => $errorReason], 500);
+        }
+
+        // Jika berhasil, kembalikan pesan sukses
+        return response()->json([
+            'message' => 'Pesan berhasil dikirim!',
+            'data' => $response['data']
+        ]);
     }
 }
