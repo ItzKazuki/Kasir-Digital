@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Traits\GenerateStrukPdf;
+use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -146,7 +147,7 @@ class TransactionController extends Controller
             $transaction = $order->transaction()->create($transactionData);
 
             // Generate struk PDF
-            $this->generateStrukPdf($transaction);
+            GenerateStrukPdfJob::dispatch($transaction);
 
             // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
 
