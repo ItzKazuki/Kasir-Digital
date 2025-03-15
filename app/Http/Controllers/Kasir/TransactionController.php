@@ -10,6 +10,8 @@ use App\Traits\GenerateStrukPdf;
 use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TransactionCreatedNotification;
 
 class TransactionController extends Controller
 {
@@ -123,7 +125,7 @@ class TransactionController extends Controller
                 'total_price' => $order->total_price,
             ];
 
-            if($request->cash) {
+            if ($request->cash) {
                 $transactionData['cash_change'] = $request->cash - $order->total_price;
             }
 
@@ -132,7 +134,7 @@ class TransactionController extends Controller
                     $pointsToUse = min($member->point, $order->total_price);
 
                     $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
-                    
+
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
@@ -150,6 +152,9 @@ class TransactionController extends Controller
             GenerateStrukPdfJob::dispatch($transaction);
 
             // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
+            if (isset($member)) {
+                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $order->member));
+            }
 
             // Hapus item cart
             \Cart::clear();

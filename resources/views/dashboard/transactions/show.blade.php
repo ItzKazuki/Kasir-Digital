@@ -108,9 +108,9 @@
                     </div>
                 </div>
                 <div class="p-6.5">
-                    <button
+                    <button id="sendInvoice" type="button"
                         class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                        Send Invoice
+                        Send Invoice to Whatshapp
                     </button>
                 </div>
             </div>
@@ -227,6 +227,36 @@
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
+        });
+
+        document.getElementById('sendInvoice').addEventListener('click', function() {
+            var url = "{{ route('dashboard.transactions.send.whatsapp', ['transaction' => $transaction->id]) }}";
+            axios.post(url, {
+                phone: "{{ $transaction->order->member->no_telp }}"
+            })
+                .then(response => {
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Invoice berhasil dikirimkan ke WhatsApp',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Invoice gagal dikirimkan ke WhatsApp',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat mengirim invoice',
+                    });
+                });
         });
 
         function cetakStruk(url) {

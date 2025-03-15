@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
+use App\Http\Controllers\Controller;
+use App\Notifications\AccountCreatedNotification;
 
 class RegisterController extends Controller
 {
@@ -40,12 +41,16 @@ class RegisterController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 
+
         // create user and redirect to login with success
-        User::create(array_merge($users, [
+        $user = User::create(array_merge($users, [
             'no_telp' => $users['phone_number'],
             'role' => 'kasir',
             'image_url' => null,
         ]));
+
+        // Kirim notifikasi ke pengguna
+        $user->notify(new AccountCreatedNotification($user));
 
         // message success
         Sweetalert::success('Akun berhasil di buat, silahkan login terlebih dahulu', 'Pendaftaran Berhasil!');

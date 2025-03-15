@@ -29,6 +29,12 @@
         <span>Total</span>
         <span>{{ number_format($transaction->order->total_price, 0, ',', '.') }}</span>
     </div>
+    @if ($transaction->point_usage)
+        <div class="uang">
+            <span>Poin Digunakan</span>
+            <span>{{ number_format($transaction->point_usage, 0, ',', '.') }}</span>
+        </div>
+    @endif
     <div class="uang">
         <span>Uang</span>
         <span>{{ number_format($transaction->cash, 0, ',', '.') }}</span>
