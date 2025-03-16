@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Kasir Digital | {{ $title }}</title>
+    <title>{{ config('app.name') }} | {{ $title }}</title>
 
     {{-- style internal or external --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -337,7 +337,7 @@
         <footer class="bg-white shadow-inner mt-auto">
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 flex justify-between items-center">
                 <div class="text-gray-600">
-                    &copy; 2025{{ date('Y') != 2025 ? ' - ' . date('Y') : '' }} Kasir Digital. All rights reserved. <a href="https://github.com/ItzKazuki/Kasir-Digital/pull/10" class="text-red-600"> v{{ config('app.version') }}</a>
+                    &copy; 2025{{ date('Y') != 2025 ? ' - ' . date('Y') : '' }} {{ config('app.name') }}. All rights reserved. <a href="https://github.com/ItzKazuki/Kasir-Digital/pull/10" class="text-red-600"> v{{ config('app.version') }}</a>
                 </div>
                 <div class="flex space-x-4">
                     <a href="#" class="text-gray-600 hover:text-red-600">Privacy Policy</a>

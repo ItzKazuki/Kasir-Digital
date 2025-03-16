@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSedder;
-use Database\Seeders\MemberSedder;
+use Database\Seeders\MemberSeeder;
 use Database\Seeders\TransactionSedder;
-use Database\Seeders\CategoryProductSedder;
+use Database\Seeders\CategoryProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSedder::class,
-            CategoryProductSedder::class,
-            MemberSedder::class,
+            CategoryProductSeeder::class,
+            MemberSeeder::class,
             TransactionSedder::class,
         ]);
     }

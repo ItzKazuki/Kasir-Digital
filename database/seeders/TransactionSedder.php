@@ -18,5 +18,8 @@ class TransactionSedder extends Seeder
         Transaction::factory()
             ->count(80)
             ->create();
+
+        $transactionCount = Transaction::count();
+        $this->command->info("Successfully added {$transactionCount} transactions to the database.");
     }
 }

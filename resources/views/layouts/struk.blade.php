@@ -51,7 +51,7 @@
                 printable: 'receipt',
                 type: 'html',
                 targetStyles: ['*'],
-                documentTitle: 'Struk Kasir Digital',
+                documentTitle: 'Struk {{ config('app.name') }}',
                 style: '@page { size: 96mm 192mm; margin: 0mm; }',
             });
         }

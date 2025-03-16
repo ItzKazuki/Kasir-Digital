@@ -63,6 +63,8 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
         Route::get('cart/products/show', [CartController::class, 'showCart'])->name('cart.show');
 
+        Route::post('members/search', [KasirTransactionController::class, 'searchMember'])->name('member.search');
+
         Route::post('transactions/add', [KasirTransactionController::class, 'store'])->name('transactions.store');
         Route::get('transactions', [KasirTransactionController::class, 'index'])->name('transactions.index');
     });
@@ -79,6 +81,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
     Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
+    Route::post('transactions/{transaction}/sendWhatsapp', [TransactionController::class, 'sendWhatsappMessage'])->name('transactions.send.whatsapp');
 });
 
 Route::get('/kasir', function () {
