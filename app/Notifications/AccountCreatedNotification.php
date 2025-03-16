@@ -7,18 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomResetPassword extends Notification implements ShouldQueue
+class AccountCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private $token;
+    private $user;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($token)
+    public function __construct($user)
     {
-        $this->token = $token;
+        $this->user = $user;
     }
 
     /**
@@ -37,11 +37,12 @@ class CustomResetPassword extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example')) // Override sender name
-            ->subject('Reset Password Notification')
-            ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.')
-            ->action('Reset Password', route('auth.reset-password', ['token' => $this->token]))
-            ->line('Jika Anda tidak meminta reset password, abaikan email ini.');
+            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
+            ->subject('Akun Berhasil Dibuat')
+            ->line('Halo, ' . $this->user->full_name)
+            ->line('Akun Anda telah berhasil dibuat. Silakan login untuk mengakses aplikasi.')
+            ->action('Login', route('auth.login'))
+            ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
 
     /**

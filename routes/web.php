@@ -81,6 +81,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
     Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
+    Route::post('transactions/{transaction}/sendWhatsapp', [TransactionController::class, 'sendWhatsappMessage'])->name('transactions.send.whatsapp');
 });
 
 Route::get('/kasir', function () {

@@ -107,12 +107,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-6.5">
-                    <button
-                        class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                        Send Invoice
-                    </button>
-                </div>
+                @if($transaction->order->member)
+                    <div class="p-6.5">
+                        <button id="sendInvoice" type="button" value="{{ $transaction->order->member->no_telp }}"
+                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                            Send Invoice to Whatshapp
+                        </button>
+                    </div>
+                @endif
             </div>
             <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
                 <div class="border-b border-gray-300 px-6.5 py-4 flex justify-between">
@@ -227,6 +229,36 @@
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
+        });
+
+        document.getElementById('sendInvoice').addEventListener('click', function() {
+            var url = "{{ route('dashboard.transactions.send.whatsapp', ['transaction' => $transaction->id]) }}";
+            axios.post(url, {
+                phone: this.value
+            })
+                .then(response => {
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Invoice berhasil dikirimkan ke WhatsApp',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Invoice gagal dikirimkan ke WhatsApp',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat mengirim invoice',
+                    });
+                });
         });
 
         function cetakStruk(url) {

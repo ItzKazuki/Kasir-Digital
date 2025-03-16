@@ -7,18 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomResetPassword extends Notification implements ShouldQueue
+class MemberCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private $token;
+    private $member;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($token)
+    public function __construct($member)
     {
-        $this->token = $token;
+        $this->member = $member;
     }
 
     /**
@@ -26,7 +26,7 @@ class CustomResetPassword extends Notification implements ShouldQueue
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
         return ['mail'];
     }
@@ -34,14 +34,15 @@ class CustomResetPassword extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example')) // Override sender name
-            ->subject('Reset Password Notification')
-            ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.')
-            ->action('Reset Password', route('auth.reset-password', ['token' => $this->token]))
-            ->line('Jika Anda tidak meminta reset password, abaikan email ini.');
+            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
+            ->subject('Selamat Datang Member Baru')
+            ->line('Halo, ' . $this->member->full_name)
+            ->line('Terima kasih telah berbelanja di Toko Kami. Selamat menjadi bagian dari komunitas kami.')
+            ->line('Poin kamu sekarang adalah ' . $this->member->point . '.')
+            ->line('Terima kasih telah bergabung dengan kami!');
     }
 
     /**
