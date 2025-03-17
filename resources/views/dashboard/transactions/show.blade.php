@@ -205,8 +205,8 @@
                         </form>
                     @else
                         <button type="button"
-                            onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
-                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                            {{-- onclick="cetakStruk('{{ route('struk.search', ['invoice' => $transaction->invoice_number]) }}')" --}}
+                            class="flex w-full justify-center rounded cursor-not-allowed bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
                             Print Struk
                         </button>
                     @endif
@@ -265,19 +265,7 @@
             // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
             var newWindow = window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
 
-            newWindow.onload = function() {
-                newWindow.document.body.style.transform = 'scale(0.8)';
-                newWindow.document.body.style.transformOrigin = 'top left';
-                newWindow.document.body.style.width = '125%';
-                newWindow.document.body.style.height = '125%';
-                newWindow.document.body.style.overflow = 'hidden';
-                setTimeout(() => {
-                    newWindow.printStruk();
-                }, 1500);
-                newWindow.onfocus = () => {
-                    newWindow.close();
-                }
-            };
+            newWindow.print();
         }
     </script>
 @endpush
