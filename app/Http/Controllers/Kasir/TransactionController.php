@@ -6,7 +6,6 @@ use App\Models\Member;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Traits\GenerateStrukPdf;
 use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -15,8 +14,6 @@ use App\Notifications\TransactionCreatedNotification;
 
 class TransactionController extends Controller
 {
-    use GenerateStrukPdf;
-
     /**
      * Display a listing of the resource.
      */
