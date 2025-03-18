@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TransactionCreatedNotification;
+use App\Traits\GenerateStrukPdf;
 
 class TransactionController extends Controller
 {
+    use GenerateStrukPdf;
+
     /**
      * Display a listing of the resource.
      */
@@ -146,7 +149,8 @@ class TransactionController extends Controller
             $transaction = $order->transaction()->create($transactionData);
 
             // Generate struk PDF
-            GenerateStrukPdfJob::dispatch($transaction);
+            // GenerateStrukPdfJob::dispatch($transaction);
+            $this->generateStrukPdf($transaction);
 
             // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
             if (isset($member)) {
