@@ -12,8 +12,6 @@ class Member extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
-    protected $table = 'members';
-
     protected $fillable = [
         'full_name',
         'no_telp',
