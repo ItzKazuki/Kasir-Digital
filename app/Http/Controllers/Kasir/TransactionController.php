@@ -6,12 +6,12 @@ use App\Models\Member;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use App\Traits\GenerateStrukPdf;
 use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TransactionCreatedNotification;
-use App\Traits\GenerateStrukPdf;
 
 class TransactionController extends Controller
 {
