@@ -100,9 +100,14 @@ class TransactionController extends Controller
     public function streamStruk(string $invoice)
     {
         $transaction = Transaction::findByInvoice($invoice)->first();
+
+        if (!$transaction) {
+            return abort(404);
+        }
+
         $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
-        if (!$transaction || !file_exists($strukPath)) {
+        if (!file_exists($strukPath)) {
             return abort(404);
         }
 
