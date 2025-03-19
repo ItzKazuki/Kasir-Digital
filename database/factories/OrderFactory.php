@@ -21,8 +21,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->value('id') ?? User::factory(),
-            'member_id' => Member::inRandomOrder()->value('id') ?? Member::factory(),
-            'order_date' => $this->faker->dateTimeBetween('-3 year', 'now'),
+            'order_date' => $this->faker->dateTimeBetween('-5 year', 'now'),
             'discount_id' => Discount::inRandomOrder()->value('id') ?? null,
             'created_at' => now(),
             'updated_at' => now(),
