@@ -28,12 +28,10 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order.member');
+        $query = Transaction::with('order');
 
         if ($request->start_date && $request->end_date) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
-            });
+            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
         } else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
