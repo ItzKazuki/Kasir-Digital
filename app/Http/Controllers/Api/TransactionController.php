@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -15,7 +17,12 @@ class TransactionController extends Controller
     {
         // get all transaction from member
 
-        return TransactionResource::collection(auth()->user->transactions);
+        $query = Transaction::with('order.member');
+        $query->whereHas('order', function ($q) use ($request) {
+            $q->where('member_id', $request->user()->id);
+        });
+        
+        return TransactionResource::collection($query->get());
     }
 
     /**

@@ -23,7 +23,7 @@ Route::group(['middleware' => ['api'],'prefix' => 'v1'], function () {
         Route::post('register', [AuthController::class, 'register'])->name('register');
     });
 
-    Route::group(['middleware' => []], function() {
+    Route::group(['middleware' => ['auth:api']], function() {
         Route::apiResource('products', ProductController::class);
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('transactions', TransactionController::class);

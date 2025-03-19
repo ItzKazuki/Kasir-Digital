@@ -70,7 +70,7 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        'users' => [
+        'members' => [
             'driver' => 'eloquent',
             'model' => App\Models\Member::class,
         ],
