@@ -16,13 +16,8 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // get all transaction from member
-
-        $query = Transaction::with('order.member');
-        $query->whereHas('order', function ($q) use ($request) {
-            $q->where('member_id', $request->user()->id);
-        });
         
-        return TransactionResource::collection($query->get());
+        return TransactionResource::collection($request->user()->transactions);
     }
 
     /**
