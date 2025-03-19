@@ -24,17 +24,13 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order.member');
+        $query = Transaction::with('order');
 
         // get all transactions that belong to the authenticated user
-        $query->whereHas('order', function ($q) use ($request) {
-            $q->where('user_id', $request->user()->id);
-        });
+        $query->where('orders.user_id', $request->user()->id);
 
         if ($request->start_date && $request->end_date) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
-            });
+            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
         } else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
@@ -47,8 +43,8 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(10)->appends(request()->query());
 
-        $income = Transaction::where('payment_status', 'paid')->sum('cash');
-        $outcome = Transaction::where('payment_status', 'paid')->sum('cash_change');
+        $income = $query->where('payment_status', 'paid')->sum('cash');
+        $outcome = $query->where('payment_status', 'paid')->sum('cash_change');
 
         return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
@@ -75,20 +71,14 @@ class TransactionController extends Controller
             // Ambil item-item cart
             $itemCart = \Cart::getContent();
 
-            $orderData = [
-                'order_date' => now(),
-            ];
-
             if ($request->no_telp_member) {
                 $member = Member::where('no_telp', $request->no_telp_member)->first();
-
-                if ($member) {
-                    $orderData['member_id'] = $member->id;
-                }
             }
 
             // Buat order baru
-            $order = $request->user()->orders()->create($orderData);
+            $order = $request->user()->orders()->create([
+                'order_date' => now(),
+            ]);
 
             // Buat orderItems berdasarkan item cart
             foreach ($itemCart as $item) {
@@ -129,12 +119,12 @@ class TransactionController extends Controller
                 $transactionData['cash_change'] = $request->cash - $order->total_price;
             }
 
-            if ($request->use_point && $request->use_point == true) {
-                if (isset($member) && $member->point > 0) {
+            if(isset($member)) {
+                $transactionData['member_id'] = $member->id;
+
+                if ($request->use_point && $request->use_point == true && $member->point > 0) {
                     $pointsToUse = min($member->point, $order->total_price);
-
                     $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
-
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
@@ -152,9 +142,8 @@ class TransactionController extends Controller
             // GenerateStrukPdfJob::dispatch($transaction);
             $this->generateStrukPdf($transaction);
 
-            // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
             if (isset($member)) {
-                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $order->member));
+                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $member));
             }
 
             // Hapus item cart
@@ -170,42 +159,11 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             // Rollback DB transaction jika terjadi error
             DB::rollBack();
+            
             return response()->json([
                 'message' => 'Transaction failed',
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
