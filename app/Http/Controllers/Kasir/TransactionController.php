@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TransactionCreatedNotification;
+use Exception;
 
 class TransactionController extends Controller
 {
@@ -122,16 +123,18 @@ class TransactionController extends Controller
             if(isset($member)) {
                 $transactionData['member_id'] = $member->id;
 
-                if ($request->use_point && $request->use_point == true && $member->point > 0) {
+                if ($request->use_point && $request->use_point == true) {
                     $pointsToUse = min($member->point, $order->total_price);
+                    $remainingPrice = $order->total_price - $pointsToUse;
+
+                    if($member->point == 0 && $request->cash < $remainingPrice) {
+                        throw new Exception("Transaction failed, insufficient points or cash", 400);
+                    }
+
                     $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
-                } else {
-                    return response()->json([
-                        'message' => 'Transaction failed, member has insufficient points'
-                    ], 400);
                 }
             }
 
@@ -159,10 +162,10 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             // Rollback DB transaction jika terjadi error
             DB::rollBack();
-            
+
             return response()->json([
-                'message' => 'Transaction failed',
-                'error' => $e->getMessage()
+                'error' => 'Transaction failed',
+                'message' => $e->getMessage()
             ], 500);
         }
     }
