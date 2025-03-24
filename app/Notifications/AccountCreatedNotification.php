@@ -37,12 +37,13 @@ class AccountCreatedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
-            ->subject('Akun Berhasil Dibuat')
-            ->line('Halo, ' . $this->user->full_name)
-            ->line('Akun Anda telah berhasil dibuat. Silakan login untuk mengakses aplikasi.')
-            ->action('Login', route('auth.login'))
-            ->line('Terima kasih telah menggunakan aplikasi kami!');
+            ->from(env('MAIL_FROM_ADDRESS', 'noreply@kasirdigital.com'), 'Kasir Digital')
+            ->subject('Selamat, ' . $this->user->full_name . '! Akun Anda Berhasil Dibuat')
+            ->greeting('Halo, ' . $this->user->full_name . ' 🎉')
+            ->line('Akun Anda di **Kasir Digital** telah berhasil dibuat. Sekarang Anda dapat login dan mulai menggunakan aplikasi.')
+            ->action('Login Sekarang', route('auth.login'))
+            ->line('Jika Anda mengalami kendala saat login, silakan hubungi tim dukungan kami.')
+            ->salutation('Salam hangat, **Tim Kasir Digital**');
     }
 
     /**
