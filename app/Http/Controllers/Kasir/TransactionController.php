@@ -25,16 +25,22 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order');
-
         // get all transactions that belong to the authenticated user
-        $query->where('orders.user_id', $request->user()->id);
+        // $query->where('orders.user_id', $request->user()->id);
+        $query = Transaction::with('order')->whereHas('order', function ($q) use ($request) {
+            $q->where('user_id', $request->user()->id);
+        });
+        
 
         if ($request->start_date && $request->end_date) {
-            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
-        } else {
+            $query->whereHas('order', function ($q) use ($request) {
+                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
+            });
+        }
+         else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
+                ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
                 ->orderBy('orders.order_date', 'DESC');
         }
 
@@ -44,8 +50,8 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(10)->appends(request()->query());
 
-        $income = $query->where('payment_status', 'paid')->sum('cash');
-        $outcome = $query->where('payment_status', 'paid')->sum('cash_change');
+        $income = (clone $query)->where('payment_status', 'paid')->sum('cash');
+        $outcome = (clone $query)->where('payment_status', 'paid')->sum('cash_change');
 
         return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
