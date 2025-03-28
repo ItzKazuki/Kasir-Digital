@@ -28,7 +28,7 @@ class AuthController extends Controller
         if($attemptsOtp >= 3) {
             return response()->json([
                'status' => 'failed',
-               'message' => 'Too many OTP requests. Please try again later.' 
+               'message' => 'Too many OTP requests. Please try again later.'
             ], 429);
         }
 
@@ -60,6 +60,8 @@ class AuthController extends Controller
             'otp' => 'required|digits:6'
         ]);
 
+        $otp = intval($request->otp);
+
         $member = Member::where('email', $request->email)->first();
 
         $otpKey = "otp_" . $member->id;
@@ -67,7 +69,7 @@ class AuthController extends Controller
 
         $cachedOtp = Cache::get($otpKey);
 
-        if(!$cachedOtp || $cachedOtp !== $request->otp) {
+        if(!$cachedOtp || $cachedOtp !== $otp) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Invalid or expired OTP token.'
