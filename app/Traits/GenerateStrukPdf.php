@@ -11,7 +11,7 @@ trait GenerateStrukPdf
 {
     public function generateStrukPdf(Transaction $transaction)
     {
-        $height = 150;
+        $height = 170;
 
         if ($transaction->order->orderDetails()->count() > 1) {
             $height = $height + ($transaction->order->orderDetails()->count() * 5);

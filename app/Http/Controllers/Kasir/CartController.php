@@ -26,7 +26,7 @@ class CartController extends Controller
         \Cart::add([
             'id' => $product->id,
             'name' => $product->name,
-            'price' => $product->price,
+            'price' => $product->discount ? $product->price - ($product->discount->type == 'fixed' ? $product->discount->value : $product->price * $product->discount->value / 100) : $product->price,
             'quantity' => 1,
             'attributes' => [
                 'image' => $product->image,

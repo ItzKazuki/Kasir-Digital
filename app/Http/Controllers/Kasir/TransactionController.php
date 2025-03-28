@@ -78,6 +78,8 @@ class TransactionController extends Controller
             // Ambil item-item cart
             $itemCart = \Cart::getContent();
 
+            $discount_total = 0;
+
             if ($request->no_telp_member) {
                 $member = Member::where('no_telp', $request->no_telp_member)->first();
             }
@@ -90,6 +92,10 @@ class TransactionController extends Controller
             // Buat orderItems berdasarkan item cart
             foreach ($itemCart as $item) {
                 $product = Product::find($item->id);
+
+                if($product->discount) {
+                    $discount_total += $item->quantity * ($product->discount->type == 'fixed' ? $product->discount->value : ($product->price * $product->discount->value) / 100);
+                }
 
                 // Cek apakah quantity orderItem lebih besar dari stock produk
                 if ($product->stock < $item->quantity) {
@@ -120,6 +126,7 @@ class TransactionController extends Controller
                 'payment_status' => $request->metode_pembayaran == "cash" ? 'paid' : 'pending',
                 'payment_method' => $request->metode_pembayaran,
                 'total_price' => $order->total_price,
+                'discount_total' => $discount_total
             ];
 
             if ($request->cash) {

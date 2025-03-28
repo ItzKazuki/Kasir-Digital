@@ -67,7 +67,7 @@
 
                         <div class="flex items-center justify-center p-2 xl:p-5">
                             <p class="font-medium {{ $discount->status == 'active' ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $discount->type == 'fixed' ? 'Rp. ' . number_format($discount->value, 0, ',', '.') : $discount->value . '%' }}
+                                {{ $discount->type == 'fixed' ? 'Rp. ' . number_format($discount->value, 0, ',', '.') : number_format($discount->value, 0, ',', '.') . '%' }}
                             </p>
                         </div>
 
