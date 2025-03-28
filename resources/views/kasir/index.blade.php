@@ -179,17 +179,32 @@
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
                     @foreach ($products as $product)
-                        <div class="bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
+                        <div class="relative bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
                             @if ($product->stock > 0) onclick="addToCart({{ $product->id }})" style="cursor: pointer;" @endif>
+
+                            {{-- Label Diskon --}}
+                            @if ($product->discount)
+                                <div
+                                    class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    {{ $product->discount->name }}
+                                </div>
+                            @endif
+
                             <img alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-t-lg"
                                 height="200" src="{{ $product->product_image }}" width="300" />
                             <div class="mt-4 text-center">
                                 <h2 class="text-lg font-bold">
                                     {{ $product->name }}
                                 </h2>
-                                <p class="text-gray-700">
+                                <p class="text-gray-700 {{ $product->discount ? 'line-through text-sm' : '' }}">
                                     Rp. {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
+                                @if ($product->discount)
+                                    <p>
+                                        Rp.
+                                        {{ number_format($product->price - ($product->discount->type == 'fixed' ? $product->discount->value : ($product->price * $product->discount->value) / 100), 0, ',', '.') }}
+                                    </p>
+                                @endif
                                 <p id="product-{{ $product->id }}-stock" class="text-gray-500">
                                     Stok: @if ($product->stock <= 0)
                                         <span class="text-red-600 font-bold">Habis</span>
@@ -202,6 +217,7 @@
                     @endforeach
                 </div>
             </div>
+
         </main>
 
     </div>
@@ -425,7 +441,8 @@
         const uangMasuk = parseFloat(e.target.value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace(
+            'Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         let uangKeluar;
 
         document.getElementById('uangMasuk').innerText = `Uang: Rp. ${uangMasuk.toLocaleString('id-ID')}`;
@@ -439,7 +456,7 @@
 
         if (uangKeluar < 0) {
             document.getElementById('uangKeluar').innerHTML =
-            `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
+                `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
         } else {
             document.getElementById('uangKeluar').innerText = `Kembalian: Rp. ${uangKeluar.toLocaleString('id-ID')}`;
         }
@@ -461,10 +478,12 @@
                 document.getElementById('uang').disabled = true;
             } else {
                 document.getElementById('uangKurang').classList.remove('hidden');
-                document.getElementById('uangKurang').innerText = `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
+                document.getElementById('uangKurang').innerText =
+                    `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
 
                 document.getElementById('penggunaanPoin').classList.remove('hidden');
-                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointValue.toLocaleString('id-ID');
+                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointValue
+                    .toLocaleString('id-ID');
                 document.getElementById('uang').value = '';
                 document.getElementById('uang').disabled = false;
             }
@@ -490,7 +509,8 @@
         const member = parseInt(document.getElementById('phone_number_member').value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace(
+            'Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         const paymentMethod = document.getElementById('metode_pembayaran').value;
         let uangKeluar;
 

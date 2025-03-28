@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\TransactionCreatedNotification;
+use Exception;
 
 class TransactionController extends Controller
 {
@@ -24,16 +25,22 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order');
-
         // get all transactions that belong to the authenticated user
-        $query->where('orders.user_id', $request->user()->id);
+        // $query->where('orders.user_id', $request->user()->id);
+        $query = Transaction::with('order')->whereHas('order', function ($q) use ($request) {
+            $q->where('user_id', $request->user()->id);
+        });
+        
 
         if ($request->start_date && $request->end_date) {
-            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
-        } else {
+            $query->whereHas('order', function ($q) use ($request) {
+                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
+            });
+        }
+         else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
+                ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
                 ->orderBy('orders.order_date', 'DESC');
         }
 
@@ -43,8 +50,8 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(10)->appends(request()->query());
 
-        $income = $query->where('payment_status', 'paid')->sum('cash');
-        $outcome = $query->where('payment_status', 'paid')->sum('cash_change');
+        $income = (clone $query)->where('payment_status', 'paid')->sum('cash');
+        $outcome = (clone $query)->where('payment_status', 'paid')->sum('cash_change');
 
         return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
@@ -71,6 +78,8 @@ class TransactionController extends Controller
             // Ambil item-item cart
             $itemCart = \Cart::getContent();
 
+            $discount_total = 0;
+
             if ($request->no_telp_member) {
                 $member = Member::where('no_telp', $request->no_telp_member)->first();
             }
@@ -83,6 +92,10 @@ class TransactionController extends Controller
             // Buat orderItems berdasarkan item cart
             foreach ($itemCart as $item) {
                 $product = Product::find($item->id);
+
+                if($product->discount) {
+                    $discount_total += $item->quantity * ($product->discount->type == 'fixed' ? $product->discount->value : ($product->price * $product->discount->value) / 100);
+                }
 
                 // Cek apakah quantity orderItem lebih besar dari stock produk
                 if ($product->stock < $item->quantity) {
@@ -113,6 +126,7 @@ class TransactionController extends Controller
                 'payment_status' => $request->metode_pembayaran == "cash" ? 'paid' : 'pending',
                 'payment_method' => $request->metode_pembayaran,
                 'total_price' => $order->total_price,
+                'discount_total' => $discount_total
             ];
 
             if ($request->cash) {
@@ -122,16 +136,18 @@ class TransactionController extends Controller
             if(isset($member)) {
                 $transactionData['member_id'] = $member->id;
 
-                if ($request->use_point && $request->use_point == true && $member->point > 0) {
+                if ($request->use_point && $request->use_point == true) {
                     $pointsToUse = min($member->point, $order->total_price);
+                    $remainingPrice = $order->total_price - $pointsToUse;
+
+                    if($member->point == 0 && $request->cash < $remainingPrice) {
+                        throw new Exception("Transaction failed, insufficient points or cash", 400);
+                    }
+
                     $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
-                } else {
-                    return response()->json([
-                        'message' => 'Transaction failed, member has insufficient points'
-                    ], 400);
                 }
             }
 
@@ -159,10 +175,10 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             // Rollback DB transaction jika terjadi error
             DB::rollBack();
-            
+
             return response()->json([
-                'message' => 'Transaction failed',
-                'error' => $e->getMessage()
+                'error' => 'Transaction failed',
+                'message' => $e->getMessage()
             ], 500);
         }
     }

@@ -23,10 +23,10 @@ class OrderDetail extends Model
         static::observe(OrderDetailObserver::class);
     }
 
-    public function setTotalPriceAttribute($value)
-    {
-        $this->attributes['total_price'] = $this->attributes['quantity'] * $this->product->price;
-    }
+    // public function setTotalPriceAttribute($value)
+    // {
+    //     $this->attributes['total_price'] = $this->attributes['quantity'] * $this->product->price;
+    // }
 
     // Relasi: Order Detail milik satu order
     public function order()

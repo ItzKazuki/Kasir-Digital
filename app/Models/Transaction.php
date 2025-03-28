@@ -16,6 +16,7 @@ class Transaction extends Model
         'order_id',
         'member_id',
         'total_price',
+        'discount_total',
         'payment_method',
         'payment_status',
         'cash',
