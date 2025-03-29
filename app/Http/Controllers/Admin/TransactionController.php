@@ -36,7 +36,8 @@ class TransactionController extends Controller
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
                 ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
-                ->orderBy('orders.order_date', 'DESC');
+                ->orderBy('orders.order_date', 'DESC')
+                ->orderBy('transactions.id', 'DESC');
         }
 
         if ($request->payment_status) {
