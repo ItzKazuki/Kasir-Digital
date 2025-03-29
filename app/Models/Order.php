@@ -17,6 +17,11 @@ class Order extends Model
         'discount_id',
     ];
 
+    protected $with = [
+        'orderDetails',
+        'user'
+    ];
+
     // Relasi: Order dibuat oleh satu user (kasir/admin)
     public function user()
     {
