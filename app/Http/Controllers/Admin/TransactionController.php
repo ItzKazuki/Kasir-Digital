@@ -28,16 +28,16 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order.member');
+        $query = Transaction::with('order');
 
         if ($request->start_date && $request->end_date) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
-            });
+            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
         } else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
-                ->orderBy('orders.order_date', 'DESC');
+                ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
+                ->orderBy('orders.order_date', 'DESC')
+                ->orderBy('transactions.id', 'DESC');
         }
 
         if ($request->payment_status) {
@@ -100,9 +100,14 @@ class TransactionController extends Controller
     public function streamStruk(string $invoice)
     {
         $transaction = Transaction::findByInvoice($invoice)->first();
+
+        if (!$transaction) {
+            return abort(404);
+        }
+
         $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
-        if (!$transaction || !file_exists($strukPath)) {
+        if (!file_exists($strukPath)) {
             return abort(404);
         }
 

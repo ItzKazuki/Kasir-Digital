@@ -37,11 +37,14 @@ class CustomResetPassword extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example')) // Override sender name
-            ->subject('Reset Password Notification')
-            ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.')
+            ->from(env('MAIL_FROM_ADDRESS', 'noreply@kasirdigital.com'), 'Kasir Digital')
+            ->subject('Permintaan Reset Password')
+            ->greeting('Halo!')
+            ->line('Kami menerima permintaan reset password untuk akun Anda.')
+            ->line('Silakan klik tombol di bawah untuk mereset password Anda. Tautan ini hanya berlaku selama **60 menit**.')
             ->action('Reset Password', route('auth.reset-password', ['token' => $this->token]))
-            ->line('Jika Anda tidak meminta reset password, abaikan email ini.');
+            ->line('Jika Anda tidak meminta reset password, abaikan email ini. Akun Anda tetap aman.')
+            ->salutation('Salam, **Tim Kasir Digital**');
     }
 
     /**

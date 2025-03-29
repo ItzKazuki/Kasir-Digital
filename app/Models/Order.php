@@ -11,7 +11,6 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'member_id',
         'order_date',
         'total_items',
         'total_price',
@@ -22,12 +21,6 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    // Relasi: Order dibuat oleh satu member (opsional)
-    public function member()
-    {
-        return $this->belongsTo(Member::class);
     }
 
     // Relasi: Order bisa memiliki satu diskon (opsional)
@@ -48,4 +41,3 @@ class Order extends Model
         return $this->hasOne(Transaction::class);
     }
 }
-

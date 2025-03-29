@@ -140,7 +140,7 @@
                                 </td>
                                 <td class="border-b border-gray-200 px-4 py-5 pl-9 xl:pl-11">
                                     <h5 class="font-medium text-black  ">
-                                        {{ $transaction->order->member ? $transaction->order->member->full_name : 'Non Member' }}
+                                        {{ $transaction->member ? $transaction->member->full_name : 'Non Member' }}
                                     </h5>
                                     <p class="text-sm">Rp.
                                         {{ number_format($transaction->order->total_price, 0, ',', '.') }}

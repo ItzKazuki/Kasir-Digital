@@ -36,7 +36,7 @@
 
                 </div>
                 <div class="flex px-6">
-                    @if ($transaction->order->member)
+                    @if ($transaction->member)
                         <div class="p-2 w-full xl:w-1/2">
                             <div class="border-b border-gray-200 pb-2">
                                 <h1 class="font-bold text-lg">Detail Member</h1>
@@ -44,21 +44,21 @@
                             <div class="flex flex-col gap-2">
                                 <div>
                                     <h3 class="font-bold text-md py-2">Nama Member</h3>
-                                    <p>{{ $transaction->order->member->full_name }}</p>
+                                    <p>{{ $transaction->member->full_name }}</p>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-md py-2">Nomor Telepon</h3>
-                                    <p>{{ $transaction->order->member->no_telp }}</p>
+                                    <p>{{ $transaction->member->no_telp }}</p>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-md py-2">Total Poin</h3>
-                                    <p>{{ number_format($transaction->order->member->point, 0, ',', '.') }}</p>
+                                    <p>{{ number_format($transaction->member->point, 0, ',', '.') }}</p>
                                 </div>
                                 <div>
                                     <h3 class="font-bold text-md py-2">Status Member</h3>
                                     <p
-                                        class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ $transaction->order->member->status == 'active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                                        {{ $transaction->order->member->status }}
+                                        class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ $transaction->member->status == 'active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                                        {{ $transaction->member->status }}
                                     </p>
                                 </div>
                             </div>
@@ -107,9 +107,9 @@
                         </div>
                     </div>
                 </div>
-                @if($transaction->order->member)
+                @if($transaction->member)
                     <div class="p-6.5">
-                        <button id="sendInvoice" type="button" value="{{ $transaction->order->member->no_telp }}"
+                        <button id="sendInvoice" type="button" value="{{ $transaction->member->no_telp }}"
                             class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
                             Send Invoice to Whatshapp
                         </button>
@@ -205,8 +205,8 @@
                         </form>
                     @else
                         <button type="button"
-                            onclick="cetakStruk('{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}')"
-                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                            {{-- onclick="cetakStruk('{{ route('struk.search', ['invoice' => $transaction->invoice_number]) }}')" --}}
+                            class="flex w-full justify-center rounded cursor-not-allowed bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
                             Print Struk
                         </button>
                     @endif
@@ -265,19 +265,7 @@
             // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
             var newWindow = window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
 
-            newWindow.onload = function() {
-                newWindow.document.body.style.transform = 'scale(0.8)';
-                newWindow.document.body.style.transformOrigin = 'top left';
-                newWindow.document.body.style.width = '125%';
-                newWindow.document.body.style.height = '125%';
-                newWindow.document.body.style.overflow = 'hidden';
-                setTimeout(() => {
-                    newWindow.printStruk();
-                }, 1500);
-                newWindow.onfocus = () => {
-                    newWindow.close();
-                }
-            };
+            newWindow.print();
         }
     </script>
 @endpush
