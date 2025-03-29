@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MemberResource;
+use App\Mail\LoginSuccessMail;
+use App\Mail\OtpMail;
 use App\Models\Member;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -38,9 +41,11 @@ class AuthController extends Controller
         Cache::put($otpKey, $otp, now()->addMinutes(10));
         Cache::put($otpAttemptsKey, $attemptsOtp + 1, now()->addMinutes(10));
 
-        Mail::raw("Your OTP code is: $otp. It will expire in 10 minutes.", function($message) use ($member) {
-            $message->to($member->email)->subject('Your Login OTP');
-        });
+        // Mail::raw("Your OTP code is: $otp. It will expire in 10 minutes.", function($message) use ($member) {
+        //     $message->to($member->email)->subject('Your Login OTP');
+        // });
+
+        Mail::to($member->email)->send(new OtpMail($otp, $member));
 
         return response()->json([
             'status' => 'success',
@@ -81,10 +86,32 @@ class AuthController extends Controller
 
         $token = $member->createToken('member-token')->plainTextToken;
 
+        $ipAddress = $request->ip();
+        $time = now()->format('Y-m-d H:i:s');
+
+        Mail::to($member->email)->send(new LoginSuccessMail($member, $ipAddress, $time));
+
         return response()->json([
             'status' => 'success',
             'message' => 'Login Successfull',
             'token' => $token
         ]);
+    }
+
+    public function logout(Request $request) {
+        // logout here
+
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout berhasil'
+        ], 200);
+    }
+
+    public function profile(Request $request) {
+        // this will be return data as a member
+
+        return new MemberResource($request->user());
     }
 }
