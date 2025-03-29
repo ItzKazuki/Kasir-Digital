@@ -23,6 +23,7 @@ class ProductResource extends JsonResource
             'expired_at' => $this->expired_at,
             'image' => $this->image_url,
             'description' => $this->description,
+            'discount' => new DiscountResource($this->whenLoaded('discount'))
         ];
     }
 }

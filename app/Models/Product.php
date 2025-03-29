@@ -26,6 +26,10 @@ class Product extends Model
         'estimasi_keuntungan',
     ];
 
+    protected $with = [
+        'discount'
+    ];
+
     protected static function boot()
     {
         parent::boot();

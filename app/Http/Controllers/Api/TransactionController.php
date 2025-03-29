@@ -16,8 +16,12 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // get all transaction from member
-        
-        return TransactionResource::collection($request->user()->transactions);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'list all transaction from ' . $request->user()->full_name,
+            'data' => TransactionResource::collection($request->user()->transactions)
+        ]);
     }
 
     /**
@@ -31,15 +35,20 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Transaction $transaction)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'message' => 'show detail transaction for ' . $transaction->member->full_name . ' with id ' . $transaction->id,
+            'transaction' => new TransactionResource($transaction),
+            'invoice' => $transaction->invoice_number
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -47,7 +56,7 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Transaction $transaction)
     {
         //
     }
