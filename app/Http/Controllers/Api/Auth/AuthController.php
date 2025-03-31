@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\MemberResource;
-use App\Mail\LoginSuccessMail;
+use Carbon\Carbon;
 use App\Mail\OtpMail;
 use App\Models\Member;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\Mail\LoginSuccessMail;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Resources\MemberResource;
 
 class AuthController extends Controller
 {
@@ -94,7 +94,8 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Login Successfull',
-            'token' => $token
+            'token' => $token,
+            'member' => new MemberResource($member)
         ]);
     }
 
