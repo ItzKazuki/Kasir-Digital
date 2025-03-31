@@ -56,6 +56,70 @@ Akses aplikasi melalui `http://127.0.0.1:8000`.
 
 ---
 
+## Menjalankan Queue Service
+
+Aplikasi ini menggunakan queue untuk menangani proses yang berjalan di latar belakang, seperti notifikasi. Berikut cara menjalankannya:
+
+### **Di Linux (Menggunakan Systemd Service)**
+
+Buat file service di `/etc/systemd/system/kasir-queue.service` dengan isi berikut:
+
+```
+# Kasir Digital Queue Worker File
+[Unit]
+Description=Kasir Digital Queue Worker
+
+[Service]
+User=www-data
+Group=www-data
+Restart=always
+ExecStart=/usr/bin/php /var/www/project-kasir-digital/artisan queue:work --daemon
+StartLimitInterval=180
+StartLimitBurst=30
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
+
+> ubah `/var/www/project-kasir-digital` menjadi lokasi project anda.
+
+Lalu jalankan perintah berikut:
+
+```sh
+sudo systemctl daemon-reload
+sudo systemctl enable kasir-queue
+sudo systemctl start kasir-queue
+```
+
+Untuk mengecek status service:
+
+```sh
+sudo systemctl status kasir-queue
+```
+
+### **Di Windows (Menggunakan Task Scheduler)**
+
+1. Buka `Task Scheduler` di Windows.
+2. Klik **Create Basic Task** → Isi nama dengan **Kasir Queue Worker**.
+3. Pilih **When the computer starts**.
+4. Pada bagian **Action**, pilih **Start a program**.
+5. Pada bagian **Program/script**, masukkan path ke `php.exe`, contoh:
+   ```
+   C:\xampp\php\php.exe
+   ```
+6. Pada bagian **Add arguments**, tambahkan:
+   ```
+   artisan queue:work --daemon
+   ```
+   dengan path lengkap ke proyek Laravel, misalnya:
+   ```
+   C:\laragon\www\project-kasir-digital\artisan queue:work --daemon
+   ```
+7. Klik **Finish**, lalu jalankan task tersebut.
+
+
+
 ## Struktur Database
 ### **Entity Relationship Diagram (ERD)**
 Sistem ini terdiri dari beberapa bagian utama:
