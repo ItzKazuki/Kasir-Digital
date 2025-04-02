@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Service\FonnteService;
+use App\Services\FonnteService;
 use App\Traits\GenerateStrukPdf;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
