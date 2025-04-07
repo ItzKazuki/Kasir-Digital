@@ -17,6 +17,10 @@ class OrderDetail extends Model
         'total_price',
     ];
 
+    protected $with = [
+        'product'
+    ];
+
     protected static function boot()
     {
         parent::boot();

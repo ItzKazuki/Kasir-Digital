@@ -24,6 +24,11 @@ class Transaction extends Model
         'point_usage'
     ];
 
+    protected $with = [
+        'order',
+        'member',
+    ];
+
     public $timestamps = false;
 
     protected static function boot()
