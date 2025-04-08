@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\Payments\MidtransPaymentService;
+use App\Services\Payments\PaymentGatewayInterface;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -14,7 +16,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PaymentGatewayInterface::class, function () {
+            switch (config('payment.default')) {
+                case 'midtrans':
+                    return new MidtransPaymentService();
+                    
+                // Add other payment gateways here
+                default:
+                    return new MidtransPaymentService();
+            }
+        });
     }
 
     /**

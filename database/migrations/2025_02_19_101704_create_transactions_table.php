@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('point_usage', 15)->default(0)->nullable();
             $table->decimal('cash', 15)->default(0);
             $table->decimal('cash_change', 15)->default(0);
-            $table->enum('payment_method', ['cash', 'debit', 'credit', 'ewallet'])->default('cash');
+            $table->enum('payment_method', ['cash', 'debit', 'credit', 'qris'])->default('cash');
             $table->enum('payment_status', ['paid', 'unpaid', 'pending'])->default('pending');
             // $table->timestamps();
         });

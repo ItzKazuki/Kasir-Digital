@@ -273,14 +273,12 @@
                 <p id="diskon" class="text-black">Diskon: Rp. 0</p>
             </div>
             <hr class="border-gray-400 mb-4">
-            <div class="mb-4">
+            <div class="mb-4" id="cashMethod">
                 <label id="uangMasuk" class="block text-black font-bold text-xl">Uang: Rp. 0</label>
                 <label id="uangKurang" class="hidden text-red-600 font-bold text-sm">Uang Kurang: Rp. 0</label>
                 <input id="uang" type="number" class="w-full p-2 mt-2 border border-gray-400 rounded-lg"
                     placeholder="">
-            </div>
-            <div class="mb-4">
-                <p id="uangKeluar" class="text-black">Kembalian: Rp. 0</p>
+                <p id="uangKeluar" class="text-black mt-4">Kembalian: Rp. 0</p>
             </div>
             <div class="mb-4 bg-white sticky bottom-0">
                 <div class="mb-4 flex items-center">
@@ -288,9 +286,9 @@
                     <div class="relative w-1/2">
                         <select id="metode_pembayaran"
                             class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
-                            <option value="cash">Cash</option>
-                            <option value="qris">Qris</option>
-                            <option value="debit">Debit Card</option>
+                            <option value="cash">CASH</option>
+                            <option value="qris">QRIS</option>
+                            {{-- <option value="debit">Debit Card</option> --}}
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                             <i class="fas fa-chevron-down"></i>
@@ -345,6 +343,22 @@
 <script>
     @include('sweetalert::sweetalert');
 
+    window.addEventListener('load', function() {
+        // Reset all input fields
+        document.querySelectorAll('input').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else {
+                input.value = '';
+            }
+        });
+
+        // Reset all select dropdowns
+        document.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         axios.get('/dashboard/kasir/cart/products/show')
             .then(resCart => {
@@ -389,6 +403,15 @@
             .catch(error => {
                 console.error('Error fetching cart content:', error);
             });
+    });
+
+    document.getElementById('metode_pembayaran').addEventListener('change', function() {
+        const cashMethodDiv = document.getElementById('cashMethod');
+        if (this.value !== 'cash') {
+            cashMethodDiv.style.display = 'none';
+        } else {
+            cashMethodDiv.style.display = 'block';
+        }
     });
 
     document.getElementById('uang').addEventListener('change', kalkulasiUang);
