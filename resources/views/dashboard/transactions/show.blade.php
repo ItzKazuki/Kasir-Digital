@@ -190,7 +190,16 @@
                     </p>
                 </div>
                 <div class="p-6 flex flex-col items-center justify-center">
-                    @include('dashboard.transactions.struk')
+                    @if ($transaction->payment_status == 'paid')
+                        @include('dashboard.transactions.struk')
+                    @elseif ($transaction->payment_status == 'pending' && $transaction->payment_method == 'qris')
+                        <div class="flex flex-col items-center">
+                            <h3 class="text-lg font-bold text-gray-700 mb-4">Bayar Sekarang</h3>
+                            <img src="{{ $transaction->payment_url }}" alt="QRIS Payment" class="w-[250px] mb-4">
+                            <p class="text-sm text-gray-600 mb-2">Scan QR Code di atas untuk melakukan pembayaran.</p>
+                            <p class="text-sm text-gray-600">Pastikan pembayaran dilakukan sebelum batas waktu yang ditentukan.</p>
+                        </div>
+                    @endif
                     @if ($transaction->payment_status == 'unpaid' || $transaction->payment_status == 'pending')
                         <form
                             action="{{ route('dashboard.transactions.payment.updateStatus', ['transaction' => $transaction->id]) }}"

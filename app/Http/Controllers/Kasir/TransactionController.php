@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kasir;
 
+use Exception;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -11,8 +12,8 @@ use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
+use App\Services\Payments\PaymentGatewayInterface;
 use App\Notifications\TransactionCreatedNotification;
-use Exception;
 
 class TransactionController extends Controller
 {
@@ -70,7 +71,7 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, PaymentGatewayInterface $paymentService)
     {
         // Mulai DB transaction
         DB::beginTransaction();
@@ -130,6 +131,19 @@ class TransactionController extends Controller
                 'discount_total' => $discount_total
             ];
 
+            if($request->metode_pembayaran == "qris") {
+                // use data to generate qris at midtrans
+
+                $midtrans = $paymentService->createTransaction([
+                    'transaction_id' => $order->id,
+                    'total_price' => $order->total_price,
+                ]);
+
+                $transactionData['payment_type'] = $midtrans['payment_type'];
+                $transactionData['payment_url'] = $midtrans['actions_url'];
+                $transactionData['cash'] = $midtrans['gross_amount'];
+            }
+
             if ($request->cash) {
                 $transactionData['cash_change'] = $request->cash - $order->total_price;
             }
@@ -177,6 +191,18 @@ class TransactionController extends Controller
             // Rollback DB transaction jika terjadi error
             DB::rollBack();
 
+            return response()->json([
+                'error' => 'Transaction failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function callback(Request $request, PaymentGatewayInterface $paymentService)
+    {
+        try {
+            return $paymentService->handleCallback($request);
+        } catch (Exception $e) {
             return response()->json([
                 'error' => 'Transaction failed',
                 'message' => $e->getMessage()

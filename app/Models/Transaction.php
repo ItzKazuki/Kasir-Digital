@@ -21,6 +21,7 @@ class Transaction extends Model
         'payment_status',
         'cash',
         'cash_change',
+        'payment_url',
         'point_usage'
     ];
 

@@ -84,4 +84,6 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::post('transactions/{transaction}/sendWhatsapp', [TransactionController::class, 'sendWhatsappMessage'])->name('transactions.send.whatsapp');
 });
 
+Route::middleware('api')->post('payment/callback', [KasirTransactionController::class, 'callback'])->name('payment.callback');
+
 Route::get('/struk/{invoice}', [TransactionController::class, 'streamStruk'])->name('struk.search');
