@@ -84,9 +84,4 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::post('transactions/{transaction}/sendWhatsapp', [TransactionController::class, 'sendWhatsappMessage'])->name('transactions.send.whatsapp');
 });
 
-Route::get('/kasir', function () {
-    $title = "Home";
-    return view('kasir.index2', compact('title'));
-});
-
 Route::get('/struk/{invoice}', [TransactionController::class, 'streamStruk'])->name('struk.search');
