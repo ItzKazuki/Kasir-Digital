@@ -151,6 +151,24 @@ class TransactionController extends Controller
             if(isset($member)) {
                 $transactionData['member_id'] = $member->id;
 
+                if ($order->total_price > 200000) {
+                    $additionalPoints = $order->total_price * 0.045;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 100000) {
+                    $additionalPoints = $order->total_price * 0.035;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 50000) {
+                    $additionalPoints = $order->total_price * 0.02;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 25000) {
+                    $additionalPoints = $order->total_price * 0.01;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                }
+
                 if ($request->use_point && $request->use_point == true) {
                     $pointsToUse = min($member->point, $order->total_price);
                     $remainingPrice = $order->total_price - $pointsToUse;
@@ -174,7 +192,7 @@ class TransactionController extends Controller
             $this->generateStrukPdf($transaction);
 
             if (isset($member)) {
-                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $member));
+                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $member, $additionalPoints));
             }
 
             // Hapus item cart
