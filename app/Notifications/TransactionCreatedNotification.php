@@ -15,12 +15,14 @@ class TransactionCreatedNotification extends Notification implements ShouldQueue
 
     private $transaction;
     private $member;
+    private $additionalPoint;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Transaction $transaction, Member $member)
+    public function __construct(Transaction $transaction, Member $member, int $additionalPoint)
     {
+        $this->additionalPoint = $additionalPoint;
         $this->transaction = $transaction;
         $this->member = $member;
     }
@@ -53,7 +55,8 @@ class TransactionCreatedNotification extends Notification implements ShouldQueue
             $mailMessage->line('**Poin yang Anda gunakan:** ' . number_format($this->transaction->point_usage, 0, ',', '.'));
         }
 
-        $mailMessage->line('**Poin Anda sekarang bertambah menjadi:** ' . number_format($this->member->point, 0, ',', '.'))
+        $mailMessage->line('**Poin bertambah:** ' . number_format($this->additionalPoint, 0, ',', '.'))
+        ->line('**Total poin Anda sekarang:** ' . number_format($this->member->point, 0, ',', '.'))
             ->action('Lihat Detail Transaksi', route('struk.search', $this->transaction->invoice_number))
             ->line('Terima kasih telah menggunakan **Kasir Digital**!')
             ->salutation('Salam, **Tim Kasir Digital**');
