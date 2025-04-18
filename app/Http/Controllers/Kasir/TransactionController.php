@@ -150,6 +150,7 @@ class TransactionController extends Controller
 
             if(isset($member)) {
                 $transactionData['member_id'] = $member->id;
+                $additionalPoints = 0;
 
                 if ($order->total_price > 200000) {
                     $additionalPoints = $order->total_price * 0.045;
