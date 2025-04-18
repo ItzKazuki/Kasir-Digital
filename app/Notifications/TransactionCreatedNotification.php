@@ -55,8 +55,11 @@ class TransactionCreatedNotification extends Notification implements ShouldQueue
             $mailMessage->line('**Poin yang Anda gunakan:** ' . number_format($this->transaction->point_usage, 0, ',', '.'));
         }
 
-        $mailMessage->line('**Poin bertambah:** ' . number_format($this->additionalPoint, 0, ',', '.'))
-        ->line('**Total poin Anda sekarang:** ' . number_format($this->member->point, 0, ',', '.'))
+        if ($this->additionalPoint) {
+            $mailMessage->line('**Poin bertambah:** ' . number_format($this->additionalPoint, 0, ',', '.'));
+        }
+
+        $mailMessage->line('**Total poin Anda sekarang:** ' . number_format($this->member->point, 0, ',', '.'))
             ->action('Lihat Detail Transaksi', route('struk.search', $this->transaction->invoice_number))
             ->line('Terima kasih telah menggunakan **Kasir Digital**!')
             ->salutation('Salam, **Tim Kasir Digital**');
