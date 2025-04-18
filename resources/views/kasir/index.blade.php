@@ -491,7 +491,8 @@
             '').replace('):', '').replace(/\./g, ''));
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace(
             'Total Belanja: Rp. ', '').replace(/\./g, ''));
-        const remainingAmount = pointValue - totalBelanja;
+        const pointToUse = totalBelanja * 0.1; // 10% of total belanja
+        const remainingAmount = pointToUse - totalBelanja;
 
         if (usePoint) {
             if (remainingAmount >= 0) {
@@ -505,7 +506,7 @@
                     `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
 
                 document.getElementById('penggunaanPoin').classList.remove('hidden');
-                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointValue
+                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointToUse
                     .toLocaleString('id-ID');
                 document.getElementById('uang').value = '';
                 document.getElementById('uang').disabled = false;

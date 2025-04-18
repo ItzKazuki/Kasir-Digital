@@ -171,14 +171,14 @@ class TransactionController extends Controller
                 }
 
                 if ($request->use_point && $request->use_point == true) {
-                    $pointsToUse = min($member->point, $order->total_price);
+                    $pointsToUse = min($member->point, $order->total_price * 0.1);
                     $remainingPrice = $order->total_price - $pointsToUse;
 
-                    if($member->point == 0 && $request->cash < $remainingPrice) {
-                        throw new Exception("Transaction failed, insufficient points or cash", 400);
+                    if ($request->cash < $remainingPrice) {
+                        throw new Exception("Transaction failed, insufficient cash to cover the remaining price", 400);
                     }
 
-                    $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
+                    $transactionData['cash_change'] = $request->cash - $remainingPrice;
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
