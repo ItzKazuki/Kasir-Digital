@@ -71,6 +71,10 @@ class TransactionController extends Controller
         $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
         if (!file_exists($strukPath)) {
+            if ($transaction->payment_status == 'unpaid' || $transaction->payment_status == 'pending') {
+                return abort(402);
+            }
+
             $this->generateStrukPdf($transaction);
         }
 
@@ -105,16 +109,18 @@ class TransactionController extends Controller
             return abort(404);
         }
 
-        $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
+        // $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
-        if (!file_exists($strukPath)) {
-            return abort(404);
-        }
+        // if (!file_exists($strukPath)) {
+        //     return abort(404);
+        // }
 
-        return response()->file($strukPath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
-        ]);
+        // return response()->file($strukPath, [
+        //     'Content-Type' => 'application/pdf',
+        //     'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
+        // ]);
+
+        return view('layouts.struk', compact('transaction'));
     }
 
     public function updateStatusPayment(Request $request, Transaction $transaction)

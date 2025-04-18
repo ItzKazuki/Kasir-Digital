@@ -213,11 +213,10 @@
                             </button>
                         </form>
                     @else
-                        <button type="button"
-                            {{-- onclick="cetakStruk('{{ route('struk.search', ['invoice' => $transaction->invoice_number]) }}')" --}}
-                            class="flex w-full justify-center rounded cursor-not-allowed bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                            Print Struk
-                        </button>
+                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}" target="_blank"
+                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                            Download Struk
+                        </a>
                     @endif
 
                 </div>

@@ -189,8 +189,14 @@ class TransactionController extends Controller
             $transaction = $order->transaction()->create($transactionData);
 
             // Generate struk PDF
+            /**
+             * this feature is soo booring, idk.
+             * tapi ada beberapa bug dikarenakan hal ini
+             * seperti lamanya proses transaksi, hingga penggunaan memori yang tinggi
+             * hal ini dapat di atasi dengan cara (hapus penggunaan struk fisik).
+            */
             // GenerateStrukPdfJob::dispatch($transaction);
-            $this->generateStrukPdf($transaction);
+            // $this->generateStrukPdf($transaction);
 
             if (isset($member)) {
                 Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $member, $additionalPoints));

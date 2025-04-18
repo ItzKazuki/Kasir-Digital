@@ -31,9 +31,9 @@
 
     @include('dashboard.transactions.struk')
 
-    <div class="download-button">
+    {{-- <div class="download-button">
         <button onclick="printStruk()">Download Struk</button>
-    </div>
+    </div> --}}
 
     <script src="{{ asset('vendor/davidshimjs-qrcodejs-04f46c6/qrcode.js') }}"></script>
     <script>
