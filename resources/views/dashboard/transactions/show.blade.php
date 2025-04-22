@@ -24,7 +24,7 @@
     <!-- Breadcrumb End -->
 
     <!-- ====== Form Layout Section Start -->
-    <div class="grid grid-cols-1 gap-9 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-9 sm:grid-cols-1 lg:grid-cols-2">
         <div class="flex flex-col gap-9 col-span-2">
             <!-- Contact Form -->
 
@@ -92,11 +92,12 @@
                                     </p>
                                 </div>
                                 @if ($transaction->point_usage)
-                                <div>
-                                    <h3 class="font-bold text-md py-2">Point Digunakan</h3>
-                                    <p class="text-red-600">- {{ number_format($transaction->point_usage, 0, ',', '.') }}
-                                    </p>
-                                </div>
+                                    <div>
+                                        <h3 class="font-bold text-md py-2">Point Digunakan</h3>
+                                        <p class="text-red-600">-
+                                            {{ number_format($transaction->point_usage, 0, ',', '.') }}
+                                        </p>
+                                    </div>
                                 @endif
                             </div>
                             <div>
@@ -107,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                @if($transaction->member)
+                @if ($transaction->member)
                     <div class="p-6.5">
                         <button id="sendInvoice" type="button" value="{{ $transaction->member->no_telp }}"
                             class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
@@ -153,7 +154,7 @@
                             <div class="col-span-2 flex items-center">
                                 <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                                     <div class="h-12.5 w-15 rounded-md">
-                                        <img src="src/images/product/product-01.png" alt="Product {{ $index + 1 }}" />
+                                        <img src="{{ $orderDetail->product->product_image }}" alt="Product {{ $index + 1 }}" />
                                     </div>
                                     <p class="text-medium font-medium text-black">
                                         {{ $orderDetail->product->name }}
@@ -197,10 +198,19 @@
                             <h3 class="text-lg font-bold text-gray-700 mb-4">Bayar Sekarang</h3>
                             <img src="{{ $transaction->payment_url }}" alt="QRIS Payment" class="w-[250px] mb-4">
                             <p class="text-sm text-gray-600 mb-2">Scan QR Code di atas untuk melakukan pembayaran.</p>
-                            <p class="text-sm text-gray-600">Pastikan pembayaran dilakukan sebelum batas waktu yang ditentukan.</p>
+                            <p class="text-sm text-gray-600">Pastikan pembayaran dilakukan sebelum batas waktu yang
+                                ditentukan.</p>
                         </div>
+
+                        <button id="checkPayment" onclick="cekPembayaran()"
+                            type="button"
+                            class="flex w-full justify-center rounded bg-green-600 text-white p-3 font-medium hover:bg-opacity-90">
+                            Cek Pembayaran
+                        </button>
                     @endif
-                    @if ($transaction->payment_status == 'unpaid' || $transaction->payment_status == 'pending')
+                    @if (
+                        $transaction->payment_status == 'unpaid' ||
+                            ($transaction->payment_status == 'pending' && $transaction->payment_method != 'qris'))
                         <form
                             action="{{ route('dashboard.transactions.payment.updateStatus', ['transaction' => $transaction->id]) }}"
                             method="post" class="w-full">
@@ -208,20 +218,19 @@
                             @method('PUT')
                             <input type="hidden" name="payment_status" value="paid">
                             <button type="submit"
-                                class="flex w-full justify-center rounded bg-green-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                                class="flex w-full justify-center rounded bg-green-600 text-white p-3 font-medium hover:bg-opacity-90">
                                 Selesaikan Pembayaran
                             </button>
                         </form>
-                    @else
-                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}" target="_blank"
-                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
+                    @elseif ($transaction->payment_status == 'paid')
+                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}"
+                            target="_blank"
+                            class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium hover:bg-opacity-90">
                             Download Struk
                         </a>
                     @endif
-
                 </div>
             </div>
-
         </div>
     </div>
     <!-- ====== Form Layout Section End -->
@@ -239,11 +248,55 @@
             correctLevel: QRCode.CorrectLevel.H
         });
 
+        function cekPembayaran() {
+            var url =
+                "{{ route('dashboard.transactions.payment.checkStatus', ['transaction' => $transaction->id]) }}";
+            axios.post(url)
+                .then(response => {
+                    if (response.data.transaction_status == 'settlement') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembayaran Berhasil',
+                            text: 'Status pembayaran telah diperbarui.',
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else if (response.data.stattransaction_statusus == 'pending') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Pembayaran Pending',
+                            text: 'Pembayaran masih dalam proses.',
+                        });
+
+                    } else if (response.data.transaction_status == 'expire') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembayaran Kadaluarsa',
+                            text: 'Pembayaran telah kadaluarsa.',
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembayaran Gagal',
+                            text: 'Status pembayaran tidak valid.',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Terjadi kesalahan saat memeriksa status pembayaran.',
+                    });
+                });
+        }
+
         document.getElementById('sendInvoice').addEventListener('click', function() {
             var url = "{{ route('dashboard.transactions.send.whatsapp', ['transaction' => $transaction->id]) }}";
             axios.post(url, {
-                phone: this.value
-            })
+                    phone: this.value
+                })
                 .then(response => {
                     if (response.data.status == 'success') {
                         Swal.fire({

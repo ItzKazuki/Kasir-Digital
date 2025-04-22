@@ -43,19 +43,39 @@ class MidtransPaymentService implements PaymentGatewayInterface
 
     }
 
+    public function checkPaymentStatus($orderId)
+    {
+        // Implement Midtrans logic here
+        $res = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ])->withBasicAuth(config('payment.midtrans.server_key'), '')
+        ->get('https://api.sandbox.midtrans.com/v2/' . $orderId . '/status');
+
+        if($res->status() !== 200) {
+            throw new \Exception('Failed to check payment status: ' . $res->body(), $res->status());
+        }
+
+        return $res->json();
+    }
+
     public function handleCallback(Request $request)
     {
-        $signature = hash('sha512', $request->order_id . $request->status_code . $request->gross_amount . config('payment.midtrans.server_key'));
+        $signature = hash('sha512', $request->order_id . $request->status_code . $request->gross_amount . config('payment.midtrans.server_key') );
+
         if ($signature !== $request->signature_key) {
             return response()->json(['message' => 'Invalid signature'], 400);
         }
+
         $transaction = Transaction::where('order_id', $request->order_id)->first();
+
         if (!$transaction) {
             return response()->json(['message' => 'Transaction not found'], 404);
         }
-        $transaction->payment_status = $request->transaction_status == 'settlement' ? 'paid' : 'pending';
+
+        $transaction->payment_status = $request->transaction_status == 'settlement' ? 'paid' : 'unpaid';
         $transaction->save();
-        
+
         return response()->json(['message' => 'Transaction updated successfully'], 200);
     }
 }
