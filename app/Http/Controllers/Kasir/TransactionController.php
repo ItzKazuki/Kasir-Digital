@@ -223,6 +223,35 @@ class TransactionController extends Controller
         }
     }
 
+    public function checkStatus(Transaction $transaction, PaymentGatewayInterface $paymentService)
+    {
+        try {
+            $status = $paymentService->checkPaymentStatus($transaction->order_id);
+
+            if ($status['transaction_status'] == 'settlement') {
+                $transaction->update([
+                    'payment_status' => 'paid',
+                    'cash' => $status['gross_amount'],
+                ]);
+            } elseif ($status['transaction_status'] == 'pending') {
+                $transaction->update([
+                    'payment_status' => 'pending',
+                ]);
+            } elseif ($status['transaction_status'] == 'expire') {
+                $transaction->update([
+                    'payment_status' => 'unpaid',
+                ]);
+            }
+
+            return response()->json($status);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Failed to check payment status',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function callback(Request $request, PaymentGatewayInterface $paymentService)
     {
         try {
