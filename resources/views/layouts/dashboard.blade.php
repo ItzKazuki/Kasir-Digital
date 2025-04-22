@@ -22,226 +22,245 @@
     @include('layouts.partials.dashboard-nav')
 
     {{-- content --}}
+
     <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-gray-100">
         <header class="sticky top-0 z-100 flex w-full bg-white drop-shadow-1">
             <div class="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                 <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
+                    <!-- Hamburger Toggle BTN -->
+                    <div class="hamburger-menu">
+                        <button id="hamburgerToggle"
+                            class="z-100 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm">
+                            {{-- <span class="relative block h-5.5 w-5.5 cursor-pointer">
+                                <span class="du-block absolute right-0 h-full w-full">
+                                    <span class="relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black"></span>
+                                    <span class="relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black"></span>
+                                    <span class="relative left-0 top-0 my-1 block h-0.5 w-0 rounded-sm bg-black"></span>
+                                </span>
+                                <span class="du-block absolute right-0 h-full w-full rotate-45">
+                                    <span class="absolute left-2.5 top-0 block h-full w-0.5 rounded-sm bg-black"></span>
+                                    <span class="absolute left-0 top-2.5 block h-0.5 w-full rounded-sm bg-black"></span>
+                                </span>
+                            </span> --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5 cursor-pointer" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
+                        </button>
 
+                    </div>
                 </div>
-                <div class="hidden sm:block">
+                <div class="search-bar hidden sm:block">
 
                 </div>
 
                 <div class="flex items-center gap-3 2xsm:gap-7">
                     {{-- <ul class="flex items-center gap-2 2xsm:gap-4">
-                        <!-- Notification Menu Area -->
-                        <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
-                            <button
-                                class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full bg-red-100 hover:text-red-800 "
-                                href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
-                                <span :class="!notifying && 'hidden'"
-                                    class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
-                                    <span
-                                        class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-                                </span>
+                    <!-- Notification Menu Area -->
+                    <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                        <button
+                            class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full bg-red-100 hover:text-red-800 "
+                            href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
+                            <span :class="!notifying && 'hidden'"
+                                class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
+                                <span
+                                    class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
+                            </span>
 
-                                <svg class="fill-current duration-300 ease-in-out text-red-400" width="18"
-                                    height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16.1999 14.9343L15.6374 14.0624C15.5249 13.8937 15.4687 13.7249 15.4687 13.528V7.67803C15.4687 6.01865 14.7655 4.47178 13.4718 3.31865C12.4312 2.39053 11.0812 1.7999 9.64678 1.6874V1.1249C9.64678 0.787402 9.36553 0.478027 8.9999 0.478027C8.6624 0.478027 8.35303 0.759277 8.35303 1.1249V1.65928C8.29678 1.65928 8.24053 1.65928 8.18428 1.6874C4.92178 2.05303 2.4749 4.66865 2.4749 7.79053V13.528C2.44678 13.8093 2.39053 13.9499 2.33428 14.0343L1.7999 14.9343C1.63115 15.2155 1.63115 15.553 1.7999 15.8343C1.96865 16.0874 2.2499 16.2562 2.55928 16.2562H8.38115V16.8749C8.38115 17.2124 8.6624 17.5218 9.02803 17.5218C9.36553 17.5218 9.6749 17.2405 9.6749 16.8749V16.2562H15.4687C15.778 16.2562 16.0593 16.0874 16.228 15.8343C16.3968 15.553 16.3968 15.2155 16.1999 14.9343ZM3.23428 14.9905L3.43115 14.653C3.5999 14.3718 3.68428 14.0343 3.74053 13.6405V7.79053C3.74053 5.31553 5.70928 3.23428 8.3249 2.95303C9.92803 2.78428 11.503 3.2624 12.6562 4.2749C13.6687 5.1749 14.2312 6.38428 14.2312 7.67803V13.528C14.2312 13.9499 14.3437 14.3437 14.5968 14.7374L14.7655 14.9905H3.23428Z"
-                                        fill="" />
-                                </svg>
-                            </button>
+                            <svg class="fill-current duration-300 ease-in-out text-red-400" width="18"
+                                height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M16.1999 14.9343L15.6374 14.0624C15.5249 13.8937 15.4687 13.7249 15.4687 13.528V7.67803C15.4687 6.01865 14.7655 4.47178 13.4718 3.31865C12.4312 2.39053 11.0812 1.7999 9.64678 1.6874V1.1249C9.64678 0.787402 9.36553 0.478027 8.9999 0.478027C8.6624 0.478027 8.35303 0.759277 8.35303 1.1249V1.65928C8.29678 1.65928 8.24053 1.65928 8.18428 1.6874C4.92178 2.05303 2.4749 4.66865 2.4749 7.79053V13.528C2.44678 13.8093 2.39053 13.9499 2.33428 14.0343L1.7999 14.9343C1.63115 15.2155 1.63115 15.553 1.7999 15.8343C1.96865 16.0874 2.2499 16.2562 2.55928 16.2562H8.38115V16.8749C8.38115 17.2124 8.6624 17.5218 9.02803 17.5218C9.36553 17.5218 9.6749 17.2405 9.6749 16.8749V16.2562H15.4687C15.778 16.2562 16.0593 16.0874 16.228 15.8343C16.3968 15.553 16.3968 15.2155 16.1999 14.9343ZM3.23428 14.9905L3.43115 14.653C3.5999 14.3718 3.68428 14.0343 3.74053 13.6405V7.79053C3.74053 5.31553 5.70928 3.23428 8.3249 2.95303C9.92803 2.78428 11.503 3.2624 12.6562 4.2749C13.6687 5.1749 14.2312 6.38428 14.2312 7.67803V13.528C14.2312 13.9499 14.3437 14.3437 14.5968 14.7374L14.7655 14.9905H3.23428Z"
+                                    fill="" />
+                            </svg>
+                        </button>
 
-                            <!-- Dropdown Start -->
-                            <div x-show="dropdownOpen"
-                                class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
-                                <div class="px-4.5 py-3">
-                                    <h5 class="text-sm font-medium text-bodydark2">Notification</h5>
-                                </div>
-
-                                <ul class="flex h-auto flex-col overflow-y-auto">
-                                    <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="#">
-                                            <p class="text-sm">
-                                                <span class="text-black  ">Edit your information in a
-                                                    swipe</span>
-                                                Sint occaecat cupidatat non proident, sunt in culpa qui
-                                                officia deserunt mollit anim.
-                                            </p>
-
-                                            <p class="text-xs">12 May, 2025</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="#">
-                                            <p class="text-sm">
-                                                <span class="text-black  ">It is a long established
-                                                    fact</span>
-                                                that a reader will be distracted by the readable.
-                                            </p>
-
-                                            <p class="text-xs">24 Feb, 2025</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="#">
-                                            <p class="text-sm">
-                                                <span class="text-black  ">There are many
-                                                    variations</span>
-                                                of passages of Lorem Ipsum available, but the majority have
-                                                suffered
-                                            </p>
-
-                                            <p class="text-xs">04 Jan, 2025</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="#">
-                                            <p class="text-sm">
-                                                <span class="text-black  ">There are many
-                                                    variations</span>
-                                                of passages of Lorem Ipsum available, but the majority have
-                                                suffered
-                                            </p>
-
-                                            <p class="text-xs">01 Dec, 2024</p>
-                                        </a>
-                                    </li>
-                                </ul>
+                        <!-- Dropdown Start -->
+                        <div x-show="dropdownOpen"
+                            class="absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
+                            <div class="px-4.5 py-3">
+                                <h5 class="text-sm font-medium text-bodydark2">Notification</h5>
                             </div>
-                            <!-- Dropdown End -->
-                        </li>
-                        <!-- Notification Menu Area -->
 
-                        <!-- Chat Notification Area -->
-                        <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
-                            <button
-                                class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-0 bg-red-100 hover:text-red-800 "
-                                href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
-                                <span :class="!notifying && 'hidden'"
-                                    class="absolute -right-0.5 -top-0.5 z-1 h-2 w-2 rounded-full bg-meta-1">
-                                    <span
-                                        class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-                                </span>
+                            <ul class="flex h-auto flex-col overflow-y-auto">
+                                <li>
+                                    <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="#">
+                                        <p class="text-sm">
+                                            <span class="text-black  ">Edit your information in a
+                                                swipe</span>
+                                            Sint occaecat cupidatat non proident, sunt in culpa qui
+                                            officia deserunt mollit anim.
+                                        </p>
 
-                                <svg class="fill-current duration-300 ease-in-out text-red-400" width="18"
-                                    height="18" viewBox="0 0 18 18" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.9688 1.57495H7.03135C3.43135 1.57495 0.506348 4.41558 0.506348 7.90308C0.506348 11.3906 2.75635 13.8375 8.26885 16.3125C8.40947 16.3687 8.52197 16.3968 8.6626 16.3968C8.85947 16.3968 9.02822 16.3406 9.19697 16.2281C9.47822 16.0593 9.64697 15.75 9.64697 15.4125V14.2031H10.9688C14.5688 14.2031 17.522 11.3625 17.522 7.87495C17.522 4.38745 14.5688 1.57495 10.9688 1.57495ZM10.9688 12.9937H9.3376C8.80322 12.9937 8.35322 13.4437 8.35322 13.9781V15.0187C3.6001 12.825 1.74385 10.8 1.74385 7.9312C1.74385 5.14683 4.10635 2.8687 7.03135 2.8687H10.9688C13.8657 2.8687 16.2563 5.14683 16.2563 7.9312C16.2563 10.7156 13.8657 12.9937 10.9688 12.9937Z"
-                                        fill="" />
-                                    <path
-                                        d="M5.42812 7.28442C5.0625 7.28442 4.78125 7.56567 4.78125 7.9313C4.78125 8.29692 5.0625 8.57817 5.42812 8.57817C5.79375 8.57817 6.075 8.29692 6.075 7.9313C6.075 7.56567 5.79375 7.28442 5.42812 7.28442Z"
-                                        fill="" />
-                                    <path
-                                        d="M9.00015 7.28442C8.63452 7.28442 8.35327 7.56567 8.35327 7.9313C8.35327 8.29692 8.63452 8.57817 9.00015 8.57817C9.33765 8.57817 9.64702 8.29692 9.64702 7.9313C9.64702 7.56567 9.33765 7.28442 9.00015 7.28442Z"
-                                        fill="" />
-                                    <path
-                                        d="M12.5719 7.28442C12.2063 7.28442 11.925 7.56567 11.925 7.9313C11.925 8.29692 12.2063 8.57817 12.5719 8.57817C12.9375 8.57817 13.2188 8.29692 13.2188 7.9313C13.2188 7.56567 12.9094 7.28442 12.5719 7.28442Z"
-                                        fill="" />
-                                </svg>
-                            </button>
+                                        <p class="text-xs">12 May, 2025</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="#">
+                                        <p class="text-sm">
+                                            <span class="text-black  ">It is a long established
+                                                fact</span>
+                                            that a reader will be distracted by the readable.
+                                        </p>
 
-                            <!-- Dropdown Start -->
-                            <div x-show="dropdownOpen"
-                                class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
-                                <div class="px-4.5 py-3">
-                                    <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
-                                </div>
+                                        <p class="text-xs">24 Feb, 2025</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="#">
+                                        <p class="text-sm">
+                                            <span class="text-black  ">There are many
+                                                variations</span>
+                                            of passages of Lorem Ipsum available, but the majority have
+                                            suffered
+                                        </p>
 
-                                <ul class="flex h-auto flex-col overflow-y-auto">
-                                    <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="messages.html">
-                                            <div class="h-12.5 w-12.5 rounded-full">
-                                                <img src="src/images/user/user-02.png" alt="User" />
-                                            </div>
+                                        <p class="text-xs">04 Jan, 2025</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex flex-col gap-2.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="#">
+                                        <p class="text-sm">
+                                            <span class="text-black  ">There are many
+                                                variations</span>
+                                            of passages of Lorem Ipsum available, but the majority have
+                                            suffered
+                                        </p>
 
-                                            <div>
-                                                <h6 class="text-sm font-medium text-black  ">
-                                                    Mariya Desoja
-                                                </h6>
-                                                <p class="text-sm">I like your confidence 💪</p>
-                                                <p class="text-xs">2min ago</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="messages.html">
-                                            <div class="h-12.5 w-12.5 rounded-full">
-                                                <img src="src/images/user/user-01.png" alt="User" />
-                                            </div>
+                                        <p class="text-xs">01 Dec, 2024</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Dropdown End -->
+                    </li>
+                    <!-- Notification Menu Area -->
 
-                                            <div>
-                                                <h6 class="text-sm font-medium text-black  ">
-                                                    Robert Jhon
-                                                </h6>
-                                                <p class="text-sm">Can you share your offer?</p>
-                                                <p class="text-xs">10min ago</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="messages.html">
-                                            <div class="h-12.5 w-12.5 rounded-full">
-                                                <img src="src/images/user/user-03.png" alt="User" />
-                                            </div>
+                    <!-- Chat Notification Area -->
+                    <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                        <button
+                            class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-0 bg-red-100 hover:text-red-800 "
+                            href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
+                            <span :class="!notifying && 'hidden'"
+                                class="absolute -right-0.5 -top-0.5 z-1 h-2 w-2 rounded-full bg-meta-1">
+                                <span
+                                    class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
+                            </span>
 
-                                            <div>
-                                                <h6 class="text-sm font-medium text-black  ">
-                                                    Henry Dholi
-                                                </h6>
-                                                <p class="text-sm">I cam across your profile and...</p>
-                                                <p class="text-xs">1day ago</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="messages.html">
-                                            <div class="h-12.5 w-12.5 rounded-full">
-                                                <img src="src/images/user/user-04.png" alt="User" />
-                                            </div>
+                            <svg class="fill-current duration-300 ease-in-out text-red-400" width="18"
+                                height="18" viewBox="0 0 18 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.9688 1.57495H7.03135C3.43135 1.57495 0.506348 4.41558 0.506348 7.90308C0.506348 11.3906 2.75635 13.8375 8.26885 16.3125C8.40947 16.3687 8.52197 16.3968 8.6626 16.3968C8.85947 16.3968 9.02822 16.3406 9.19697 16.2281C9.47822 16.0593 9.64697 15.75 9.64697 15.4125V14.2031H10.9688C14.5688 14.2031 17.522 11.3625 17.522 7.87495C17.522 4.38745 14.5688 1.57495 10.9688 1.57495ZM10.9688 12.9937H9.3376C8.80322 12.9937 8.35322 13.4437 8.35322 13.9781V15.0187C3.6001 12.825 1.74385 10.8 1.74385 7.9312C1.74385 5.14683 4.10635 2.8687 7.03135 2.8687H10.9688C13.8657 2.8687 16.2563 5.14683 16.2563 7.9312C16.2563 10.7156 13.8657 12.9937 10.9688 12.9937Z"
+                                    fill="" />
+                                <path
+                                    d="M5.42812 7.28442C5.0625 7.28442 4.78125 7.56567 4.78125 7.9313C4.78125 8.29692 5.0625 8.57817 5.42812 8.57817C5.79375 8.57817 6.075 8.29692 6.075 7.9313C6.075 7.56567 5.79375 7.28442 5.42812 7.28442Z"
+                                    fill="" />
+                                <path
+                                    d="M9.00015 7.28442C8.63452 7.28442 8.35327 7.56567 8.35327 7.9313C8.35327 8.29692 8.63452 8.57817 9.00015 8.57817C9.33765 8.57817 9.64702 8.29692 9.64702 7.9313C9.64702 7.56567 9.33765 7.28442 9.00015 7.28442Z"
+                                    fill="" />
+                                <path
+                                    d="M12.5719 7.28442C12.2063 7.28442 11.925 7.56567 11.925 7.9313C11.925 8.29692 12.2063 8.57817 12.5719 8.57817C12.9375 8.57817 13.2188 8.29692 13.2188 7.9313C13.2188 7.56567 12.9094 7.28442 12.5719 7.28442Z"
+                                    fill="" />
+                            </svg>
+                        </button>
 
-                                            <div>
-                                                <h6 class="text-sm font-medium text-black  ">
-                                                    Cody Fisher
-                                                </h6>
-                                                <p class="text-sm">I’m waiting for you response!</p>
-                                                <p class="text-xs">5days ago</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
-                                            href="messages.html">
-                                            <div class="h-12.5 w-12.5 rounded-full">
-                                                <img src="src/images/user/user-02.png" alt="User" />
-                                            </div>
-
-                                            <div>
-                                                <h6 class="text-sm font-medium text-black  ">
-                                                    Mariya Desoja
-                                                </h6>
-                                                <p class="text-sm">I like your confidence 💪</p>
-                                                <p class="text-xs">2min ago</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
+                        <!-- Dropdown Start -->
+                        <div x-show="dropdownOpen"
+                            class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-gray-300 bg-white shadow-default     sm:right-0 sm:w-80">
+                            <div class="px-4.5 py-3">
+                                <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
                             </div>
-                            <!-- Dropdown End -->
-                        </li>
-                        <!-- Chat Notification Area -->
-                    </ul> --}}
+
+                            <ul class="flex h-auto flex-col overflow-y-auto">
+                                <li>
+                                    <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="messages.html">
+                                        <div class="h-12.5 w-12.5 rounded-full">
+                                            <img src="src/images/user/user-02.png" alt="User" />
+                                        </div>
+
+                                        <div>
+                                            <h6 class="text-sm font-medium text-black  ">
+                                                Mariya Desoja
+                                            </h6>
+                                            <p class="text-sm">I like your confidence 💪</p>
+                                            <p class="text-xs">2min ago</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="messages.html">
+                                        <div class="h-12.5 w-12.5 rounded-full">
+                                            <img src="src/images/user/user-01.png" alt="User" />
+                                        </div>
+
+                                        <div>
+                                            <h6 class="text-sm font-medium text-black  ">
+                                                Robert Jhon
+                                            </h6>
+                                            <p class="text-sm">Can you share your offer?</p>
+                                            <p class="text-xs">10min ago</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="messages.html">
+                                        <div class="h-12.5 w-12.5 rounded-full">
+                                            <img src="src/images/user/user-03.png" alt="User" />
+                                        </div>
+
+                                        <div>
+                                            <h6 class="text-sm font-medium text-black  ">
+                                                Henry Dholi
+                                            </h6>
+                                            <p class="text-sm">I cam across your profile and...</p>
+                                            <p class="text-xs">1day ago</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="messages.html">
+                                        <div class="h-12.5 w-12.5 rounded-full">
+                                            <img src="src/images/user/user-04.png" alt="User" />
+                                        </div>
+
+                                        <div>
+                                            <h6 class="text-sm font-medium text-black  ">
+                                                Cody Fisher
+                                            </h6>
+                                            <p class="text-sm">I’m waiting for you response!</p>
+                                            <p class="text-xs">5days ago</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="flex gap-4.5 border-t border-gray-300 px-4.5 py-3 hover:bg-gray-2    "
+                                        href="messages.html">
+                                        <div class="h-12.5 w-12.5 rounded-full">
+                                            <img src="src/images/user/user-02.png" alt="User" />
+                                        </div>
+
+                                        <div>
+                                            <h6 class="text-sm font-medium text-black  ">
+                                                Mariya Desoja
+                                            </h6>
+                                            <p class="text-sm">I like your confidence 💪</p>
+                                            <p class="text-xs">2min ago</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Dropdown End -->
+                    </li>
+                    <!-- Chat Notification Area -->
+                </ul> --}}
 
                     <!-- User Area -->
                     <div class="relative" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
@@ -324,7 +343,6 @@
                     </div>
                     <!-- User Area -->
                 </div>
-            </div>
         </header>
 
         <main>
@@ -333,11 +351,12 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="bg-white shadow-inner mt-auto">
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10 flex justify-between items-center">
                 <div class="text-gray-600">
-                    &copy; 2025{{ date('Y') != 2025 ? ' - ' . date('Y') : '' }} {{ config('app.name') }}. All rights reserved. <a href="https://github.com/ItzKazuki/Kasir-Digital/pull/10" class="text-red-600"> v{{ config('app.version') }}</a>
+                    &copy; 2025{{ date('Y') != 2025 ? ' - ' . date('Y') : '' }} {{ config('app.name') }}. All rights
+                    reserved. <a href="https://github.com/ItzKazuki/Kasir-Digital/pull/10" class="text-red-600">
+                        v{{ config('app.version') }}</a>
                 </div>
                 <div class="flex space-x-4">
                     <a href="#" class="text-gray-600 hover:text-red-600">Privacy Policy</a>
@@ -346,7 +365,6 @@
                 </div>
             </div>
         </footer>
-
     </div>
 
     <!-- Modal -->
@@ -397,6 +415,14 @@
         document.addEventListener("DOMContentLoaded", function() {
             // trigger sweet alert
             @include('sweetalert::sweetalert');
+
+            const hamburgerToggle = document.getElementById("hamburgerToggle");
+
+            hamburgerToggle.addEventListener("click", function() {
+                // alert("Hamburger menu toggled!");
+                const sidebar = document.getElementById("sidebar");
+                sidebar.classList.toggle("-translate-x-full");
+            });
 
             setTimeout(function() {
                 document.getElementById("loading").style.display = "none";

@@ -23,9 +23,9 @@
     </div>
 
     <!-- Sidebar Kiri -->
-    <aside
-        class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-md lg:static lg:translate-x-0">
-        <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+    <aside id="sidebar"
+        class="absolute left-0 pt-20 lg:pt-0 top-0 z-80 flex h-screen w-72 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-2xl lg:static lg:translate-x-0 -translate-x-full">
+        <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6.5">
             <a href="#">
                 <img src="{{ asset('static/logo-340x180.png') }}" alt="Logo" />
             </a>
@@ -177,7 +177,7 @@
 
         <main>
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
                     @foreach ($products as $product)
                         <div class="relative bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
                             @if ($product->stock > 0) onclick="addToCart({{ $product->id }})" style="cursor: pointer;" @endif>
@@ -217,23 +217,22 @@
                     @endforeach
                 </div>
             </div>
-
         </main>
 
     </div>
 
     <!-- Aside Keranjang (Tersembunyi secara default) -->
     <aside id="cart-aside"
-        class="absolute right-0 top-0 h-screen w-2/6 bg-white shadow-lg mt-20 transform translate-x-full transition-transform duration-300 flex flex-col">
+        class="fixed right-0 top-0 h-screen w-2/2 sm:w-2/6 bg-white shadow-lg mt-20 transform transition-transform translate-x-full duration-300 flex flex-col">
         <div class="p-4 flex justify-between items-center bg-gray-200">
             <h2 class="text-lg font-semibold">Keranjang</h2>
             <button id="close-cart" class="text-red-500">✖</button>
         </div>
         <div class="" id="cart">
-            <div id="cartContent">
-                <div class="p-4 overflow-y-auto flex-1" id="containerCart"></div>
-                <div class="p-4 bg-white sticky bottom-0">
-                    <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
+            <div id="cartContent" class="flex flex-col h-full">
+                <div class="p-4 overflow-y-auto no-scrollbar flex-1" id="containerCart" style="max-height: calc(100vh - 180px);"></div>
+                <div class="p-4 bg-white sticky bottom-0 flex justify-between items-center">
+                    <p id="subtotalCart" class="text-xl font-bold">Total Transaksi: Rp. </p>
                     <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
                         Transaksi</button>
                 </div>
@@ -241,7 +240,7 @@
             <div id="emptyCartMessage" class="p-4 text-center text-gray-500 hidden">Cart Kosong</div>
         </div>
 
-        <div class="hidden p-4" id="transactionConfirm">
+        <div class="hidden p-4 no-scrollbar overflow-y-auto" id="transactionConfirm">
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-2">
                     <label class="block text-black">Member</label>

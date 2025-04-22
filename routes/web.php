@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -54,6 +55,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::resource('products', ProductController::class);
     Route::resource('discounts', DiscountController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('reports', ReportController::class);
 
     Route::group(['middleware' => [KasirMiddleware::class], 'prefix' => 'kasir', 'as' => 'kasir.'], function() {
         Route::get('products', [KasirProductController::class, 'index'])->name('products.index');
@@ -76,6 +78,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
         Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
         Route::put('transactions/{transaction}/payment/update-status', [TransactionController::class, 'updateStatusPayment'])->name('transactions.payment.updateStatus');
+        Route::post('transactions/{transaction}/payment/check', [KasirTransactionController::class, 'checkStatus'])->name('transactions.payment.checkStatus');
     });
 
     Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
