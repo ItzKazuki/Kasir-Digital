@@ -67,9 +67,20 @@
         <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow-1">
             <div class="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                 <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
+                    <!-- Hamburger Toggle BTN -->
+                    <div class="hamburger-menu">
+                        <button id="hamburgerToggle"
+                            class="z-100 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5 cursor-pointer"
+                                viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                <path
+                                    d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                            </svg>
+                        </button>
 
+                    </div>
                 </div>
-                <div class="hidden sm:block">
+                <div class="search-bar hidden sm:block">
 
                 </div>
 
@@ -177,6 +188,12 @@
 
         <main>
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                <div class="mb-6 hidden sm:block">
+                    <label for="barcodeInput" class="block text-sm font-medium text-gray-700">Find Product by Barcode</label>
+                    <input id="barcodeInput" type="text"
+                        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                        placeholder="Scan atau masukkan barcode produk" onkeypress="handleBarcodeInput(event)" autofocus>
+                </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
                     @foreach ($products as $product)
                         <div class="relative bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
@@ -230,7 +247,8 @@
         </div>
         <div class="" id="cart">
             <div id="cartContent" class="flex flex-col h-full">
-                <div class="p-4 overflow-y-auto no-scrollbar flex-1" id="containerCart" style="max-height: calc(100vh - 180px);"></div>
+                <div class="p-4 overflow-y-auto no-scrollbar flex-1" id="containerCart"
+                    style="max-height: calc(100vh - 180px);"></div>
                 <div class="p-4 bg-white sticky bottom-0 flex justify-between items-center">
                     <p id="subtotalCart" class="text-xl font-bold">Total Transaksi: Rp. </p>
                     <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
@@ -359,6 +377,15 @@
     });
 
     document.addEventListener('DOMContentLoaded', function() {
+
+        const hamburgerToggle = document.getElementById("hamburgerToggle");
+
+        hamburgerToggle.addEventListener("click", function() {
+            // alert("Hamburger menu toggled!");
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("-translate-x-full");
+        });
+
         axios.get('/dashboard/kasir/cart/products/show')
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
@@ -403,6 +430,44 @@
                 console.error('Error fetching cart content:', error);
             });
     });
+
+    function handleBarcodeInput(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const barcode = event.target.value;
+            if (!barcode) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Barcode tidak boleh kosong',
+                });
+                return;
+            }
+
+            axios.post("{{ route('dashboard.kasir.cart.store.barcode') }}", {
+                    barcode
+                })
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Produk berhasil ditambahkan ke keranjang!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    event.target.value = ''; // Clear the input field
+                    fetchCartItem(); // Refresh the cart
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Produk dengan barcode tersebut tidak ditemukan.',
+                    });
+                    event.target.value = ''; // Clear the input field
+                });
+        }
+    }
 
     document.getElementById('metode_pembayaran').addEventListener('change', function() {
         const cashMethodDiv = document.getElementById('cashMethod');

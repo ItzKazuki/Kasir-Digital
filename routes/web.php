@@ -60,6 +60,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
     Route::group(['middleware' => [KasirMiddleware::class], 'prefix' => 'kasir', 'as' => 'kasir.'], function() {
         Route::get('products', [KasirProductController::class, 'index'])->name('products.index');
         Route::post('cart/products/{product}/add', [CartController::class, 'storeCart'])->name('cart.store');
+        Route::post('cart/products/add/barcode', [CartController::class, 'storeCartByBarcode'])->name('cart.store.barcode');
         Route::post('cart/products/{cartProductId}/remove', [CartController::class, 'removeItemCart'])->name('cart.removeItem');
         Route::post('cart/products/{cartProductId}/increment', [CartController::class, 'incrementItemCart'])->name('cart.incrementItem');
         Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
