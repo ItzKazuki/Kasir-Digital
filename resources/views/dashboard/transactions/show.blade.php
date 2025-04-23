@@ -24,11 +24,11 @@
     <!-- Breadcrumb End -->
 
     <!-- ====== Form Layout Section Start -->
-    <div class="grid grid-cols-1 gap-9 sm:grid-cols-1 lg:grid-cols-2">
+    <div class="grid grid-cols-1 gap-9 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-9 col-span-2">
             <!-- Contact Form -->
 
-            <div class="rounded-sm border border-gray-300 bg-white shadow-default    ">
+            <div class="rounded-sm border border-gray-300 bg-white shadow-default">
                 <div class="border-b border-gray-300 px-6 py-4 flex justify-between">
                     <h3 class="font-medium text-black">
                         Detail Order
