@@ -93,8 +93,11 @@ class TransactionController extends Controller
                 $printer->text($item->product->name . " x" . $item->quantity . " @ " . number_format($item->product->price, 0, ',', '.') . "\n");
             }
 
+            $printer->feed();
             $printer->setEmphasis(true);
             $printer->text("Total: " . number_format($transaction->total_price, 0, ',', '.') . "\n");
+            $printer->text("Dibayar: " . number_format($transaction->cash, 0, ',', '.') . "\n");
+            $printer->text("Kembali: " . number_format($transaction->cash_change, 0, ',', '.') . "\n");
             $printer->setEmphasis(false);
 
             // Print footer
