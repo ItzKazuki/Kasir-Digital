@@ -100,7 +100,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 400px) {
     .receipt {
         border: 0.5px solid #000;
     }
