@@ -48,6 +48,7 @@ class SettingController extends Controller
         $user->no_telp = $userInput['phone_number'];
         $user->email = $userInput['email'];
         $user->username = $userInput['username'];
+        
         $user->save();
 
         Sweetalert::success('berhasil mengubah detail account', 'Ubah Profile Berhasil!');
