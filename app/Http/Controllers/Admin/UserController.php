@@ -121,6 +121,11 @@ class UserController extends Controller
             return redirect()->route('dashboard.users.index');
         }
 
+        if($user->status === 'denied') {
+            Sweetalert::error('Tidak dapat mengedit pengguna dengan status ditolak', 'Edit Gagal');
+            return redirect()->route('dashboard.users.index');
+        }
+
         $request->validate([
             'full_name' => 'required|string|max:255',
             'phone_number' => 'required|string|regex:/08[0-9]{8,11}/',
@@ -128,7 +133,8 @@ class UserController extends Controller
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'password' => 'nullable|string|min:8',
             'role' => 'required|string|in:admin,kasir',
-            'profile_img' => 'nullable|string'
+            'profile_img' => 'nullable|string',
+            'status' => 'nullable|string|in:approved,pending,denied'
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.string' => 'Nama lengkap harus berupa string.',
@@ -175,6 +181,10 @@ class UserController extends Controller
             if($this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'))) {
                 $userData['profile_img'] = $imageName;
             }
+        }
+
+        if($request->status) {
+            $userData['status'] = $request->status;
         }
 
         $user->update($userData);
