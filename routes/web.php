@@ -65,6 +65,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::post('cart/products/{cartProductId}/increment', [CartController::class, 'incrementItemCart'])->name('cart.incrementItem');
         Route::post('cart/products/{cartProductId}/decrement', [CartController::class, 'decrementItemCart'])->name('cart.decrementItem');
         Route::get('cart/products/show', [CartController::class, 'showCart'])->name('cart.show');
+        Route::get('products/preview', function() {
+            return view('kasir.preview-cart');
+        })->name('cart.preview');
 
         Route::post('members/search', [KasirTransactionController::class, 'searchMember'])->name('member.search');
 
@@ -79,9 +82,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
         Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
         Route::put('transactions/{transaction}/payment/update-status', [TransactionController::class, 'updateStatusPayment'])->name('transactions.payment.updateStatus');
-        Route::post('transactions/{transaction}/payment/check', [KasirTransactionController::class, 'checkStatus'])->name('transactions.payment.checkStatus');
     });
 
+    Route::post('transactions/{transaction}/payment/check', [KasirTransactionController::class, 'checkStatus'])->name('transactions.payment.checkStatus');
     Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::get('transactions/{transaction}/print', [TransactionController::class, 'print'])->name('transactions.print');
     Route::get('transactions/{transaction}/pdf', [TransactionController::class, 'pdf'])->name('transactions.pdf');
