@@ -223,11 +223,11 @@
                             </button>
                         </form>
                     @elseif ($transaction->payment_status == 'paid')
-                        <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}"
+                        <button type="button" onclick="cetakStruk(`{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}`)"
                             target="_blank"
                             class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium hover:bg-opacity-90">
-                            Download Struk
-                        </a>
+                            Print Struk
+                    </button>
                     @endif
                 </div>
             </div>
@@ -323,10 +323,20 @@
         });
 
         function cetakStruk(url) {
-            // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes')
-            var newWindow = window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
-
-            newWindow.print();
+            // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes'
+                let b = event.target;
+                b.setAttribute('data-old', b.textContent);
+                b.textContent = 'wait';
+                axios.get(url)
+                    .then(response => {
+                        window.location.href = response.data; // main action
+                    })
+                    .catch(() => {
+                        alert("ajax error");
+                    })
+                    .finally(() => {
+                        b.textContent = b.getAttribute('data-old');
+                    });
         }
     </script>
 @endpush

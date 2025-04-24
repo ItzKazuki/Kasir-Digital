@@ -386,7 +386,7 @@
             sidebar.classList.toggle("-translate-x-full");
         });
 
-        axios.get('/dashboard/kasir/cart/products/show')
+        axios.get("{{ route('dashboard.kasir.cart.show') }}")
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
@@ -491,7 +491,7 @@
             return;
         }
 
-        axios.post(`/dashboard/kasir/members/search`, {
+        axios.post("{{ route('dashboard.kasir.member.search') }}", {
                 phone: phoneNumber
             })
             .then(response => {
@@ -626,7 +626,7 @@
 
         document.getElementById('loadingProcessTransaction').style.display = 'flex';
 
-        axios.post('/dashboard/kasir/transactions/add', {
+        axios.post("{{ route('dashboard.kasir.transactions.store') }}", {
                 total: totalBelanja,
                 cash: uangMasuk,
                 no_telp_member: member,
@@ -669,7 +669,7 @@
     }
 
     function fetchCartItem() {
-        axios.get('/dashboard/kasir/cart/products/show')
+        axios.get("{{ route('dashboard.kasir.cart.show') }}")
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
@@ -715,7 +715,11 @@
     }
 
     function updateCartQuantity(cartProductId, action) {
-        const url = `/dashboard/kasir/cart/products/${cartProductId}/${action}`;
+        // const url = `/dashboard/kasir/cart/products/${cartProductId}/${action}`;
+        let url = action === 'increment' ?
+            `{{ route('dashboard.kasir.cart.incrementItem', ':cartProductId') }}` :
+            `{{ route('dashboard.kasir.cart.decrementItem', ':cartProductId') }}`;
+        url = url.replace(':cartProductId', cartProductId);
         axios.post(url)
             .then(response => {
                 // Fetch the updated cart content
@@ -731,7 +735,10 @@
     }
 
     function removeFromCart(cartProductId) {
-        axios.post(`/dashboard/kasir/cart/products/${cartProductId}/remove`)
+        // axios.post(`/dashboard/kasir/cart/products/${cartProductId}/remove`)
+        let url = "{{ route('dashboard.kasir.cart.removeItem', ':cartProductId') }}"
+        url = url.replace(':cartProductId', cartProductId);
+        axios.post(url)
             .then(response => {
                 Swal.fire({
                     icon: 'success',
@@ -753,7 +760,9 @@
     }
 
     function addToCart(id) {
-        axios.post(`/dashboard/kasir/cart/products/${id}/add`)
+        let url = "{{ route('dashboard.kasir.cart.store', ':id') }}";
+        url = url.replace(':id', id);
+        axios.post(url)
             .then(response => {
                 Swal.fire({
                     icon: 'success',
