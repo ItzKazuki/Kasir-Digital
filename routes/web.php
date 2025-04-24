@@ -2,31 +2,33 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\CheckUserStatus;
+use App\Http\Middleware\KasirMiddleware;
+use App\Http\Middleware\CheckIsAlreadyLogin;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Kasir\CartController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DiscountController;
-use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Kasir\CartController;
-use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
 use App\Http\Controllers\Kasir\ProductController as KasirProductController;
-use App\Http\Middleware\KasirMiddleware;
+use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
 
 Route::get('/', function () {
     return redirect()->route('auth.login');
 })->name('home');
 
 // start authentication
-Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
+Route::group(['prefix' => 'auth', 'as' => 'auth.', 'middleware' => [CheckIsAlreadyLogin::class]], function () {
     Route::get('login', [LoginController::class, 'login'])->name('login');
     Route::get('register', [RegisterController::class, 'register'])->name('register');
     Route::get('forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot');
@@ -37,11 +39,12 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('register', [RegisterController::class, 'store'])->name('store');
     Route::post('forgot', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('send-reset-link-email');
     Route::post('reset/password', [ResetPasswordController::class, 'update'])->name('update');
+    // Route::post('logout', [LogoutController::class, 'logout'])->name('logout')->middleware('auth');
 });
 Route::post('/auth/logout', [LogoutController::class, 'logout'])->name('auth.logout')->middleware('auth');
 // end authentication
 
-Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth', CheckUserStatus::class]], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::get('/profile', function () {
         $title = "Profile";
@@ -94,3 +97,9 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'au
 Route::middleware('api')->post('payment/callback', [KasirTransactionController::class, 'callback'])->name('payment.callback');
 
 Route::get('/struk/{invoice}', [TransactionController::class, 'streamStruk'])->name('struk.search');
+
+Route::middleware(['auth'])->group(function () {
+    Route::view('/pending', 'account.pending-acc')->name('account.pending');
+    Route::view('/suspended', 'account.suspend-acc')->name('account.suspended');
+    Route::view('/denied', 'account.denied-acc')->name('account.denied');
+});
