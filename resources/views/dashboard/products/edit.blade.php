@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Produk /</li>
+                <li>
+                    <a href="{{ route('dashboard.products.index') }}" class="font-medium">Produk /</a>
+                </li>
                 <li class="font-medium text-red-600">Edit</li>
             </ol>
         </nav>
@@ -265,13 +267,6 @@
         let modalCropImage = document.getElementById('cropImageModal');
         let imageToCrop = document.getElementById('cropImage');
         let cropper;
-
-        // document.getElementById("productImgInput").addEventListener("change", function(event) {
-        //     const [file] = event.target.files;
-        //     if (file) {
-        //         document.getElementById("previewUploadImage").src = URL.createObjectURL(file);
-        //     }
-        // });
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
             canvas = cropper.getCroppedCanvas({
