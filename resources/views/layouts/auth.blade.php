@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="bg-gray-100 flex min-h-screen flex-wrap flex-wrap-reverse">
+    <div class="bg-gray-100 flex min-h-screen flex-wrap-reverse">
         <div class="w-full md:w-1/2 xl:w-1/3 bg-white flex flex-col px-3 py-20 shadow-2xl">
             @yield('content-auth')
         </div>
@@ -26,7 +26,7 @@
 
     <script>
         @include('sweetalert::sweetalert')
-        
+
         // Force fullscreen for tablets or handphones
         if (window.matchMedia("(max-width: 1024px)").matches) {
             document.documentElement.requestFullscreen().catch(err => {
