@@ -14,7 +14,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Transaksi /</li>
+                <li>
+                    <a href="{{ route('dashboard.transactions.index') }}" class="font-medium">Transaksi /</a>
+                </li>
                 <li class="font-medium text-red-600"><a
                         href="{{ route('dashboard.transactions.show', ['transaction' => $transaction->id]) }}">{{ $transaction->invoice_number }}</a>
                 </li>
@@ -91,7 +93,7 @@
                                         {{ number_format($transaction->cash_change, 0, ',', '.') }}
                                     </p>
                                 </div>
-                                @if ($transaction->point_usage)
+                                @if ($transaction->point_usage > 0 && $transaction->member)
                                     <div>
                                         <h3 class="font-bold text-md py-2">Point Digunakan</h3>
                                         <p class="text-red-600">-
@@ -154,7 +156,8 @@
                             <div class="col-span-2 flex items-center">
                                 <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
                                     <div class="h-12.5 w-15 rounded-md">
-                                        <img src="{{ $orderDetail->product->product_image }}" alt="Product {{ $index + 1 }}" />
+                                        <img src="{{ $orderDetail->product->product_image }}"
+                                            alt="Product {{ $index + 1 }}" />
                                     </div>
                                     <p class="text-medium font-medium text-black">
                                         {{ $orderDetail->product->name }}
@@ -202,8 +205,7 @@
                                 ditentukan.</p>
                         </div>
 
-                        <button id="checkPayment" onclick="cekPembayaran()"
-                            type="button"
+                        <button id="checkPayment" onclick="cekPembayaran()" type="button"
                             class="flex w-full justify-center rounded bg-green-600 text-white p-3 font-medium hover:bg-opacity-90">
                             Cek Pembayaran
                         </button>
@@ -223,11 +225,12 @@
                             </button>
                         </form>
                     @elseif ($transaction->payment_status == 'paid')
-                        <button type="button" onclick="cetakStruk(`{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}`)"
+                        <button type="button"
+                            onclick="cetakStruk(`{{ route('dashboard.transactions.print', ['transaction' => $transaction->id]) }}`)"
                             target="_blank"
                             class="flex w-full justify-center rounded bg-red-600 text-white p-3 font-medium hover:bg-opacity-90">
                             Print Struk
-                    </button>
+                        </button>
                     @endif
                 </div>
             </div>
@@ -324,19 +327,19 @@
 
         function cetakStruk(url) {
             // return window.open(url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes'
-                let b = event.target;
-                b.setAttribute('data-old', b.textContent);
-                b.textContent = 'wait';
-                axios.get(url)
-                    .then(response => {
-                        window.location.href = response.data; // main action
-                    })
-                    .catch(() => {
-                        alert("ajax error");
-                    })
-                    .finally(() => {
-                        b.textContent = b.getAttribute('data-old');
-                    });
+            let b = event.target;
+            b.setAttribute('data-old', b.textContent);
+            b.textContent = 'wait';
+            axios.get(url)
+                .then(response => {
+                    window.location.href = response.data; // main action
+                })
+                .catch(() => {
+                    alert("ajax error");
+                })
+                .finally(() => {
+                    b.textContent = b.getAttribute('data-old');
+                });
         }
     </script>
 @endpush
