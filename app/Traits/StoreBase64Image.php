@@ -19,6 +19,8 @@ trait StoreBase64Image
 
             // upload image products
             Storage::put($filePath, $imageData);
+
+            return true;
         } catch (\Exception $e) {
             // Log error to laravel.log
             Log::error('Failed to upload base64 image: ' . $e->getMessage(), [

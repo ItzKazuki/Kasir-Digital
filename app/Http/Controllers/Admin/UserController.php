@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\StoreBase64Image;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    use StoreBase64Image;
+
     /**
      * Display a listing of the resource.
      */
@@ -78,18 +81,11 @@ class UserController extends Controller
 
         if ($request->profile_img) {
             // convert base64 image to file
-            $imageData = $request->input('profile_img');
-            $imageData = str_replace('data:image/png;base64,', '', $imageData);
-            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-            $imageData = str_replace(' ', '+', $imageData);
-            $imageData = base64_decode($imageData);
-
-            // add filename
             $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
 
-            $userData['profile_img'] = $imageName;
-
-            Storage::put('static/images/profiles/' . $imageName, $imageData);
+            if($this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'))) {
+                $userData['profile_img'] = $imageName;
+            }
         }
 
         User::create($userData);
@@ -174,24 +170,16 @@ class UserController extends Controller
                 Storage::delete('static/images/profiles/' . $user->profile_img);
             }
 
-            // convert base64 image to file
-            $imageData = $request->input('profile_img');
-            $imageData = str_replace('data:image/png;base64,', '', $imageData);
-            $imageData = str_replace('data:image/jpeg;base64,', '', $imageData);
-            $imageData = str_replace(' ', '+', $imageData);
-            $imageData = base64_decode($imageData);
-
-            // add filename
             $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
 
-            $userData['profile_img'] = $imageName;
-
-            Storage::put('static/images/profiles/' . $imageName, $imageData);
+            if($this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'))) {
+                $userData['profile_img'] = $imageName;
+            }
         }
 
         $user->update($userData);
 
-        Sweetalert::success('Detail pengguna berhasil diperbarui', 'Update Berhasil');
+        Sweetalert::success('Detail pengguna berhasil diperbarui', 'Edit Berhasil');
         return redirect()->route('dashboard.users.index');
     }
 
@@ -201,7 +189,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         if ($user->role === 'admin') {
-            Sweetalert::error('Tidak dapat menghapus pengguna dengan peran admin', 'Edit Gagal');
+            Sweetalert::error('Tidak dapat menghapus pengguna dengan peran admin', 'Hapus Gagal');
             return redirect()->route('dashboard.users.index');
         }
 
