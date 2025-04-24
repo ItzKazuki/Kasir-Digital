@@ -73,7 +73,27 @@ class MidtransPaymentService implements PaymentGatewayInterface
             return response()->json(['message' => 'Transaction not found'], 404);
         }
 
-        $transaction->payment_status = $request->transaction_status == 'settlement' ? 'paid' : 'unpaid';
+        // TODO: Update the transaction status based on the payment status use real case like expired
+        // $transaction->payment_status = $request->transaction_status == 'settlement' ? 'paid' : 'unpaid';
+        switch ($request->transaction_status) {
+            case 'settlement':
+                $transaction->payment_status = 'paid';
+                break;
+            case 'pending':
+                $transaction->payment_status = 'pending';
+                break;
+            case 'expire':
+                // $transaction->payment_status = 'expired';
+                $transaction->payment_status = 'unpaid';
+                break;
+            case 'cancel':
+                // $transaction->payment_status = 'canceled';
+                $transaction->payment_status = 'unpaid';
+                break;
+            default:
+                $transaction->payment_status = 'unpaid';
+        }
+
         $transaction->save();
 
         return response()->json(['message' => 'Transaction updated successfully'], 200);
