@@ -30,7 +30,7 @@
             </div>
 
             <div class="flex flex-col">
-                <div class="grid grid-cols-3 rounded-sm bg-gray-200   sm:grid-cols-7">
+                <div class="grid grid-cols-3 rounded-sm bg-gray-200   sm:grid-cols-8">
                     <div class="p-2 xl:p-4">
                         <h5 class="text-sm font-medium uppercase sm:text-base">#</h5>
                     </div>
@@ -46,6 +46,9 @@
                     <div class="hidden p-2 text-center sm:block xl:p-5">
                         <h5 class="text-sm font-medium uppercase sm:text-base">Terdaftar Pada</h5>
                     </div>
+                    <div class="p-2 text-center xl:p-5">
+                        <h5 class="text-sm font-medium uppercase sm:text-base">Status</h5>
+                    </div>
                     <div class="hidden p-2 text-center sm:block xl:p-5">
                         <h5 class="text-sm font-medium uppercase sm:text-base">Aksi</h5>
                     </div>
@@ -57,7 +60,7 @@
                     </div>
                 @else
                     @foreach ($users as $user)
-                        <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-7">
+                        <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-8">
                             <div class="flex items-center p-2 xl:p-4">
                                 <p class="font-medium text-black  ">{{ $user->id }}</p>
                             </div>
@@ -91,6 +94,14 @@
                                 <p class="font-medium text-black  ">{{ $user->created_at->diffForHumans() }}</p>
                             </div>
 
+                            <div class="flex items-center justify-center p-2 xl:p-5">
+                                <p
+                                    class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium
+                                    {{ $user->status == 'approved' ? 'text-green-600 bg-green-100' : ($user->status == 'pending' ? 'text-yellow-600 bg-yellow-100' : 'text-red-600 bg-red-100') }}">
+                                    {{ $user->status }}
+                                </p>
+                            </div>
+
                             <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
                                 @if ($user->role !== 'admin' || auth()->user()->id === $user->id)
                                     <a href="{{ route('dashboard.users.edit', $user->id) }}"
@@ -115,6 +126,7 @@
                                         </span>
                                     </button>
                                 @endif
+
                                 @if (auth()->user()->id !== $user->id)
                                     @if (auth()->user()->role !== 'admin' || $user->role !== 'admin')
                                         <form id="delete-user-{{ $user->id }}"

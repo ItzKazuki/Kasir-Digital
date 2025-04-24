@@ -196,6 +196,35 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="rounded-sm border border-gray-300 bg-white shadow-default mt-4">
+                        <div class="border-b border-gray-300 px-7 py-4">
+                            <h3 class="font-medium text-black">
+                                Ubah Status User
+                            </h3>
+                        </div>
+                        <div class="p-7">
+                            <div class="mb-5.5">
+                                <label class="mb-3 block text-sm font-medium text-black" for="status">Status
+                                    User</label>
+                                <select
+                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none"
+                                    name="status" id="status" {{ $user->status == 'denied' ? 'disabled' : '' }}>
+                                    <option value="approved" {{ $user->status == 'approved' ? 'selected' : '' }}>Diterima
+                                    </option>
+                                    <option value="pending" {{ $user->status == 'pending' ? 'selected' : '' }}>Menunggu
+                                    </option>
+                                    <option value="denied" {{ $user->status == 'denied' ? 'selected' : '' }}>Ditolak
+                                    </option>
+                                </select>
+                                @error('status')
+                                    <div class="mt-1 text-red-600">
+                                        <p class="text-xs">{{ $message }}</p>
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
