@@ -125,6 +125,8 @@ return [
 
     'version' => '1.1.0',
 
+    'generate_pdf' => env('ENABLE_PDF_STRUK', false),
+
     'node' => [
         'path' => env('NODE_PATH', '/usr/bin/node'),
         'npm' => env('NPM_PATH', '/usr/bin/npm'),
@@ -135,6 +137,6 @@ return [
     'fonnte' => [
         'token' => env('FONNTE_WHATSAPP_TOKEN', ''),
         'phone_number' => env('FONNTE_WHATSAPP_NUMBER', '08123456789')
-    ]
+    ],
 
 ];
