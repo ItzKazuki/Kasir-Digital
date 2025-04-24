@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Produk /</li>
+                <li>
+                    <a href="{{ route('dashboard.products.index') }}" class="font-medium">Produk /</a>
+                </li>
                 <li class="font-medium text-red-600">Create</li>
             </ol>
         </nav>
@@ -180,7 +182,7 @@
                         <div class="w-full">
                             <div class="mb-4">
                                 <label class="mb-3 block text-sm font-medium text-black  ">
-                                    Attach file
+                                    Attach file <span class="text-red-600">*</span>
                                 </label>
                                 <input type="file" id="productImgInput"
                                     class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent hover:border-red-600 font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-600 file:text-white file:px-5 file:py-3 file:hover:bg-red-500 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100            "
@@ -273,14 +275,6 @@
             let barcodeInput = document.getElementById("barcodeInput");
             barcodeInput.focus();
         });
-
-        // document.getElementById("productImgInput").addEventListener("change", function(event) {
-        //     const [file] = event.target.files;
-        //     if (file) {
-        //         document.getElementById("previewContainer").classList.remove("hidden");
-        //         document.getElementById("previewUploadImage").src = URL.createObjectURL(file);
-        //     }
-        // });
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
             canvas = cropper.getCroppedCanvas({
