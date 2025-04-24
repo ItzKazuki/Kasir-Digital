@@ -105,7 +105,7 @@
             <div class="mt-4 flex items-end justify-between">
                 <div>
                     <h4 class="text-3xl font-bold text-black  ">
-                        {{ $total_member['active']->count() }}
+                        {{ isset($total_member['active']) ? $total_member['active']->count() : 0 }}
                     </h4>
                     <span class="text-sm font-medium">Total Member</span>
                 </div>
