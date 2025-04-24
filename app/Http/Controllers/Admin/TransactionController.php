@@ -9,6 +9,10 @@ use App\Traits\GenerateStrukPdf;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
 
 class TransactionController extends Controller
 {
@@ -58,9 +62,62 @@ class TransactionController extends Controller
      */
     public function print(Request $request, Transaction $transaction)
     {
-        $title = "Print Transaction " . $transaction->invoice_number;
+        try {
+            // Load printer profile
+            $profile = CapabilityProfile::load("SP2000");
 
-        return view('layouts.struk', compact('title', 'transaction'));
+            // Load transaction with related order and orderDetails
+            $transaction->load('order.orderDetails.product');
+
+            // Connect to RawBT
+            $connector = new RawbtPrintConnector();
+
+            // Initialize printer
+            $printer = new Printer($connector, $profile);
+
+            // Print shop details
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            $printer->text(config('app.name') . "\n");
+            $printer->selectPrintMode();
+            $printer->text(config('app.address') . "\n");
+            $printer->feed();
+
+            // Print transaction details
+            $printer->setEmphasis(true);
+            $printer->text("Detail Transaksi\n");
+            $printer->setEmphasis(false);
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+
+            foreach ($transaction->order->orderDetails as $item) {
+                $printer->text($item->product->name . " x" . $item->quantity . " @ " . number_format($item->product->price, 0, ',', '.') . "\n");
+            }
+
+            $printer->setEmphasis(true);
+            $printer->text("Total: " . number_format($transaction->total_price, 0, ',', '.') . "\n");
+            $printer->setEmphasis(false);
+
+            // Print footer
+            $printer->feed(2);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Terima kasih telah berbelanja di " . config('app.name') . "\n");
+            $printer->text("Tanggal: " . now()->format('d-m-Y H:i:s') . "\n");
+            $printer->feed(2);
+
+            // Print QR Code (optional)
+            $printer->qrCode($transaction->struk_url, Printer::QR_ECLEVEL_M, 8);
+
+            // Cut the receipt and open the cash drawer
+            $printer->cut();
+            $printer->pulse();
+
+            // Close the printer connection
+            $printer->close();
+
+            return response()->json(['status' => 'success', 'message' => 'Struk berhasil dicetak.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
