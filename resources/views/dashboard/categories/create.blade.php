@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Kategori /</li>
+                <li>
+                    <a href="{{ route('dashboard.categories.index') }}" class="font-medium">Kategori /</a>
+                </li>
                 <li class="font-medium text-red-600">Create</li>
             </ol>
         </nav>
