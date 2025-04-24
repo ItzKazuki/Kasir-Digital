@@ -63,7 +63,7 @@ class MemberController extends Controller
         Notification::route('mail', $member->email)->notify(new MemberCreatedNotification($member));
 
         Sweetalert::success('berhasil menabah member baru', 'Tambah Member Berhasil!');
-        return redirect()->back();
+        return redirect()->route('dashboard.members.index');
     }
 
     /**

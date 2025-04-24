@@ -107,6 +107,7 @@ class ProductController extends Controller
         $title = "Edit Products";
         $categories = Category::all();
         $discounts = Discount::all();
+        
         return view('dashboard.products.edit', compact('title', 'product', 'categories', 'discounts'));
     }
 
@@ -177,7 +178,7 @@ class ProductController extends Controller
         if ($product->image_url != null) {
             Storage::delete('static/images/products/' . $product->image_url);
         }
-        
+
         $product->delete();
 
         Sweetalert::success('berhasil menghapus produk ' . $product->name, 'Hapus Berhasil');

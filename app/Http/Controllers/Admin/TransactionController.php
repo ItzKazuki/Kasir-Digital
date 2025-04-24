@@ -169,17 +169,6 @@ class TransactionController extends Controller
             return abort(404);
         }
 
-        // $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
-
-        // if (!file_exists($strukPath)) {
-        //     return abort(404);
-        // }
-
-        // return response()->file($strukPath, [
-        //     'Content-Type' => 'application/pdf',
-        //     'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
-        // ]);
-
         return view('layouts.struk', compact('transaction'));
     }
 
