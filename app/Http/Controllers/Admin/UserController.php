@@ -8,6 +8,7 @@ use App\Traits\StoreBase64Image;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\UserStatusChangedNotification;
 
 class UserController extends Controller
 {
@@ -185,6 +186,13 @@ class UserController extends Controller
 
         if($request->status) {
             $userData['status'] = $request->status;
+
+            if ($request->status === 'denied') {
+                $userData['profile_img'] = null;
+                Storage::delete('static/images/profiles/' . $user->profile_img);
+            }
+
+            $user->notify(new UserStatusChangedNotification($request->status));
         }
 
         $user->update($userData);
