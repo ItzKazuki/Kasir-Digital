@@ -12,6 +12,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "laravolt/avatar": "^6.1",
+        "mike42/escpos-php": "^4.0",
         "spatie/laravel-pdf": "^1.5",
         "wavey/sweetalert": "^1.2"
     },
