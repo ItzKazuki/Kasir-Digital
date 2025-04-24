@@ -230,7 +230,7 @@
                                                     </svg>
                                                 </button>
                                             @endif
-                                            @if ($transaction->payment_status == 'paid')
+                                            @if ($transaction->payment_status == 'paid' && config('app.generate_pdf') == true)
                                                 <a href="{{ route('dashboard.transactions.pdf', ['transaction' => $transaction->id]) }}"
                                                     class="hover:text-red-600">
                                                     <svg class="fill-current" width="18" height="18"
