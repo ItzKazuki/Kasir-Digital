@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Member /</li>
+                <li>
+                    <a href="{{ route('dashboard.members.index') }}" class="font-medium">Member /</a>
+                </li>
                 <li class="font-medium text-red-600">Create</li>
             </ol>
         </nav>
@@ -119,7 +121,7 @@
                         </a>
                         <button type="submit"
                             class="flex px-10 justify-center rounded bg-green-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                            Create Product
+                            Create New Member
                         </button>
                     </div>
                 </div>
