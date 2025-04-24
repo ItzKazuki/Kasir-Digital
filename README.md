@@ -77,7 +77,6 @@ ExecStart=/usr/bin/php /var/www/project-kasir-digital/artisan queue:work --daemo
 StartLimitInterval=180
 StartLimitBurst=30
 RestartSec=5s
-
 [Install]
 WantedBy=multi-user.target
 ```
@@ -117,8 +116,6 @@ sudo systemctl status kasir-queue
    C:\laragon\www\project-kasir-digital\artisan queue:work --daemon
    ```
 7. Klik **Finish**, lalu jalankan task tersebut.
-
-
 
 ## Struktur Database
 ### **Entity Relationship Diagram (ERD)**
