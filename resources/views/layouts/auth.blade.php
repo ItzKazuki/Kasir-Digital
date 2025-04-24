@@ -23,9 +23,10 @@
 
     {{-- script untuk alert atau yang lain --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @include('sweetalert::sweetalert')
 
     <script>
+        @include('sweetalert::sweetalert')
+        
         // Force fullscreen for tablets or handphones
         if (window.matchMedia("(max-width: 1024px)").matches) {
             document.documentElement.requestFullscreen().catch(err => {
