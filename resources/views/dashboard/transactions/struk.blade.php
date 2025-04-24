@@ -18,7 +18,11 @@
             @foreach ($transaction->order->orderDetails as $orderDetail)
                 <tr>
                     <td class="qty">{{ $orderDetail->quantity }}</td>
-                    <td style="text-align: left;">{{ $orderDetail->product->name }} @if(isset($orderDetail->product->discount)) <span class="font-bold text-sm">({{ Str::words($orderDetail->product->discount->name, 2) }})</span> @endif</td>
+                    <td style="text-align: left;">{{ $orderDetail->product->name }} @if (isset($orderDetail->product->discount))
+                            <span
+                                class="font-bold text-sm">({{ Str::words($orderDetail->product->discount->name, 2) }})</span>
+                        @endif
+                    </td>
                     <td>Rp. {{ number_format($orderDetail->product->price, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
@@ -38,7 +42,9 @@
                         {{-- Pastikan discount ada --}}
                         <tr>
                             <td class="qty">{{ $orderDetail->product->discount->name }}</td>
-                            <td>( -{{ number_format($orderDetail->quantity * ($orderDetail->product->discount->type == 'fixed' ? $orderDetail->product->discount->value : ($orderDetail->product->price * $orderDetail->product->discount->value) / 100), 0, ',', '.') }} )</td>
+                            <td>(
+                                -{{ number_format($orderDetail->quantity * ($orderDetail->product->discount->type == 'fixed' ? $orderDetail->product->discount->value : ($orderDetail->product->price * $orderDetail->product->discount->value) / 100), 0, ',', '.') }}
+                                )</td>
                         </tr>
                     @endif
                 @endforeach
