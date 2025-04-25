@@ -135,7 +135,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8',
             'role' => 'required|string|in:admin,kasir',
             'profile_img' => 'nullable|string',
-            'status' => 'nullable|string|in:approved,pending,denied'
+            'status' => 'nullable|string|in:approved,pending,suspended,denied'
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.string' => 'Nama lengkap harus berupa string.',
