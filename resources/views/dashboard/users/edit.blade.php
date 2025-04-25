@@ -210,11 +210,13 @@
                                 <select
                                     class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none"
                                     name="status" id="status" {{ $user->status == 'denied' ? 'disabled' : '' }}>
-                                    <option value="approved" {{ $user->status == 'approved' ? 'selected' : '' }}>Diterima
+                                    <option value="approved" {{ $user->status == 'approved' ? 'selected' : '' }}>Terima Akun
                                     </option>
                                     <option value="pending" {{ $user->status == 'pending' ? 'selected' : '' }}>Menunggu
                                     </option>
-                                    <option value="denied" {{ $user->status == 'denied' ? 'selected' : '' }}>Ditolak
+                                    <option value="suspended" {{ $user->status == 'suspended' ? 'selected' : '' }}>Tunda Akun
+                                    </option>
+                                    <option value="denied" {{ $user->status == 'denied' ? 'selected' : '' }}>Tolak Akun
                                     </option>
                                 </select>
                                 @error('status')

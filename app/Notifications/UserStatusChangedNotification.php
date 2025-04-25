@@ -39,9 +39,23 @@ class UserStatusChangedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $message = $this->status === 'approved'
-            ? 'Selamat! Akun Anda telah disetujui. Anda sekarang dapat mengakses dashboard.'
-            : 'Maaf, akun Anda telah ditolak. Silakan hubungi admin untuk informasi lebih lanjut.';
+        switch ($this->status) {
+            case 'approved':
+                $message = 'Selamat! Akun Anda telah disetujui. Anda sekarang dapat mengakses dashboard.';
+                break;
+            case 'suspended':
+                $message = 'Akun Anda telah ditangguhkan. Silakan hubungi tim dukungan untuk informasi lebih lanjut.';
+                break;
+            case 'pending':
+                $message = 'Akun Anda sedang dalam proses verifikasi. Kami akan memberi tahu Anda setelah akun Anda disetujui.';
+                break;
+            case 'denied':
+                $message = 'Akun Anda telah ditolak. Silakan hubungi tim dukungan untuk informasi lebih lanjut.';
+                break;
+            default:
+                $message = 'Status akun Anda telah berubah. Silakan hubungi tim dukungan untuk informasi lebih lanjut.';
+                break;
+        }
 
         $mailMessage = (new MailMessage)
             ->subject('Perubahan Status Akun')
@@ -50,11 +64,11 @@ class UserStatusChangedNotification extends Notification
 
         // Tambahkan tombol login jika statusnya approved
         if ($this->status === 'approved') {
-            $mailMessage->action('Login Sekarang', route('auth.login'));
+            $mailMessage->action('Login Sekarang', route('auth.login'))
+                ->line('Jika Anda mengalami kendala saat login, silakan hubungi tim dukungan kami.');
         }
 
-        $mailMessage->line('Jika Anda mengalami kendala saat login, silakan hubungi tim dukungan kami.')
-            ->salutation('Salam hangat, **Tim Kasir Digital**');
+        $mailMessage->salutation('Salam hangat, **Tim Kasir Digital**');
 
         return $mailMessage;
     }

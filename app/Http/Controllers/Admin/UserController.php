@@ -184,7 +184,7 @@ class UserController extends Controller
             }
         }
 
-        if($request->status) {
+        if($request->status && $request->status !== $user->status) {
             $userData['status'] = $request->status;
 
             if ($request->status === 'denied') {
