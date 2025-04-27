@@ -48,7 +48,7 @@
                         <!-- Tombol yang akan dihapus -->
                         <div class="w-full xl:w-1/2" id="buttonContainer">
                             <label class="mb-3 block text-sm font-medium text-black  ">
-                                Ada Barcode? <span class="text-red-600">*</span>
+                                Ada Barcode?
                             </label>
                             <button id="toggleButton" type="button"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default">
@@ -257,23 +257,70 @@
             </div>
         </div>
     </div>
+
+    <div id="showReaderBarcode" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"
+            onclick="document.getElementById('showReaderBarcode').classList.add('hidden')"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-8 sm:pb-6">
+                    <div class="sm:flex sm:items-start gap-4">
+                        <div id="qr-reader" style="width:350px"></div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                    <button onclick="document.getElementById('showReaderBarcode').classList.add('hidden')"
+                        class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
     <script>
         let modalCropImage = document.getElementById('cropImageModal');
+        let modalReaderBarcode = document.getElementById('showReaderBarcode');
         let imageToCrop = document.getElementById('cropImage');
         let cropper;
 
         document.getElementById("toggleButton").addEventListener("click", function() {
-            // Hapus div tombol sepenuhnya
-            document.getElementById("buttonContainer").remove();
+            // Check if the device is Android
+            if (window.innerWidth < 1000) {
+                document.getElementById("buttonContainer").remove();
 
-            // Tampilkan input barcode
-            document.getElementById("barcodeInputContainer").style.display = "block";
+                // Tampilkan input barcode
+                document.getElementById("barcodeInputContainer").style.display = "block";
 
-            let barcodeInput = document.getElementById("barcodeInput");
-            barcodeInput.focus();
+                modalReaderBarcode.classList.remove('hidden');
+
+                var html5QrcodeScanner = new Html5QrcodeScanner(
+                    "qr-reader", {
+                        fps: 10,
+                        qrbox: 250
+                    });
+                html5QrcodeScanner.render((decodeText, decodeRes) => {
+                    console.log(decodeText);
+                    let barcodeInput = document.getElementById("barcodeInput");
+                    barcodeInput.value = decodeText;
+                    modalReaderBarcode.classList.add('hidden');
+
+                });
+            } else { // Tampilkan modal pemindai barcode
+                // Hapus div tombol sepenuhnya
+                document.getElementById("buttonContainer").remove();
+
+                // Tampilkan input barcode
+                document.getElementById("barcodeInputContainer").style.display = "block";
+
+                let barcodeInput = document.getElementById("barcodeInput");
+                barcodeInput.focus();
+            }
         });
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
