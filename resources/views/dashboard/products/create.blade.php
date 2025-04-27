@@ -299,17 +299,23 @@
 
                 modalReaderBarcode.classList.remove('hidden');
 
-                var html5QrcodeScanner = new Html5QrcodeScanner(
-                    "qr-reader", {
-                        fps: 10,
-                        qrbox: 250
-                    });
-                html5QrcodeScanner.render((decodeText, decodeRes) => {
-                    let barcodeInput = document.getElementById("barcodeInput");
-                    barcodeInput.value = decodeText;
+                var html5QrcodeScanner = new Html5Qrcode(
+                    "qr-reader");
+
+                const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+                    document.getElementById("barcodeInput").value = decodedText;
                     modalReaderBarcode.classList.add('hidden');
-                    html5QrcodeScanner.stop();
-                });
+                    html5QrcodeScanner.clear();
+                }
+                html5QrcodeScanner.start({
+                    facingMode: "user"
+                }, {
+                    fps: 10,
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    }
+                }, qrCodeSuccessCallback);
             } else { // Tampilkan modal pemindai barcode
                 // Hapus div tombol sepenuhnya
                 document.getElementById("buttonContainer").remove();
