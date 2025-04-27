@@ -299,14 +299,7 @@
 
                 modalReaderBarcode.classList.remove('hidden');
 
-                var html5QrcodeScanner = new Html5Qrcode(
-                    "qr-reader");
-
-                const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-                    document.getElementById("barcodeInput").value = decodedText;
-                    modalReaderBarcode.classList.add('hidden');
-                    html5QrcodeScanner.clear();
-                }
+                var html5QrcodeScanner = new Html5Qrcode("qr-reader");
                 html5QrcodeScanner.start({
                     facingMode: "user"
                 }, {
@@ -315,7 +308,14 @@
                         width: 250,
                         height: 250
                     }
-                }, qrCodeSuccessCallback);
+                }, (decodedText, decodedResult) => {
+                    document.getElementById("barcodeInput").value = decodedText;
+                    html5QrcodeScanner.stop().then(() => {
+                        modalReaderBarcode.classList.add('hidden');
+                    }).catch(err => {
+                        console.error('Failed to stop scanning.', err);
+                    });
+                });
             } else { // Tampilkan modal pemindai barcode
                 // Hapus div tombol sepenuhnya
                 document.getElementById("buttonContainer").remove();
