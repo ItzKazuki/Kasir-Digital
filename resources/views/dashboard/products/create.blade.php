@@ -305,11 +305,10 @@
                         qrbox: 250
                     });
                 html5QrcodeScanner.render((decodeText, decodeRes) => {
-                    console.log(decodeText);
                     let barcodeInput = document.getElementById("barcodeInput");
                     barcodeInput.value = decodeText;
                     modalReaderBarcode.classList.add('hidden');
-
+                    html5QrcodeScanner.stop();
                 });
             } else { // Tampilkan modal pemindai barcode
                 // Hapus div tombol sepenuhnya
