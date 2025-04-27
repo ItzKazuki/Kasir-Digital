@@ -301,13 +301,10 @@
 
                 var html5QrcodeScanner = new Html5Qrcode("qr-reader");
                 html5QrcodeScanner.start({
-                    facingMode: "user"
+                    facingMode: "environment"
                 }, {
                     fps: 10,
-                    qrbox: {
-                        width: 250,
-                        height: 250
-                    }
+                    qrbox: 300
                 }, (decodedText, decodedResult) => {
                     document.getElementById("barcodeInput").value = decodedText;
                     html5QrcodeScanner.stop().then(() => {
