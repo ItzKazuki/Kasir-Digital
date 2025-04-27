@@ -272,7 +272,20 @@
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
-                    <button onclick="document.getElementById('showReaderBarcode').classList.add('hidden')"
+                    <div class="flex gap-2" id="selectCameraContainer">
+                        <select
+                            class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600"
+                            id="selectBackCamera">
+                            <option value="" class="text-gray-800">
+                                Pilih kamera belakang
+                            </option>
+                        </select>
+                        <button id="startQrCodeReader" type="button"
+                            class="w-1/3 sm:w-auto px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-500">
+                            Start
+                        </button>
+                    </div>
+                    <button onclick="closeModalScanner()"
                         class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
                 </div>
             </div>
@@ -288,6 +301,7 @@
         let modalReaderBarcode = document.getElementById('showReaderBarcode');
         let imageToCrop = document.getElementById('cropImage');
         let cropper;
+        var html5QrcodeScanner = new Html5Qrcode("qr-reader");
 
         document.getElementById("toggleButton").addEventListener("click", function() {
             // Check if the device is Android
@@ -299,18 +313,37 @@
 
                 modalReaderBarcode.classList.remove('hidden');
 
-                var html5QrcodeScanner = new Html5Qrcode("qr-reader");
-                html5QrcodeScanner.start({
-                    facingMode: "environment"
-                }, {
-                    fps: 10,
-                    qrbox: 300
-                }, (decodedText, decodedResult) => {
-                    document.getElementById("barcodeInput").value = decodedText;
-                    html5QrcodeScanner.stop().then(() => {
-                        modalReaderBarcode.classList.add('hidden');
-                    }).catch(err => {
-                        console.error('Failed to stop scanning.', err);
+                let camera = [];
+
+                Html5Qrcode.getCameras().then(devices => {
+                    devices.filter(device => device.label.toLowerCase().includes('back')).forEach((device) => {
+                        let option = document.createElement("option");
+                        option.value = device.id;
+                        option.text = device.label;
+                        document.getElementById("selectBackCamera").appendChild(option);
+                    });
+                }).catch(err => {
+                    console.error('Error getting cameras:', err);
+                });
+
+                document.getElementById("startQrCodeReader").addEventListener("click", function() {
+                    const selectedCameraId = document.getElementById("selectBackCamera").value;
+
+                    html5QrcodeScanner.start(
+                        selectedCameraId, {
+                            fps: 10,
+                            qrbox: 300
+                        },
+                        (decodedText, decodedResult) => {
+                            document.getElementById("barcodeInput").value = decodedText;
+                            html5QrcodeScanner.stop().then(() => {
+                                modalReaderBarcode.classList.add('hidden');
+                            }).catch(err => {
+                                console.error('Failed to stop scanning.', err);
+                            });
+                        }
+                    ).catch(err => {
+                        console.error('Error starting QR code scanner:', err);
                     });
                 });
             } else { // Tampilkan modal pemindai barcode
@@ -324,6 +357,11 @@
                 barcodeInput.focus();
             }
         });
+
+        function closeModalScanner() {
+            modalReaderBarcode.classList.add('hidden');
+            html5QrcodeScanner.stop()
+        }
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
             canvas = cropper.getCroppedCanvas({
