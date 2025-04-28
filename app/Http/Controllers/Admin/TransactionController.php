@@ -101,11 +101,11 @@ class TransactionController extends Controller
             $printer->setEmphasis(false);
 
             // Print footer
-            $printer->feed(2);
+            $printer->feed();
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             $printer->text("Terima kasih telah berbelanja di " . config('app.name') . "\n");
             $printer->text("Tanggal: " . now()->format('d-m-Y H:i:s') . "\n");
-            $printer->feed(2);
+            $printer->feed();
 
             // Print QR Code (optional)
             $printer->qrCode($transaction->struk_url, Printer::QR_ECLEVEL_M, 8);
