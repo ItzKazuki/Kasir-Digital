@@ -76,9 +76,10 @@ class Transaction extends Model
 
     public static function getTotalProfit()
     {
-        return self::join('order_details', 'transactions.order_id', '=', 'order_details.order_id')
+        return self::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->join('order_details', 'orders.id', '=', 'order_details.order_id')
             ->join('products', 'order_details.product_id', '=', 'products.id')
-            ->selectRaw('SUM(order_details.total_price - (order_details.quantity * (products.price - products.estimasi_keuntungan))) as profit')
+            ->selectRaw('SUM(transactions.cash - transactions.cash_change - (order_details.quantity * products.price)) as profit')
             ->where('transactions.payment_status', 'paid')
             ->first()
             ->profit ?? 0;
