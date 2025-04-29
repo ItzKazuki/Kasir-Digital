@@ -189,10 +189,12 @@
         <main>
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 <div class="mb-6 hidden sm:block">
-                    <label for="barcodeInput" class="block text-sm font-medium text-gray-700">Find Product by Barcode</label>
+                    <label for="barcodeInput" class="block text-sm font-medium text-gray-700">Find Product by
+                        Barcode</label>
                     <input id="barcodeInput" type="text"
                         class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
-                        placeholder="Scan atau masukkan barcode produk" onkeypress="handleBarcodeInput(event)" autofocus>
+                        placeholder="Scan atau masukkan barcode produk" onkeypress="handleBarcodeInput(event)"
+                        autofocus>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
                     @foreach ($products as $product)
@@ -262,7 +264,8 @@
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-2">
                     <label class="block text-black">Member</label>
-                    <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
+                    <button onclick="showCreateMemberModal()"
+                        class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
                 </div>
                 <div class="flex mb-2">
                     <input id="phone_number_member" type="text"
@@ -319,7 +322,7 @@
         </div>
     </aside>
 
-    <div id="logoutConfirmModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+    <div id="logoutConfirmModal" class="fixed inset-0 z-99999 hidden" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideLogoutModal()">
         </div>
@@ -352,6 +355,105 @@
                     <button onclick="hideLogoutModal()"
                         class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="createMemberModal" class="fixed inset-0 z-99999 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"
+            onclick="hideCreateMemberModal()">
+        </div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:size-10">
+                            <svg class="size-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Tambah Member Baru</h3>
+                            <p class="text-sm text-gray-500 mt-2">Isi form di bawah untuk menambahkan member baru.</p>
+                        </div>
+                    </div>
+                </div>
+                <form onsubmit="createMember()" method="POST">
+                    <div class="bg-white px-4 py-5 sm:p-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Nama Lengkap <span
+                                    class="text-red-600">*</span></label>
+                            <input type="text" name="full_name" placeholder="John Doe" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('full_name')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Nomor Telepon <span
+                                    class="text-red-600">*</span></label>
+                            <input type="tel" name="phone_number" pattern="08[0-9]{8,11}"
+                                placeholder="08XXXXXXXXX" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('phone_number')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Email <span
+                                    class="text-red-600">*</span></label>
+                            <input type="email" name="email" placeholder="someone@yourdomain.com" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('email')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Point <span
+                                    class="text-red-600">*</span></label>
+                            <input type="number" name="point" placeholder="contoh: 12000" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('point')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Status <span
+                                    class="text-red-600">*</span></label>
+                            <select name="status" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600">
+                                <option value="" disabled selected>Pilih status member</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                            @error('status')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                        <button type="submit"
+                            class="w-full sm:w-auto px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-500">Tambah
+                            Member</button>
+                        <button type="button" onclick="hideCreateMemberModal()"
+                            class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Batal</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -430,6 +532,54 @@
                 console.error('Error fetching cart content:', error);
             });
     });
+
+    function hideCreateMemberModal() {
+        document.getElementById('createMemberModal').classList.add('hidden');
+    }
+
+    function showCreateMemberModal() {
+        document.getElementById('createMemberModal').classList.remove('hidden');
+    }
+
+    function createMember() {
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        axios.post("{{ route('dashboard.kasir.member.store') }}", data)
+            .then(response => {
+
+                if (response.data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Member berhasil ditambahkan!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+
+                hideCreateMemberModal();
+                if (event) {
+                    event.preventDefault();
+                    event.target.reset();
+                }
+            }).catch(err => {
+                let message = err.response?.data?.message || 'Terjadi kesalahan saat menambahkan member.';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: message,
+                });
+
+                hideCreateMemberModal();
+                if (event) {
+                    event.preventDefault();
+                    event.target.reset();
+                }
+            })
+
+        event.preventDefault();
+    }
 
     function handleBarcodeInput(event) {
         if (event.key === 'Enter') {

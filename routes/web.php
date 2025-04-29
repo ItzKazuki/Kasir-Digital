@@ -22,6 +22,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Kasir\ProductController as KasirProductController;
 use App\Http\Controllers\Kasir\TransactionController as KasirTransactionController;
+use App\Http\Controllers\Kasir\MemberController as KasirMemberController;
 
 Route::get('/', function () {
     return redirect()->route('auth.login');
@@ -73,6 +74,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
         })->name('cart.preview');
 
         Route::post('members/search', [KasirTransactionController::class, 'searchMember'])->name('member.search');
+        Route::post('members/add', [KasirMemberController::class, 'store'])->name('member.store');
 
         Route::post('transactions/add', [KasirTransactionController::class, 'store'])->name('transactions.store');
         Route::get('transactions', [KasirTransactionController::class, 'index'])->name('transactions.index');
