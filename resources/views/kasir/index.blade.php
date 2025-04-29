@@ -602,7 +602,7 @@
                         icon: 'success',
                         title: 'Berhasil',
                         text: 'Produk berhasil ditambahkan ke keranjang!',
-                        timer: 1500,
+                        timer: 700,
                         showConfirmButton: false
                     });
                     event.target.value = ''; // Clear the input field
@@ -613,6 +613,8 @@
                         icon: 'error',
                         title: 'Gagal',
                         text: 'Produk dengan barcode tersebut tidak ditemukan.',
+                        timer: 700,
+                        showConfirmButton: false
                     });
                     event.target.value = ''; // Clear the input field
                 });
