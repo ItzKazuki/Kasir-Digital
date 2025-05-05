@@ -15,14 +15,16 @@ class ProductController extends Controller
     public function index()
     {
         $categoryName = request('category');
+
         if ($categoryName) {
             $products = Product::whereHas('category', function ($query) use ($categoryName) {
-            $query->where('name', $categoryName);
+                $query->where('name', $categoryName);
             })->get();
         } else {
             $products = Product::all();
         }
-        $categories = Category::all();
+
+        $categories = Category::whereHas('products')->get();
 
         return view('kasir.index', compact('products', 'categories'));
     }

@@ -48,6 +48,7 @@ class SettingController extends Controller
         $user->no_telp = $userInput['phone_number'];
         $user->email = $userInput['email'];
         $user->username = $userInput['username'];
+
         $user->save();
 
         Sweetalert::success('berhasil mengubah detail account', 'Ubah Profile Berhasil!');
@@ -71,10 +72,11 @@ class SettingController extends Controller
 
         // add filename
         $imageName = $request->user()->username . '-' . date('dmyHis') . '.png';
-        $this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'));
+        if($this->storeBase64Image('static/images/profiles/' . $imageName, $request->input('profile_img'))) {
+            // update image profile
+            $user->profile_img = $imageName;
+        }
 
-        // update image profile
-        $user->profile_img = $imageName;
         $user->save();
 
         Sweetalert::success('berhasil mengubah gambar profile', 'Ubah Profile Berhasil!');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kasir;
 
+use Exception;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -11,6 +12,7 @@ use App\Jobs\GenerateStrukPdfJob;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
+use App\Services\Payments\PaymentGatewayInterface;
 use App\Notifications\TransactionCreatedNotification;
 
 class TransactionController extends Controller
@@ -24,21 +26,24 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order.member');
-
         // get all transactions that belong to the authenticated user
-        $query->whereHas('order', function ($q) use ($request) {
+        // $query->where('orders.user_id', $request->user()->id);
+        $query = Transaction::with('order')->whereHas('order', function ($q) use ($request) {
             $q->where('user_id', $request->user()->id);
         });
+
 
         if ($request->start_date && $request->end_date) {
             $query->whereHas('order', function ($q) use ($request) {
                 $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
             });
-        } else {
+        }
+         else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
-                ->orderBy('orders.order_date', 'DESC');
+                ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
+                ->orderBy('orders.order_date', 'DESC')
+                ->orderBy('transactions.id', 'DESC');
         }
 
         if ($request->payment_status) {
@@ -47,8 +52,8 @@ class TransactionController extends Controller
 
         $transactions = $query->paginate(10)->appends(request()->query());
 
-        $income = Transaction::where('payment_status', 'paid')->sum('cash');
-        $outcome = Transaction::where('payment_status', 'paid')->sum('cash_change');
+        $income = (clone $query)->where('payment_status', 'paid')->sum('cash');
+        $outcome = (clone $query)->where('payment_status', 'paid')->sum('cash_change');
 
         return view('dashboard.transactions.index', compact('title', 'transactions', 'income', 'outcome'));
     }
@@ -66,7 +71,7 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, PaymentGatewayInterface $paymentService)
     {
         // Mulai DB transaction
         DB::beginTransaction();
@@ -75,24 +80,24 @@ class TransactionController extends Controller
             // Ambil item-item cart
             $itemCart = \Cart::getContent();
 
-            $orderData = [
-                'order_date' => now(),
-            ];
+            $discount_total = 0;
 
             if ($request->no_telp_member) {
                 $member = Member::where('no_telp', $request->no_telp_member)->first();
-
-                if ($member) {
-                    $orderData['member_id'] = $member->id;
-                }
             }
 
             // Buat order baru
-            $order = $request->user()->orders()->create($orderData);
+            $order = $request->user()->orders()->create([
+                'order_date' => now(),
+            ]);
 
             // Buat orderItems berdasarkan item cart
             foreach ($itemCart as $item) {
                 $product = Product::find($item->id);
+
+                if($product->discount) {
+                    $discount_total += $item->quantity * ($product->discount->type == 'fixed' ? $product->discount->value : ($product->price * $product->discount->value) / 100);
+                }
 
                 // Cek apakah quantity orderItem lebih besar dari stock produk
                 if ($product->stock < $item->quantity) {
@@ -123,25 +128,60 @@ class TransactionController extends Controller
                 'payment_status' => $request->metode_pembayaran == "cash" ? 'paid' : 'pending',
                 'payment_method' => $request->metode_pembayaran,
                 'total_price' => $order->total_price,
+                'discount_total' => $discount_total
             ];
+
+            if($request->metode_pembayaran == "qris") {
+                // use data to generate qris at midtrans
+
+                $midtrans = $paymentService->createTransaction([
+                    'transaction_id' => $order->id,
+                    'total_price' => $order->total_price,
+                ]);
+
+                $transactionData['payment_type'] = $midtrans['payment_type'];
+                $transactionData['payment_url'] = $midtrans['actions_url'];
+                $transactionData['cash'] = $midtrans['gross_amount'];
+            }
 
             if ($request->cash) {
                 $transactionData['cash_change'] = $request->cash - $order->total_price;
             }
 
-            if ($request->use_point && $request->use_point == true) {
-                if (isset($member) && $member->point > 0) {
-                    $pointsToUse = min($member->point, $order->total_price);
+            if(isset($member)) {
+                $transactionData['member_id'] = $member->id;
+                $additionalPoints = 0;
 
-                    $transactionData['cash_change'] = $request->cash - ($order->total_price - $pointsToUse);
+                if ($order->total_price > 200000) {
+                    $additionalPoints = $order->total_price * 0.045;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 100000) {
+                    $additionalPoints = $order->total_price * 0.035;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 50000) {
+                    $additionalPoints = $order->total_price * 0.02;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                } elseif ($order->total_price > 25000) {
+                    $additionalPoints = $order->total_price * 0.01;
+                    $member->point += $additionalPoints;
+                    $member->save();
+                }
 
+                if ($request->use_point && $request->use_point == true) {
+                    $pointsToUse = min($member->point, $order->total_price * 0.1);
+                    $remainingPrice = $order->total_price - $pointsToUse;
+
+                    if ($request->cash < $remainingPrice) {
+                        throw new Exception("Transaction failed, insufficient cash to cover the remaining price", 400);
+                    }
+
+                    $transactionData['cash_change'] = $request->cash - $remainingPrice;
                     $transactionData['point_usage'] = $pointsToUse;
                     $member->point -= $pointsToUse;
                     $member->save();
-                } else {
-                    return response()->json([
-                        'message' => 'Transaction failed, member has insufficient points'
-                    ], 400);
                 }
             }
 
@@ -149,11 +189,17 @@ class TransactionController extends Controller
             $transaction = $order->transaction()->create($transactionData);
 
             // Generate struk PDF
-            GenerateStrukPdfJob::dispatch($transaction);
+            /**
+             * this feature is soo booring, idk.
+             * tapi ada beberapa bug dikarenakan hal ini
+             * seperti lamanya proses transaksi, hingga penggunaan memori yang tinggi
+             * hal ini dapat di atasi dengan cara (hapus penggunaan struk fisik).
+            */
+            // GenerateStrukPdfJob::dispatch($transaction);
+            // $this->generateStrukPdf($transaction);
 
-            // $order->member->notify(new TransactionCreatedNotification($transaction, $order->member));
             if (isset($member)) {
-                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $order->member));
+                Notification::route('mail', $member->email)->notify(new TransactionCreatedNotification($transaction, $member, $additionalPoints));
             }
 
             // Hapus item cart
@@ -169,42 +215,52 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             // Rollback DB transaction jika terjadi error
             DB::rollBack();
+
             return response()->json([
-                'message' => 'Transaction failed',
-                'error' => $e->getMessage()
+                'error' => 'Transaction failed',
+                'message' => $e->getMessage()
             ], 500);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function checkStatus(Transaction $transaction, PaymentGatewayInterface $paymentService)
     {
-        //
+        try {
+            $status = $paymentService->checkPaymentStatus($transaction->order_id);
+
+            if ($status['transaction_status'] == 'settlement') {
+                $transaction->update([
+                    'payment_status' => 'paid',
+                    'cash' => $status['gross_amount'],
+                ]);
+            } elseif ($status['transaction_status'] == 'pending') {
+                $transaction->update([
+                    'payment_status' => 'pending',
+                ]);
+            } elseif ($status['transaction_status'] == 'expire') {
+                $transaction->update([
+                    'payment_status' => 'unpaid',
+                ]);
+            }
+
+            return response()->json($status);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Failed to check payment status',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function callback(Request $request, PaymentGatewayInterface $paymentService)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            return $paymentService->handleCallback($request);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Transaction failed',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

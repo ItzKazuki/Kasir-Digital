@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Produk /</li>
+                <li>
+                    <a href="{{ route('dashboard.products.index') }}" class="font-medium">Produk /</a>
+                </li>
                 <li class="font-medium text-red-600">Create</li>
             </ol>
         </nav>
@@ -46,7 +48,7 @@
                         <!-- Tombol yang akan dihapus -->
                         <div class="w-full xl:w-1/2" id="buttonContainer">
                             <label class="mb-3 block text-sm font-medium text-black  ">
-                                Ada Barcode? <span class="text-red-600">*</span>
+                                Ada Barcode?
                             </label>
                             <button id="toggleButton" type="button"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default">
@@ -180,7 +182,7 @@
                         <div class="w-full">
                             <div class="mb-4">
                                 <label class="mb-3 block text-sm font-medium text-black  ">
-                                    Attach file
+                                    Attach file <span class="text-red-600">*</span>
                                 </label>
                                 <input type="file" id="productImgInput"
                                     class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent hover:border-red-600 font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-600 file:text-white file:px-5 file:py-3 file:hover:bg-red-500 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100            "
@@ -255,32 +257,111 @@
             </div>
         </div>
     </div>
+
+    <div id="showReaderBarcode" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"
+            onclick="document.getElementById('showReaderBarcode').classList.add('hidden')"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-8 sm:pb-6">
+                    <div class="sm:flex sm:items-start gap-4">
+                        <div id="qr-reader" style="width:350px"></div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                    <div class="flex gap-2" id="selectCameraContainer">
+                        <select
+                            class="relative z-20 w-full appearance-none rounded border border-gray-300 bg-transparent px-5 py-3 outline-none transition focus:border-red-600 active:border-red-600"
+                            id="selectBackCamera">
+                            <option value="" class="text-gray-800">
+                                Pilih kamera belakang
+                            </option>
+                        </select>
+                        <button id="startQrCodeReader" type="button"
+                            class="w-1/3 sm:w-auto px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-500">
+                            Start
+                        </button>
+                    </div>
+                    <button onclick="closeModalScanner()"
+                        class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('scripts')
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
     <script>
         let modalCropImage = document.getElementById('cropImageModal');
+        let modalReaderBarcode = document.getElementById('showReaderBarcode');
         let imageToCrop = document.getElementById('cropImage');
         let cropper;
+        var html5QrcodeScanner = new Html5Qrcode("qr-reader");
 
         document.getElementById("toggleButton").addEventListener("click", function() {
-            // Hapus div tombol sepenuhnya
-            document.getElementById("buttonContainer").remove();
+            // Check if the device is Android
+            if (window.innerWidth < 1000) {
+                document.getElementById("buttonContainer").remove();
 
-            // Tampilkan input barcode
-            document.getElementById("barcodeInputContainer").style.display = "block";
+                // Tampilkan input barcode
+                document.getElementById("barcodeInputContainer").style.display = "block";
 
-            let barcodeInput = document.getElementById("barcodeInput");
-            barcodeInput.focus();
+                modalReaderBarcode.classList.remove('hidden');
+
+                let camera = [];
+
+                Html5Qrcode.getCameras().then(devices => {
+                    devices.filter(device => device.label.toLowerCase().includes('back')).forEach((device) => {
+                        let option = document.createElement("option");
+                        option.value = device.id;
+                        option.text = device.label;
+                        document.getElementById("selectBackCamera").appendChild(option);
+                    });
+                }).catch(err => {
+                    console.error('Error getting cameras:', err);
+                });
+
+                document.getElementById("startQrCodeReader").addEventListener("click", function() {
+                    const selectedCameraId = document.getElementById("selectBackCamera").value;
+
+                    html5QrcodeScanner.start(
+                        selectedCameraId, {
+                            fps: 10,
+                            qrbox: 300
+                        },
+                        (decodedText, decodedResult) => {
+                            document.getElementById("barcodeInput").value = decodedText;
+                            html5QrcodeScanner.stop().then(() => {
+                                modalReaderBarcode.classList.add('hidden');
+                            }).catch(err => {
+                                console.error('Failed to stop scanning.', err);
+                            });
+                        }
+                    ).catch(err => {
+                        console.error('Error starting QR code scanner:', err);
+                    });
+                });
+            } else { // Tampilkan modal pemindai barcode
+                // Hapus div tombol sepenuhnya
+                document.getElementById("buttonContainer").remove();
+
+                // Tampilkan input barcode
+                document.getElementById("barcodeInputContainer").style.display = "block";
+
+                let barcodeInput = document.getElementById("barcodeInput");
+                barcodeInput.focus();
+            }
         });
 
-        // document.getElementById("productImgInput").addEventListener("change", function(event) {
-        //     const [file] = event.target.files;
-        //     if (file) {
-        //         document.getElementById("previewContainer").classList.remove("hidden");
-        //         document.getElementById("previewUploadImage").src = URL.createObjectURL(file);
-        //     }
-        // });
+        function closeModalScanner() {
+            modalReaderBarcode.classList.add('hidden');
+            html5QrcodeScanner.stop()
+        }
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
             canvas = cropper.getCroppedCanvas({

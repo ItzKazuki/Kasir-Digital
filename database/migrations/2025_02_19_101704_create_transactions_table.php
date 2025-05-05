@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('member_id')->nullable()->constrained('members')->onDelete('set null');
-            $table->decimal('total_price', 15);
-            $table->decimal('point_usage', 15)->nullable();
-            $table->decimal('cash', 15);
+            $table->decimal('total_price', 15)->default(0);
+            $table->decimal('point_usage', 15)->default(0)->nullable();
+            $table->decimal('cash', 15)->default(0);
             $table->decimal('cash_change', 15)->default(0);
-            $table->enum('payment_method', ['cash', 'debit', 'credit', 'ewallet']);
-            $table->enum('payment_status', ['paid', 'unpaid', 'pending']);
+            $table->enum('payment_method', ['cash', 'debit', 'credit', 'qris'])->default('cash');
+            $table->enum('payment_status', ['paid', 'unpaid', 'pending'])->default('pending');
             // $table->timestamps();
         });
     }

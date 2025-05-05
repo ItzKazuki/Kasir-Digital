@@ -107,6 +107,7 @@ class ProductController extends Controller
         $title = "Edit Products";
         $categories = Category::all();
         $discounts = Discount::all();
+        
         return view('dashboard.products.edit', compact('title', 'product', 'categories', 'discounts'));
     }
 
@@ -123,7 +124,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required',
             'expired_at' => 'nullable|date',
-            'product_img' => 'required|string',
+            'product_img' => 'string|nullable',
         ], [
             'name_product.required' => 'Nama produk wajib diisi.',
             'name_product.min' => 'Nama produk harus minimal 3 karakter.',
@@ -165,7 +166,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        Sweetalert::success('berhasil mengubah produk ' . $product->name, 'Tambah Produk Berhasil!');
+        Sweetalert::success('berhasil mengubah produk ' . $product->name, 'Ubah Produk Berhasil!');
         return redirect()->route('dashboard.products.index');
     }
 
@@ -174,7 +175,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Storage::delete('static/images/products/' . $product->image_url);
+        if ($product->image_url != null) {
+            Storage::delete('static/images/products/' . $product->image_url);
+        }
+
         $product->delete();
 
         Sweetalert::success('berhasil menghapus produk ' . $product->name, 'Hapus Berhasil');

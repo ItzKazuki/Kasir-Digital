@@ -12,6 +12,9 @@
                     <li>
                         <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                     </li>
+                    <li>
+                        <a href="{{ route('dashboard.users.index') }}" class="font-medium">User /</a>
+                    </li>
                     <li class="font-medium text-red-600">Edit User</li>
                 </ol>
             </nav>
@@ -34,11 +37,11 @@
                             <div class="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                                 <div class="w-full sm:w-1/2">
                                     <label class="mb-3 block text-sm font-medium text-black" for="fullName">Full
-                                        Name</label>
+                                        Name <span class="text-red-600">*</span></label>
                                     <input
                                         class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none"
                                         type="text" name="full_name" id="full_name" value="{{ $user->full_name }}"
-                                        placeholder="John Doe" />
+                                        required placeholder="John Doe" />
                                     @error('full_name')
                                         <div class="mt-1 text-red-600">
                                             <p class="text-xs">{{ $message }}</p>
@@ -48,11 +51,11 @@
 
                                 <div class="w-full sm:w-1/2">
                                     <label class="mb-3 block text-sm font-medium text-black" for="phoneNumber">Phone
-                                        Number</label>
+                                        Number <span class="text-red-600">*</span></label>
                                     <input
                                         class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none"
                                         type="tel" pattern="08[0-9]{8,11}" name="phone_number" id="phone_number"
-                                        value="{{ $user->no_telp }}" placeholder="08XXXXXXXXXX" />
+                                        required value="{{ $user->no_telp }}" placeholder="08XXXXXXXXXX" />
                                     @error('phone_number')
                                         <div class="mt-1 text-red-600">
                                             <p class="text-xs">{{ $message }}</p>
@@ -63,10 +66,10 @@
 
                             <div class="mb-5.5">
                                 <label class="mb-3 block text-sm font-medium text-black" for="emailAddress">Email
-                                    Address</label>
+                                    Address <span class="text-red-600">*</span></label>
                                 <input
                                     class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none"
-                                    type="email" name="email" id="email" value="{{ $user->email }}"
+                                    type="email" name="email" id="email" value="{{ $user->email }}" required
                                     placeholder="someone@domain.com" />
                                 @error('email')
                                     <div class="mt-1 text-red-600">
@@ -76,10 +79,11 @@
                             </div>
 
                             <div class="mb-5.5">
-                                <label class="mb-3 block text-sm font-medium text-black" for="username">Username</label>
+                                <label class="mb-3 block text-sm font-medium text-black" for="username">Username <span
+                                        class="text-red-600">*</span></label>
                                 <input
                                     class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none"
-                                    type="text" name="username" id="username" value="{{ $user->username }}"
+                                    type="text" name="username" id="username" value="{{ $user->username }}" required
                                     placeholder="yourname" />
                                 @error('username')
                                     <div class="mt-1 text-red-600">
@@ -116,11 +120,10 @@
                             </div>
 
                             <div class="flex justify-end gap-4.5">
-                                <button
-                                    class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1"
+                                <a class="flex justify-center rounded border border-gray-300 px-6 py-2 font-medium text-black hover:shadow-1"
                                     type="reset">
                                     Cancel
-                                </button>
+                                </a>
                                 <button
                                     class="flex justify-center rounded bg-red-600 px-6 py-2 font-medium text-white hover:bg-opacity-90"
                                     type="submit">
@@ -141,7 +144,8 @@
                         <div class="p-7">
                             <div class="mb-4 flex items-center gap-3">
                                 <div class="h-14 w-14 rounded-full">
-                                    <img id="previewProfile" class="rounded-full aspect-square object-cover" src="{{ $user->profile_image ? $user->profile_image : Avatar::create($user->full_name)->toBase64() }}"
+                                    <img id="previewProfile" class="rounded-full aspect-square object-cover"
+                                        src="{{ $user->profile_image ? $user->profile_image : Avatar::create($user->full_name)->toBase64() }}"
                                         alt="User" />
                                 </div>
                                 <div>
@@ -192,6 +196,37 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="rounded-sm border border-gray-300 bg-white shadow-default mt-4">
+                        <div class="border-b border-gray-300 px-7 py-4">
+                            <h3 class="font-medium text-black">
+                                Ubah Status User
+                            </h3>
+                        </div>
+                        <div class="p-7">
+                            <div class="mb-5.5">
+                                <label class="mb-3 block text-sm font-medium text-black" for="status">Status
+                                    User</label>
+                                <select
+                                    class="w-full rounded border border-gray-300 bg-gray-200 px-4.5 py-3 font-medium text-black focus:border-red-600 focus-visible:outline-none"
+                                    name="status" id="status" {{ $user->status == 'denied' ? 'disabled' : '' }}>
+                                    <option value="approved" {{ $user->status == 'approved' ? 'selected' : '' }}>Terima Akun
+                                    </option>
+                                    <option value="pending" {{ $user->status == 'pending' ? 'selected' : '' }}>Menunggu
+                                    </option>
+                                    <option value="suspended" {{ $user->status == 'suspended' ? 'selected' : '' }}>Tunda Akun
+                                    </option>
+                                    <option value="denied" {{ $user->status == 'denied' ? 'selected' : '' }}>Tolak Akun
+                                    </option>
+                                </select>
+                                @error('status')
+                                    <div class="mt-1 text-red-600">
+                                        <p class="text-xs">{{ $message }}</p>
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -200,7 +235,7 @@
 @endsection
 
 
- @push('styles')
+@push('styles')
     <link rel="stylesheet" href="{{ asset('vendor/cropperjs/cropper.css') }}" />
     <script src="{{ asset('vendor/cropperjs/cropper.js') }}"></script>
 @endpush

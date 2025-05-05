@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Service\FonnteService;
+use App\Services\FonnteService;
 use App\Traits\GenerateStrukPdf;
 use Wavey\Sweetalert\Sweetalert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
 
 class TransactionController extends Controller
 {
@@ -28,16 +32,16 @@ class TransactionController extends Controller
     {
         $title = "Transactions";
 
-        $query = Transaction::with('order.member');
+        $query = Transaction::with('order');
 
         if ($request->start_date && $request->end_date) {
-            $query->whereHas('order', function ($q) use ($request) {
-                $q->whereBetween('order_date', [$request->start_date, $request->end_date]);
-            });
+            $query->whereBetween('orders.order_date', [$request->start_date, $request->end_date]);
         } else {
             // urutkan data $query berdasarkan asc dari order_date
             $query->join('orders', 'transactions.order_id', '=', 'orders.id')
-                ->orderBy('orders.order_date', 'DESC');
+                ->select('transactions.*', 'orders.order_date') // Pastikan memilih kolom yang dibutuhkan
+                ->orderBy('orders.order_date', 'DESC')
+                ->orderBy('transactions.id', 'DESC');
         }
 
         if ($request->payment_status) {
@@ -58,9 +62,65 @@ class TransactionController extends Controller
      */
     public function print(Request $request, Transaction $transaction)
     {
-        $title = "Print Transaction " . $transaction->invoice_number;
+        try {
+            // Load printer profile
+            $profile = CapabilityProfile::load("SP2000");
 
-        return view('layouts.struk', compact('title', 'transaction'));
+            // Load transaction with related order and orderDetails
+            $transaction->load('order.orderDetails.product');
+
+            // Connect to RawBT
+            $connector = new RawbtPrintConnector();
+
+            // Initialize printer
+            $printer = new Printer($connector, $profile);
+
+            // Print shop details
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            $printer->text(config('app.name') . "\n");
+            $printer->selectPrintMode();
+            $printer->text(config('app.address') . "\n");
+            $printer->feed();
+
+            // Print transaction details
+            $printer->setEmphasis(true);
+            $printer->text("Detail Transaksi\n");
+            $printer->setEmphasis(false);
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+
+            foreach ($transaction->order->orderDetails as $item) {
+                $printer->text($item->product->name . " x" . $item->quantity . " @ " . number_format($item->product->price, 0, ',', '.') . "\n");
+            }
+
+            $printer->feed();
+            $printer->setEmphasis(true);
+            $printer->text("Total: " . number_format($transaction->total_price, 0, ',', '.') . "\n");
+            $printer->text("Dibayar: " . number_format($transaction->cash, 0, ',', '.') . "\n");
+            $printer->text("Kembali: " . number_format($transaction->cash_change, 0, ',', '.') . "\n");
+            $printer->setEmphasis(false);
+
+            // Print footer
+            $printer->feed();
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Terima kasih telah berbelanja di " . config('app.name') . "\n");
+            $printer->text("Tanggal: " . now()->format('d-m-Y H:i:s') . "\n");
+            $printer->feed();
+
+            // Print QR Code (optional)
+            $printer->qrCode($transaction->struk_url, Printer::QR_ECLEVEL_M, 8);
+
+            // Cut the receipt and open the cash drawer
+            $printer->cut();
+            $printer->pulse();
+
+            // Close the printer connection
+            $printer->close();
+
+            return response()->json(['status' => 'success', 'message' => 'Struk berhasil dicetak.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -71,6 +131,10 @@ class TransactionController extends Controller
         $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
         if (!file_exists($strukPath)) {
+            if ($transaction->payment_status == 'unpaid' || $transaction->payment_status == 'pending') {
+                return abort(402);
+            }
+
             $this->generateStrukPdf($transaction);
         }
 
@@ -100,16 +164,12 @@ class TransactionController extends Controller
     public function streamStruk(string $invoice)
     {
         $transaction = Transaction::findByInvoice($invoice)->first();
-        $strukPath = Storage::disk('local')->path('/static/struk/' . $transaction->invoice_number . '.pdf');
 
-        if (!$transaction || !file_exists($strukPath)) {
+        if (!$transaction) {
             return abort(404);
         }
 
-        return response()->file($strukPath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $transaction->invoice_number . '.pdf"'
-        ]);
+        return view('layouts.struk', compact('transaction'));
     }
 
     public function updateStatusPayment(Request $request, Transaction $transaction)

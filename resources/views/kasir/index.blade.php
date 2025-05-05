@@ -23,9 +23,9 @@
     </div>
 
     <!-- Sidebar Kiri -->
-    <aside
-        class="absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-md lg:static lg:translate-x-0">
-        <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+    <aside id="sidebar"
+        class="absolute left-0 pt-20 lg:pt-0 top-0 z-80 flex h-screen w-72 flex-col overflow-y-hidden bg-white duration-300 ease-linear shadow-2xl lg:static lg:translate-x-0 -translate-x-full">
+        <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6.5">
             <a href="#">
                 <img src="{{ asset('static/logo-340x180.png') }}" alt="Logo" />
             </a>
@@ -67,9 +67,20 @@
         <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow-1">
             <div class="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                 <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
+                    <!-- Hamburger Toggle BTN -->
+                    <div class="hamburger-menu">
+                        <button id="hamburgerToggle"
+                            class="z-100 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5 cursor-pointer"
+                                viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                <path
+                                    d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                            </svg>
+                        </button>
 
+                    </div>
                 </div>
-                <div class="hidden sm:block">
+                <div class="search-bar hidden sm:block">
 
                 </div>
 
@@ -177,19 +188,42 @@
 
         <main>
             <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
+                <div class="mb-6 hidden sm:block">
+                    <label for="barcodeInput" class="block text-sm font-medium text-gray-700">Find Product by
+                        Barcode</label>
+                    <input id="barcodeInput" type="text"
+                        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                        placeholder="Scan atau masukkan barcode produk" onkeypress="handleBarcodeInput(event)"
+                        autofocus>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
                     @foreach ($products as $product)
-                        <div class="bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
+                        <div class="relative bg-white p-4 rounded-lg shadow-md {{ $product->stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : '' }}"
                             @if ($product->stock > 0) onclick="addToCart({{ $product->id }})" style="cursor: pointer;" @endif>
+
+                            {{-- Label Diskon --}}
+                            @if ($product->discount)
+                                <div
+                                    class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                                    {{ $product->discount->name }}
+                                </div>
+                            @endif
+
                             <img alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-t-lg"
                                 height="200" src="{{ $product->product_image }}" width="300" />
                             <div class="mt-4 text-center">
                                 <h2 class="text-lg font-bold">
                                     {{ $product->name }}
                                 </h2>
-                                <p class="text-gray-700">
+                                <p class="text-gray-700 {{ $product->discount ? 'line-through text-sm' : '' }}">
                                     Rp. {{ number_format($product->price, 0, ',', '.') }}
                                 </p>
+                                @if ($product->discount)
+                                    <p>
+                                        Rp.
+                                        {{ number_format($product->price - ($product->discount->type == 'fixed' ? $product->discount->value : ($product->price * $product->discount->value) / 100), 0, ',', '.') }}
+                                    </p>
+                                @endif
                                 <p id="product-{{ $product->id }}-stock" class="text-gray-500">
                                     Stok: @if ($product->stock <= 0)
                                         <span class="text-red-600 font-bold">Habis</span>
@@ -208,16 +242,17 @@
 
     <!-- Aside Keranjang (Tersembunyi secara default) -->
     <aside id="cart-aside"
-        class="absolute right-0 top-0 h-screen w-2/6 bg-white shadow-lg mt-20 transform translate-x-full transition-transform duration-300 flex flex-col">
+        class="fixed right-0 top-0 h-screen w-2/2 sm:w-2/6 bg-white shadow-lg mt-20 transform transition-transform translate-x-full duration-300 flex flex-col">
         <div class="p-4 flex justify-between items-center bg-gray-200">
             <h2 class="text-lg font-semibold">Keranjang</h2>
             <button id="close-cart" class="text-red-500">✖</button>
         </div>
         <div class="" id="cart">
-            <div id="cartContent">
-                <div class="p-4 overflow-y-auto flex-1" id="containerCart"></div>
-                <div class="p-4 bg-white sticky bottom-0">
-                    <p id="subtotalCart" class="pb-3 text-xl font-bold">Total Transaksi: Rp. </p>
+            <div id="cartContent" class="flex flex-col h-full">
+                <div class="p-4 overflow-y-auto no-scrollbar flex-1" id="containerCart"
+                    style="max-height: calc(100vh - 180px);"></div>
+                <div class="p-4 bg-white sticky bottom-0 flex justify-between items-center">
+                    <p id="subtotalCart" class="text-xl font-bold">Total Transaksi: Rp. </p>
                     <button class="w-full bg-red-500 text-white py-2 rounded" onclick="processTransaction()">Proses
                         Transaksi</button>
                 </div>
@@ -225,11 +260,12 @@
             <div id="emptyCartMessage" class="p-4 text-center text-gray-500 hidden">Cart Kosong</div>
         </div>
 
-        <div class="hidden p-4" id="transactionConfirm">
+        <div class="hidden p-4 no-scrollbar overflow-y-auto" id="transactionConfirm">
             <div class="mb-4">
                 <div class="flex justify-between items-center mb-2">
                     <label class="block text-black">Member</label>
-                    <button class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
+                    <button onclick="showCreateMemberModal()"
+                        class="bg-red-500 text-white py-1 px-4 rounded-lg">Tambah Member</button>
                 </div>
                 <div class="flex mb-2">
                     <input id="phone_number_member" type="text"
@@ -257,14 +293,12 @@
                 <p id="diskon" class="text-black">Diskon: Rp. 0</p>
             </div>
             <hr class="border-gray-400 mb-4">
-            <div class="mb-4">
+            <div class="mb-4" id="cashMethod">
                 <label id="uangMasuk" class="block text-black font-bold text-xl">Uang: Rp. 0</label>
                 <label id="uangKurang" class="hidden text-red-600 font-bold text-sm">Uang Kurang: Rp. 0</label>
                 <input id="uang" type="number" class="w-full p-2 mt-2 border border-gray-400 rounded-lg"
                     placeholder="">
-            </div>
-            <div class="mb-4">
-                <p id="uangKeluar" class="text-black">Kembalian: Rp. 0</p>
+                <p id="uangKeluar" class="text-black mt-4">Kembalian: Rp. 0</p>
             </div>
             <div class="mb-4 bg-white sticky bottom-0">
                 <div class="mb-4 flex items-center">
@@ -272,9 +306,9 @@
                     <div class="relative w-1/2">
                         <select id="metode_pembayaran"
                             class="appearance-none w-full bg-red-500 text-white p-2 rounded-lg">
-                            <option value="cash">Cash</option>
-                            <option value="qris">Qris</option>
-                            <option value="debit">Debit Card</option>
+                            <option value="cash">CASH</option>
+                            <option value="qris">QRIS</option>
+                            {{-- <option value="debit">Debit Card</option> --}}
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                             <i class="fas fa-chevron-down"></i>
@@ -288,7 +322,7 @@
         </div>
     </aside>
 
-    <div id="logoutConfirmModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
+    <div id="logoutConfirmModal" class="fixed inset-0 z-99999 hidden" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideLogoutModal()">
         </div>
@@ -325,12 +359,136 @@
         </div>
     </div>
 
+    <div id="createMemberModal" class="fixed inset-0 z-99999 hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"
+            onclick="hideCreateMemberModal()">
+        </div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div
+                            class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:size-10">
+                            <svg class="size-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900" id="modal-title">Tambah Member Baru</h3>
+                            <p class="text-sm text-gray-500 mt-2">Isi form di bawah untuk menambahkan member baru.</p>
+                        </div>
+                    </div>
+                </div>
+                <form onsubmit="createMember()" method="POST">
+                    <div class="bg-white px-4 py-5 sm:p-6">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Nama Lengkap <span
+                                    class="text-red-600">*</span></label>
+                            <input type="text" name="full_name" placeholder="John Doe" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('full_name')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Nomor Telepon <span
+                                    class="text-red-600">*</span></label>
+                            <input type="tel" name="phone_number" pattern="08[0-9]{8,11}"
+                                placeholder="08XXXXXXXXX" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('phone_number')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Email <span
+                                    class="text-red-600">*</span></label>
+                            <input type="email" name="email" placeholder="someone@yourdomain.com" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('email')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Point <span
+                                    class="text-red-600">*</span></label>
+                            <input type="number" name="point" placeholder="contoh: 12000" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600" />
+                            @error('point')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-black">Status <span
+                                    class="text-red-600">*</span></label>
+                            <select name="status" required
+                                class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-red-600 active:border-red-600">
+                                <option value="" disabled selected>Pilih status member</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Tidak Aktif</option>
+                            </select>
+                            @error('status')
+                                <div class="mt-1 text-red-600">
+                                    <p class="text-xs">{{ $message }}</p>
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-5">
+                        <button type="submit"
+                            class="w-full sm:w-auto px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-500">Tambah
+                            Member</button>
+                        <button type="button" onclick="hideCreateMemberModal()"
+                            class="mt-3 sm:mt-0 w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script>
     @include('sweetalert::sweetalert');
 
+    window.addEventListener('load', function() {
+        // Reset all input fields
+        document.querySelectorAll('input').forEach(input => {
+            if (input.type === 'checkbox' || input.type === 'radio') {
+                input.checked = false;
+            } else {
+                input.value = '';
+            }
+        });
+
+        // Reset all select dropdowns
+        document.querySelectorAll('select').forEach(select => {
+            select.selectedIndex = 0;
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
-        axios.get('/dashboard/kasir/cart/products/show')
+
+        const hamburgerToggle = document.getElementById("hamburgerToggle");
+
+        hamburgerToggle.addEventListener("click", function() {
+            // alert("Hamburger menu toggled!");
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("-translate-x-full");
+        });
+
+        axios.get("{{ route('dashboard.kasir.cart.show') }}")
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
@@ -375,6 +533,103 @@
             });
     });
 
+    function hideCreateMemberModal() {
+        document.getElementById('createMemberModal').classList.add('hidden');
+    }
+
+    function showCreateMemberModal() {
+        document.getElementById('createMemberModal').classList.remove('hidden');
+    }
+
+    function createMember() {
+        const formData = new FormData(event.target);
+        const data = Object.fromEntries(formData.entries());
+
+        axios.post("{{ route('dashboard.kasir.member.store') }}", data)
+            .then(response => {
+
+                if (response.data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Member berhasil ditambahkan!',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+
+                hideCreateMemberModal();
+                if (event) {
+                    event.preventDefault();
+                    event.target.reset();
+                }
+            }).catch(err => {
+                let message = err.response?.data?.message || 'Terjadi kesalahan saat menambahkan member.';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: message,
+                });
+
+                hideCreateMemberModal();
+                if (event) {
+                    event.preventDefault();
+                    event.target.reset();
+                }
+            })
+
+        event.preventDefault();
+    }
+
+    function handleBarcodeInput(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const barcode = event.target.value;
+            if (!barcode) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Barcode tidak boleh kosong',
+                });
+                return;
+            }
+
+            axios.post("{{ route('dashboard.kasir.cart.store.barcode') }}", {
+                    barcode
+                })
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: 'Produk berhasil ditambahkan ke keranjang!',
+                        timer: 700,
+                        showConfirmButton: false
+                    });
+                    event.target.value = ''; // Clear the input field
+                    fetchCartItem(); // Refresh the cart
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Produk dengan barcode tersebut tidak ditemukan.',
+                        timer: 700,
+                        showConfirmButton: false
+                    });
+                    event.target.value = ''; // Clear the input field
+                });
+        }
+    }
+
+    document.getElementById('metode_pembayaran').addEventListener('change', function() {
+        const cashMethodDiv = document.getElementById('cashMethod');
+        if (this.value !== 'cash') {
+            cashMethodDiv.style.display = 'none';
+        } else {
+            cashMethodDiv.style.display = 'block';
+        }
+    });
+
     document.getElementById('uang').addEventListener('change', kalkulasiUang);
 
     function searchMember() {
@@ -388,7 +643,7 @@
             return;
         }
 
-        axios.post(`/dashboard/kasir/members/search`, {
+        axios.post("{{ route('dashboard.kasir.member.search') }}", {
                 phone: phoneNumber
             })
             .then(response => {
@@ -425,7 +680,8 @@
         const uangMasuk = parseFloat(e.target.value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace(
+            'Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         let uangKeluar;
 
         document.getElementById('uangMasuk').innerText = `Uang: Rp. ${uangMasuk.toLocaleString('id-ID')}`;
@@ -439,7 +695,7 @@
 
         if (uangKeluar < 0) {
             document.getElementById('uangKeluar').innerHTML =
-            `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
+                `<p class="text-red-600 font-bold">Uang kurang: Rp. ${Math.abs(uangKeluar).toLocaleString('id-ID')}</p>`;
         } else {
             document.getElementById('uangKeluar').innerText = `Kembalian: Rp. ${uangKeluar.toLocaleString('id-ID')}`;
         }
@@ -451,7 +707,8 @@
             '').replace('):', '').replace(/\./g, ''));
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace(
             'Total Belanja: Rp. ', '').replace(/\./g, ''));
-        const remainingAmount = pointValue - totalBelanja;
+        const pointToUse = totalBelanja * 0.1; // 10% of total belanja
+        const remainingAmount = pointToUse - totalBelanja;
 
         if (usePoint) {
             if (remainingAmount >= 0) {
@@ -461,10 +718,12 @@
                 document.getElementById('uang').disabled = true;
             } else {
                 document.getElementById('uangKurang').classList.remove('hidden');
-                document.getElementById('uangKurang').innerText = `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
+                document.getElementById('uangKurang').innerText =
+                    `Uang Kurang: Rp. ${Math.abs(remainingAmount).toLocaleString('id-ID')}`;
 
                 document.getElementById('penggunaanPoin').classList.remove('hidden');
-                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointValue.toLocaleString('id-ID');
+                document.getElementById('penggunaanPoin').innerText = 'Penggunaan Poin: ' + pointToUse
+                    .toLocaleString('id-ID');
                 document.getElementById('uang').value = '';
                 document.getElementById('uang').disabled = false;
             }
@@ -490,7 +749,8 @@
         const member = parseInt(document.getElementById('phone_number_member').value);
         const totalBelanja = parseFloat(document.getElementById('totalBelanja').innerText.replace('Total Belanja: Rp. ',
             '').replace(/\./g, ''));
-        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace('Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
+        const penggunaanPoin = parseFloat(document.getElementById('penggunaanPoin').innerText.replace(
+            'Penggunaan Poin: ', '').replace(/\./g, '')) || 0;
         const paymentMethod = document.getElementById('metode_pembayaran').value;
         let uangKeluar;
 
@@ -518,7 +778,7 @@
 
         document.getElementById('loadingProcessTransaction').style.display = 'flex';
 
-        axios.post('/dashboard/kasir/transactions/add', {
+        axios.post("{{ route('dashboard.kasir.transactions.store') }}", {
                 total: totalBelanja,
                 cash: uangMasuk,
                 no_telp_member: member,
@@ -561,7 +821,7 @@
     }
 
     function fetchCartItem() {
-        axios.get('/dashboard/kasir/cart/products/show')
+        axios.get("{{ route('dashboard.kasir.cart.show') }}")
             .then(resCart => {
                 const containerCart = document.getElementById('containerCart');
                 const subtotalCart = document.getElementById('subtotalCart');
@@ -607,7 +867,11 @@
     }
 
     function updateCartQuantity(cartProductId, action) {
-        const url = `/dashboard/kasir/cart/products/${cartProductId}/${action}`;
+        // const url = `/dashboard/kasir/cart/products/${cartProductId}/${action}`;
+        let url = action === 'increment' ?
+            `{{ route('dashboard.kasir.cart.incrementItem', ':cartProductId') }}` :
+            `{{ route('dashboard.kasir.cart.decrementItem', ':cartProductId') }}`;
+        url = url.replace(':cartProductId', cartProductId);
         axios.post(url)
             .then(response => {
                 // Fetch the updated cart content
@@ -623,7 +887,10 @@
     }
 
     function removeFromCart(cartProductId) {
-        axios.post(`/dashboard/kasir/cart/products/${cartProductId}/remove`)
+        // axios.post(`/dashboard/kasir/cart/products/${cartProductId}/remove`)
+        let url = "{{ route('dashboard.kasir.cart.removeItem', ':cartProductId') }}"
+        url = url.replace(':cartProductId', cartProductId);
+        axios.post(url)
             .then(response => {
                 Swal.fire({
                     icon: 'success',
@@ -645,7 +912,9 @@
     }
 
     function addToCart(id) {
-        axios.post(`/dashboard/kasir/cart/products/${id}/add`)
+        let url = "{{ route('dashboard.kasir.cart.store', ':id') }}";
+        url = url.replace(':id', id);
+        axios.post(url)
             .then(response => {
                 Swal.fire({
                     icon: 'success',

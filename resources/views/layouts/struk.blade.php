@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     {{-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> --}}
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <title>Invoice | {{ config('app.name') }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Invoice {{ $transaction->invoice_number }} | {{ config('app.name') }}</title>
     <style>
         body {
             display: flex;
@@ -31,9 +31,9 @@
 
     @include('dashboard.transactions.struk')
 
-    <div class="download-button">
+    {{-- <div class="download-button">
         <button onclick="printStruk()">Download Struk</button>
-    </div>
+    </div> --}}
 
     <script src="{{ asset('vendor/davidshimjs-qrcodejs-04f46c6/qrcode.js') }}"></script>
     <script>

@@ -152,62 +152,81 @@
             </div>
         </div>
 
-        @foreach ($products as $product)
-            <div class="grid grid-cols-6 border-b border-gray-300 px-4 py-4.5 sm:grid-cols-9 md:px-6 2xl:px-7.5">
-                <div class="col-span-3 flex items-center">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                        <div class="h-12.5 w-15 rounded-md">
-                            <img src="{{ $product->product_image }}" alt="Product"
-                                onclick="addToCart({{ $product->id }})" />
+        @if ($products->isEmpty())
+            <div class="px-4 py-4.5 text-center text-gray-500">
+                <p class="font-medium">Produk tidak ditemukan.</p>
+            </div>
+        @else
+            @foreach ($products as $product)
+                <div class="grid grid-cols-6 border-b border-gray-300 px-4 py-4.5 sm:grid-cols-9 md:px-6 2xl:px-7.5">
+                    <div class="col-span-3 flex items-center">
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+                            <div class="h-12.5 w-15 rounded-md">
+                                <img src="{{ $product->product_image }}" alt="Product"
+                                    onclick="addToCart({{ $product->id }})" />
+                            </div>
+                            <p class="font-medium text-black  ">
+                                {{ $product->name }}
+                            </p>
                         </div>
-                        <p class="font-medium text-black  ">
-                            {{ $product->name }}
+                    </div>
+                    <div class="col-span-2 hidden items-center sm:flex">
+                        <p class="font-medium text-black  ">{{ $product->category->name }}</p>
+                    </div>
+                    <div class="col-span-1 flex items-center">
+                        <p class="font-medium text-black  ">Rp. {{ number_format($product->price, 0, ',', '.') }}
                         </p>
                     </div>
-                </div>
-                <div class="col-span-2 hidden items-center sm:flex">
-                    <p class="font-medium text-black  ">{{ $product->category->name }}</p>
-                </div>
-                <div class="col-span-1 flex items-center">
-                    <p class="font-medium text-black  ">Rp. {{ number_format($product->price, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="col-span-1 flex items-center">
-                    <p class="font-medium text-black  ">{{ $product->stock }}</p>
-                </div>
-                <div class="col-span-1 flex items-center">
-                    <p class="font-medium text-meta-3">Rp. {{ number_format($product->estimasi_keuntungan, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
-                    <a href="{{ route('dashboard.products.edit', $product->id) }}"
-                        class="inline-flex items-center justify-center gap-2 bg-yellow-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
-                        <span>
-                            <svg class="fill-current" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512">
-                                <path
-                                    d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
-                            </svg>
-                        </span>
-                    </a>
-                    <form id="delete-product-{{ $product->id }}"
-                        action="{{ route('dashboard.products.destroy', ['product' => $product->id]) }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="showModal('delete-product-{{ $product->id }}')"
-                            class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                    <div class="col-span-1 flex items-center">
+                        <p class="font-medium text-black  ">{{ $product->stock }}</p>
+                    </div>
+                    <div class="col-span-1 flex items-center">
+                        <p class="font-medium text-meta-3">Rp.
+                            {{ number_format($product->estimasi_keuntungan, 0, ',', '.') }}
+                        </p>
+                    </div>
+                    <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-2">
+                        <a href="{{ route('dashboard.products.edit', $product->id) }}"
+                            class="inline-flex items-center justify-center gap-2 bg-yellow-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
                             <span>
                                 <svg class="fill-current" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 448 512">
+                                    viewBox="0 0 512 512">
                                     <path
-                                        d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                        d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                                </svg>
+                            </span>
+                        </a>
+                        <button type="button" onclick="showBarcodeModal('{{ $product->barcode }}')"
+                            class="inline-flex items-center justify-center gap-2 bg-blue-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded"
+                            @if (is_null($product->barcode)) disabled class="opacity-50 cursor-not-allowed" @endif>
+                            <span>
+                                <svg class="fill-current" width="15" height="15" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                    <path
+                                        d="M24 32C10.7 32 0 42.7 0 56L0 456c0 13.3 10.7 24 24 24l16 0c13.3 0 24-10.7 24-24L64 56c0-13.3-10.7-24-24-24L24 32zm88 0c-8.8 0-16 7.2-16 16l0 416c0 8.8 7.2 16 16 16s16-7.2 16-16l0-416c0-8.8-7.2-16-16-16zm72 0c-13.3 0-24 10.7-24 24l0 400c0 13.3 10.7 24 24 24l16 0c13.3 0 24-10.7 24-24l0-400c0-13.3-10.7-24-24-24l-16 0zm96 0c-13.3 0-24 10.7-24 24l0 400c0 13.3 10.7 24 24 24l16 0c13.3 0 24-10.7 24-24l0-400c0-13.3-10.7-24-24-24l-16 0zM448 56l0 400c0 13.3 10.7 24 24 24l16 0c13.3 0 24-10.7 24-24l0-400c0-13.3-10.7-24-24-24l-16 0c-13.3 0-24 10.7-24 24zm-64-8l0 416c0 8.8 7.2 16 16 16s16-7.2 16-16l0-416c0-8.8-7.2-16-16-16s-16 7.2-16 16z" />
                                 </svg>
                             </span>
                         </button>
-                    </form>
+                        <form id="delete-product-{{ $product->id }}"
+                            action="{{ route('dashboard.products.destroy', ['product' => $product->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="showModal('delete-product-{{ $product->id }}')"
+                                class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                                <span>
+                                    <svg class="fill-current" width="15" height="15"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path
+                                            d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
+
         <!-- Pagination Links -->
         <div class="my-4">
             {{ $products->links() }}
@@ -216,6 +235,31 @@
 @endsection
 
 @push('modals')
+    <!-- Barcode Modal -->
+    <div id="barcodeModal" class="fixed inset-0 z-300 hidden" aria-labelledby="barcode-modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true" onclick="hideBarcodeModal()"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto flex items-center justify-center p-4">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900" id="barcode-modal-title">Barcode Produk</h3>
+                            <div id="barcodeContainer" class="mt-4 flex justify-center">
+                                <canvas id="barcode"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button onclick="hideBarcodeModal()"
+                        class="w-full sm:w-auto px-3 py-2 bg-white text-gray-900 rounded-md ring-1 ring-gray-300 hover:bg-gray-50">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div id="deleteConfirmModal" class="fixed inset-0 z-300 hidden" aria-labelledby="modal-title" role="dialog"
         aria-modal="true">
@@ -253,6 +297,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('vendor/jsbarcode/JsBarcode.all.min.js') }}"></script>
     <script>
         function addToCart(productId) {
             fetch(`/dashboard/cart/products/${productId}/add`, {
@@ -275,7 +320,22 @@
                     alert('An error occurred. Please try again.');
                 });
         }
-        
+
+        function showBarcodeModal(barcode) {
+            JsBarcode("#barcode", barcode, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 100,
+                displayValue: true
+            });
+            document.getElementById('barcodeModal').classList.remove('hidden');
+        }
+
+        function hideBarcodeModal() {
+            document.getElementById('barcodeModal').classList.add('hidden');
+        }
+
         let deleteFormId = '';
 
         function showModal(formId) {

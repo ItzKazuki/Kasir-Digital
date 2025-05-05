@@ -55,69 +55,75 @@
                     </div>
                 </div>
 
-                @foreach ($discounts as $discount)
-                    <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-7">
-                        <div class="flex items-center justify-center p-2 xl:p-5">
-                            <p class="font-medium text-black  ">{{ $discount->name }}</p>
-                        </div>
+                @if ($discounts->isEmpty())
+                    <div class="text-center p-5">
+                        <p class="text-lg font-medium text-gray-500">Diskon tidak ditemukan.</p>
+                    </div>
+                @else
+                    @foreach ($discounts as $discount)
+                        <div class="grid grid-cols-3 border-b border-gray-300   sm:grid-cols-7">
+                            <div class="flex items-center justify-center p-2 xl:p-5">
+                                <p class="font-medium text-black  ">{{ $discount->name }}</p>
+                            </div>
 
-                        <div class="flex items-center justify-center p-2 xl:p-5">
-                            <p class="font-medium text-black  ">{{ $discount->type }}</p>
-                        </div>
+                            <div class="flex items-center justify-center p-2 xl:p-5">
+                                <p class="font-medium text-black  ">{{ $discount->type }}</p>
+                            </div>
 
-                        <div class="flex items-center justify-center p-2 xl:p-5">
-                            <p class="font-medium {{ $discount->status == 'active' ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $discount->type == 'fixed' ? 'Rp. ' . number_format($discount->value, 0, ',', '.') : $discount->value . '%' }}
-                            </p>
-                        </div>
+                            <div class="flex items-center justify-center p-2 xl:p-5">
+                                <p class="font-medium {{ $discount->status == 'active' ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $discount->type == 'fixed' ? 'Rp. ' . number_format($discount->value, 0, ',', '.') : number_format($discount->value, 0, ',', '.') . '%' }}
+                                </p>
+                            </div>
 
-                        <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
-                            <p class="font-medium text-black  ">{{ $discount->start_date }}</p>
-                        </div>
+                            <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
+                                <p class="font-medium text-black  ">{{ $discount->start_date }}</p>
+                            </div>
 
-                        <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
-                            <p class="font-medium text-black  ">{{ $discount->end_date }}</p>
-                        </div>
+                            <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
+                                <p class="font-medium text-black  ">{{ $discount->end_date }}</p>
+                            </div>
 
-                        <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
-                            <p
-                                class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ $discount->status == 'active' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100' }}">
-                                {{ $discount->status }}
-                            </p>
-                        </div>
+                            <div class="hidden items-center justify-center p-2 sm:flex xl:p-5">
+                                <p
+                                    class="inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium {{ $discount->status == 'active' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100' }}">
+                                    {{ $discount->status }}
+                                </p>
+                            </div>
 
-                        <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
-                            <a href="{{ route('dashboard.discounts.edit', $discount->id) }}"
-                                class="inline-flex items-center justify-center gap-2 bg-yellow-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
-                                <span>
-                                    <svg class="fill-current" width="15" height="15"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512">
-                                        <path
-                                            d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
-                                    </svg>
-                                </span>
-                            </a>
-                            <form id="delete-discount-{{ $discount->id }}"
-                                action="{{ route('dashboard.discounts.destroy', ['discount' => $discount->id]) }}"
-                                method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" onclick="showModal('delete-discount-{{ $discount->id }}')"
-                                    class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                            <div class="hidden items-center justify-center p-2 sm:flex xl:p-3 gap-4">
+                                <a href="{{ route('dashboard.discounts.edit', $discount->id) }}"
+                                    class="inline-flex items-center justify-center gap-2 bg-yellow-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
                                     <span>
                                         <svg class="fill-current" width="15" height="15"
                                             xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 448 512">
+                                            viewBox="0 0 512 512">
                                             <path
-                                                d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                                d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
                                         </svg>
                                     </span>
-                                </button>
-                            </form>
+                                </a>
+                                <form id="delete-discount-{{ $discount->id }}"
+                                    action="{{ route('dashboard.discounts.destroy', ['discount' => $discount->id]) }}"
+                                    method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" onclick="showModal('delete-discount-{{ $discount->id }}')"
+                                        class="inline-flex items-center justify-center gap-2 bg-red-500 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-2 xl:px-5 rounded">
+                                        <span>
+                                            <svg class="fill-current" width="15" height="15"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 448 512">
+                                                <path
+                                                    d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
             <!-- Pagination Links -->
             <div class="my-4">

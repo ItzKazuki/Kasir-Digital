@@ -15,12 +15,14 @@ class TransactionCreatedNotification extends Notification implements ShouldQueue
 
     private $transaction;
     private $member;
+    private $additionalPoint;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Transaction $transaction, Member $member)
+    public function __construct(Transaction $transaction, Member $member, int $additionalPoint)
     {
+        $this->additionalPoint = $additionalPoint;
         $this->transaction = $transaction;
         $this->member = $member;
     }
@@ -40,17 +42,29 @@ class TransactionCreatedNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->from(env('MAIL_FROM_ADDRESS', 'hello@example.com'), env('MAIL_FROM_NAME', 'Example'))
-            ->subject('Transaksi Berhasil Dibuat')
-            ->line('Halo, ' . $this->member->full_name)
+        $mailMessage = (new MailMessage)
+            ->from(env('MAIL_FROM_ADDRESS', 'noreply@kasirdigital.com'), 'Kasir Digital')
+            ->subject('Transaksi Berhasil - Invoice #' . $this->transaction->invoice_number)
+            ->greeting('Halo, ' . $this->member->full_name . '!')
             ->line('Transaksi Anda telah berhasil dibuat.')
-            ->line('Nomor Invoice: ' . $this->transaction->invoice_number)
-            ->line('Total Belanja: ' . number_format($this->transaction->total))
-            ->line('Poin yang Anda gunakan: ' . $this->transaction->point_usage)
-            ->line('Poin Anda sekarang bertambah menjadi: ' . $this->member->point)
-            ->action('Lihat Transaksi', route('struk.search', $this->transaction->invoice_number))
-            ->line('Terima kasih telah menggunakan ' . config('app.name') . '!');
+            ->line('**Nomor Invoice:** ' . $this->transaction->invoice_number)
+            ->line('**Total Belanja:** Rp ' . number_format($this->transaction->total_price, 0, ',', '.'));
+
+        // Hanya tampilkan poin yang digunakan jika tidak 0
+        if ($this->transaction->point_usage > 0) {
+            $mailMessage->line('**Poin yang Anda gunakan:** ' . number_format($this->transaction->point_usage, 0, ',', '.'));
+        }
+
+        if ($this->additionalPoint) {
+            $mailMessage->line('**Poin bertambah:** ' . number_format($this->additionalPoint, 0, ',', '.'));
+        }
+
+        $mailMessage->line('**Total poin Anda sekarang:** ' . number_format($this->member->point, 0, ',', '.'))
+            ->action('Lihat Detail Transaksi', route('struk.search', $this->transaction->invoice_number))
+            ->line('Terima kasih telah menggunakan **Kasir Digital**!')
+            ->salutation('Salam, **Tim Kasir Digital**');
+
+        return $mailMessage;
     }
 
     /**

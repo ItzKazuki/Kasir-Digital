@@ -11,7 +11,9 @@
                 <li>
                     <a class="font-medium" href="{{ route('dashboard.index') }}">Dashboard /</a>
                 </li>
-                <li class="font-medium">Produk /</li>
+                <li>
+                    <a href="{{ route('dashboard.products.index') }}" class="font-medium">Produk /</a>
+                </li>
                 <li class="font-medium text-red-600">Edit</li>
             </ol>
         </nav>
@@ -172,7 +174,7 @@
                             <input type="date" placeholder="Enter your first name" name="expired_at"
                                 value="{{ $product->expired_at }}"
                                 class="w-full rounded border-[1.5px] border-gray-300 bg-transparent px-5 py-3 font-normal text-gray-800 outline-none transition focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-white" />
-                            @error('product_img')
+                            @error('expired_at')
                                 <div class="mt-1 text-red-600">
                                     <p class="text-xs">{{ $message }}</p>
                                 </div>
@@ -184,11 +186,10 @@
                         <div class="w-full">
                             <div class="mb-4">
                                 <label class="mb-3 block text-sm font-medium text-black  ">
-                                    Attach file <span class="text-red-600">*</span>
+                                    Attach file
                                 </label>
                                 <input type="file" id="productImgInput"
-                                    class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent hover:border-red-600 font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-600 file:text-white file:px-5 file:py-3 file:hover:bg-red-500 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100            "
-                                    required />
+                                    class="w-full cursor-pointer rounded-lg border-[1.5px] border-gray-300 bg-transparent hover:border-red-600 font-normal outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-gray-300 file:bg-red-600 file:text-white file:px-5 file:py-3 file:hover:bg-red-500 file:hover:bg-opacity-10 focus:border-red-600 active:border-red-600 disabled:cursor-default disabled:bg-gray-100            "/>
                                 @error('product_img')
                                     <div class="mt-1 text-red-600">
                                         <p class="text-xs">{{ $message }}</p>
@@ -221,7 +222,7 @@
                         </a>
                         <button type="submit"
                             class="flex px-10 justify-center rounded bg-green-600 text-white p-3 font-medium text-gray hover:bg-opacity-90">
-                            Create Product
+                            Edit Product
                         </button>
                     </div>
                 </div>
@@ -266,13 +267,6 @@
         let modalCropImage = document.getElementById('cropImageModal');
         let imageToCrop = document.getElementById('cropImage');
         let cropper;
-
-        // document.getElementById("productImgInput").addEventListener("change", function(event) {
-        //     const [file] = event.target.files;
-        //     if (file) {
-        //         document.getElementById("previewUploadImage").src = URL.createObjectURL(file);
-        //     }
-        // });
 
         document.getElementById("confirmCropImageBtn").addEventListener("click", function() {
             canvas = cropper.getCroppedCanvas({
