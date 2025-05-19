@@ -43,7 +43,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $productDetail = $request->validate([
-            'name_product' => 'required|min:3',
+            'name_product' => 'required|min:3|unique:products,name',
             'barcode' => 'nullable',
             'category_id' => 'required|exists:categories,id',
             'discount_id' => 'nullable',
@@ -107,7 +107,7 @@ class ProductController extends Controller
         $title = "Edit Products";
         $categories = Category::all();
         $discounts = Discount::all();
-        
+
         return view('dashboard.products.edit', compact('title', 'product', 'categories', 'discounts'));
     }
 

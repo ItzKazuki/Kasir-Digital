@@ -36,8 +36,8 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|min:3',
+        $reqValidate = $request->validate([
+            'name' => 'required|min:3|unique:discounts,name',
             'type' => ['required', Rule::enum(TypeDiscount::class)],
             'value' => 'required|numeric',
             'start_date' => 'required|date',
@@ -56,7 +56,7 @@ class DiscountController extends Controller
             'status.required' => 'Status diskon wajib diisi.'
         ]);
 
-        Discount::create($request->all());
+        Discount::create($reqValidate);
 
         Sweetalert::success('berhasil menabah diskon baru', 'Tambah Diskon Berhasil!');
         return redirect()->route('dashboard.discounts.index');

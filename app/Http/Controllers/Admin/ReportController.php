@@ -34,8 +34,8 @@ class ReportController extends Controller
         $title = "Create Reports";
         $date = now()->toDateString();
 
-        if(now()->format('H:i') <= '22:00' || now()->format('H:i') > '06:00') {
-            Sweetalert::error('Pembuatan laporan saat ini tidak tersedia, tunggu sampai toko tutup.', 'Gagal');
+        if (now()->format('H:i') < '22:00' || now()->format('H:i') > '23:59') {
+            Sweetalert::error('Pembuatan laporan hanya tersedia pada jam 10-12 malam.', 'Gagal');
             return redirect()->route('dashboard.reports.index');
         }
 
