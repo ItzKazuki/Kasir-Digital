@@ -41,7 +41,7 @@ class MemberController extends Controller
             'full_name' => 'required|min:3',
             'phone_number' => 'required|numeric',
             'point' => 'required|numeric',
-            'email' => 'required|email:dns',
+            'email' => 'required|email:dns|unique:members,email',
             'status' => ['required', Rule::enum(MemberStatus::class)]
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',
@@ -92,7 +92,7 @@ class MemberController extends Controller
             'full_name' => 'required|min:3',
             'phone_number' => 'required|numeric',
             'point' => 'required|numeric',
-            'email' => 'required|email:dns',
+            'email' => 'required|email:dns|unique:members,email,' . $member->id,
             'status' => ['required', Rule::enum(MemberStatus::class)]
         ], [
             'full_name.required' => 'Nama lengkap wajib diisi.',

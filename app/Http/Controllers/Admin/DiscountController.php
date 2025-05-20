@@ -85,7 +85,7 @@ class DiscountController extends Controller
     public function update(Request $request, Discount $discount)
     {
         $request->validate([
-            'name' => 'required|min:3',
+            'name' => 'required|min:3|unique:discount,name,' . $discount->id,
             'type' => ['required', Rule::enum(TypeDiscount::class)],
             'value' => 'required|numeric',
             'start_date' => 'required|date',

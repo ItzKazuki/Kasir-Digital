@@ -34,10 +34,10 @@ class ReportController extends Controller
         $title = "Create Reports";
         $date = now()->toDateString();
 
-        if (now()->format('H:i') < '22:00' || now()->format('H:i') > '23:59') {
-            Sweetalert::error('Pembuatan laporan hanya tersedia pada jam 10-12 malam.', 'Gagal');
-            return redirect()->route('dashboard.reports.index');
-        }
+        // if (now()->format('H:i') < '22:00' || now()->format('H:i') > '23:59') {
+        //     Sweetalert::error('Pembuatan laporan hanya tersedia pada jam 10-12 malam.', 'Gagal');
+        //     return redirect()->route('dashboard.reports.index');
+        // }
 
         if (Report::where('date', $date)->exists()) {
             Sweetalert::error('Laporan untuk tanggal ini sudah ada.', 'Gagal');
@@ -54,6 +54,13 @@ class ReportController extends Controller
     {
         // Ambil data transaksi harian
         $date = $request->input('date', now()->toDateString());
+
+        // Validasi input
+        $request->validate([
+            'expenses' => 'nullable|numeric',
+            'cash_before' => 'nullable|numeric',
+            'cash_after' => 'nullable|numeric',
+        ]);
 
         // Cek apakah laporan untuk tanggal ini sudah ada
         if (Report::where('date', $date)->exists()) {
@@ -79,13 +86,6 @@ class ReportController extends Controller
         $cashBefore = $request->input('cash_before', 0); // Input manual untuk kas awal
         $cashAfter = $request->input('cash_after', 0); // Input manual untuk kas akhir
         $cashDifference = $cashAfter - $cashBefore; // Selisih kas
-
-        // Validasi input
-        $request->validate([
-            'expenses' => 'nullable|numeric',
-            'cash_before' => 'nullable|numeric',
-            'cash_after' => 'nullable|numeric',
-        ]);
 
         // Simpan data ke tabel reports
         Report::create([

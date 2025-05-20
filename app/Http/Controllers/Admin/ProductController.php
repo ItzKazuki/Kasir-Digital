@@ -117,7 +117,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $productDetail = $request->validate([
-            'name_product' => 'required|min:3',
+            'name_product' => 'required|min:3|unique:products,name, ' . $product->id,
             'barcode' => 'nullable',
             'category_id' => 'required|numeric|exists:categories,id',
             'discount_id' => 'nullable',
