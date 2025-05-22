@@ -33,19 +33,25 @@
                             </h3>
                         </div>
                         <div class="p-7">
-                            <!-- Date -->
-                            <div class="mb-4">
-                                <label class="mb-3 block text-sm font-medium text-black" for="date">Tanggal <span
-                                        class="text-red-600">*</span></label>
-                                <input
-                                    class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none"
-                                    type="date" name="date" id="date" value="{{ old('date', now()->toDateString()) }}" readonly
-                                    required />
-                                @error('date')
-                                    <div class="mt-1 text-red-600">
-                                        <p class="text-xs">{{ $message }}</p>
-                                    </div>
-                                @enderror
+                            <div class="mb-4 flex flex-col gap-6 xl:flex-row">
+                                <!-- Date -->
+                                <div class="w-full xl:w-1/2">
+                                    <select id="filterType" name="filter_type"
+                                        class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none"
+                                        onchange="updateFilterInput()" class="form-control">
+                                        <option value="harian">Harian</option>
+                                        <option value="bulanan">Bulanan</option>
+                                        <option value="tahunan">Tahunan</option>
+                                    </select>
+                                    @error('date')
+                                        <div class="mt-1 text-red-600">
+                                            <p class="text-xs">{{ $message }}</p>
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div id="filterInput" class="w-full xl:w-1/2">
+                                    <!-- Ini akan diganti secara dinamis -->
+                                </div>
                             </div>
 
                             <!-- Cash Before and Cash After -->
@@ -98,8 +104,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black" for="notes">Catatan</label>
                                 <textarea
                                     class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none"
-                                    name="notes" id="notes" rows="4"
-                                    placeholder="Tambahkan catatan tambahan...">{{ old('notes') }}</textarea>
+                                    name="notes" id="notes" rows="4" placeholder="Tambahkan catatan tambahan...">{{ old('notes') }}</textarea>
                                 @error('notes')
                                     <div class="mt-1 text-red-600">
                                         <p class="text-xs">{{ $message }}</p>
@@ -127,3 +132,41 @@
         <!-- ====== Create Report Section End -->
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function updateFilterInput() {
+            const type = document.getElementById('filterType').value;
+            const container = document.getElementById('filterInput');
+
+            if (type === 'tahunan') {
+                // const year = new Date().getFullYear();
+                // ambil array year dari $years
+                const years = @json($years);
+                let options = '';
+                for (let i = 0; i < years.length; i++) {
+                    const year = years[i];
+                    options += `<option value="${year}">${year}</option>`;
+                }
+                container.innerHTML =
+                    `<select name="year"  class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none">${options}</select>`;
+            } else if (type === 'bulanan') {
+                const months = [
+                    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ];
+                let options = months.map((m, i) => `<option value="${i+1}">${m}</option>`).join('');
+                container.innerHTML =
+                    `<select name="month"  class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none">${options}</select>`;
+            } else {
+                // Harian, ambil hari ini
+                const today = new Date().toISOString().split('T')[0];
+                container.innerHTML =
+                    `<input type="date" name="date"  class="w-full rounded border border-gray-300 bg-gray-200 py-3 px-4.5 font-medium text-black focus:border-red-600 focus-visible:outline-none" value="${today}">`;
+            }
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", updateFilterInput);
+    </script>
+@endpush

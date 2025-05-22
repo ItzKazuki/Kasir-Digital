@@ -6,7 +6,9 @@ use App\Models\Report;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Wavey\Sweetalert\Sweetalert;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class ReportController extends Controller
 {
@@ -16,15 +18,66 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $title = "Reports";
-        $reports = Report::query();
+        $query = Transaction::query();
 
-        if ($request->start_date && $request->end_date) {
-            $reports->whereBetween('date', [$request->start_date, $request->end_date]);
+        // Join ke tabel orders
+        $query->join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->select('transactions.*', 'orders.order_date');
+
+        // Filter berdasarkan tahun jika ada
+        if ($request->year) {
+            $query->whereYear('orders.order_date', $request->year);
         }
 
-        $reports = $reports->paginate(10);
+        // Filter berdasarkan bulan jika ada
+        if ($request->month) {
+            $query->whereMonth('orders.order_date', $request->month);
+        }
+
+        // Urutkan data
+        $query->orderBy('orders.order_date', 'DESC')
+            ->orderBy('transactions.id', 'DESC');
+
+        $reports = $query->get();
+
+        // dd($reports);
+
         return view('dashboard.reports.index', compact('title', 'reports'));
     }
+
+    public function download(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+
+        $query = Transaction::query()
+            ->join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->select('transactions.*', 'orders.order_date');
+
+        if ($month && $year) {
+            $query->whereMonth('orders.order_date', $month)
+                ->whereYear('orders.order_date', $year);
+        } elseif ($year) {
+            $query->whereYear('orders.order_date', $year);
+        }
+
+        $transactions = $query->orderBy('orders.order_date', 'ASC')->get();
+
+        $total = $transactions->sum('total_price');
+
+        $pdf = FacadePdf::loadView('pdf.report', [
+            'transactions' => $transactions,
+            'total' => $total,
+            'month' => $month,
+            'year' => $year
+        ]);
+
+        $filename = "laporan_transaksi_{$month}_{$year}.pdf";
+
+        return $pdf->download($filename);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -39,12 +92,18 @@ class ReportController extends Controller
         //     return redirect()->route('dashboard.reports.index');
         // }
 
-        if (Report::where('date', $date)->exists()) {
-            Sweetalert::error('Laporan untuk tanggal ini sudah ada.', 'Gagal');
-            return redirect()->route('dashboard.reports.index');
-        }
+        $years = Transaction::join('orders', 'transactions.order_id', '=', 'orders.id')
+            ->select(DB::raw('YEAR(orders.order_date) as year'))
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
 
-        return view('dashboard.reports.create', compact('title'));
+        // if (Report::where('date', $date)->exists()) {
+        //     Sweetalert::error('Laporan untuk tanggal ini sudah ada.', 'Gagal');
+        //     return redirect()->route('dashboard.reports.index');
+        // }
+
+        return view('dashboard.reports.create', compact('title', 'years'));
     }
 
     /**
@@ -52,27 +111,60 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        // Ambil data transaksi harian
-        $date = $request->input('date', now()->toDateString());
-
         // Validasi input
         $request->validate([
             'expenses' => 'nullable|numeric',
             'cash_before' => 'nullable|numeric',
             'cash_after' => 'nullable|numeric',
+            'filter_type' => 'nullable|in:harian,bulanan,tahunan',
+            'year' => 'nullable|integer',
+            'month' => 'nullable|integer',
+            'date' => 'nullable|date',
+            'notes' => 'nullable|string|max:255',
         ]);
 
+        $filterType = $request->filter_type;
+        $year = $request->year ?? now()->year;
+        $month = $request->month;
+        $date = $request->date ?? $request->input('date', now()->toDateString());
+
         // Cek apakah laporan untuk tanggal ini sudah ada
-        if (Report::where('date', $date)->exists()) {
-            Sweetalert::error('Gagal', 'Laporan untuk tanggal ini sudah ada.');
-            return redirect()->route('dashboard.reports.index');
+        // if (Report::where('date', $date)->exists()) {
+        //     Sweetalert::error('Gagal', 'Laporan untuk tanggal ini sudah ada.');
+        //     return redirect()->route('dashboard.reports.index');
+        // }
+
+        // $transactions = Transaction::whereIn('order_id', function ($query) use ($date) {
+        //     $query->select('id')
+        //         ->from('orders')
+        //         ->whereDate('created_at', $date);
+        // })->get();
+
+        if ($filterType === 'bulanan' && $month) {
+            // Ambil transaksi berdasarkan bulan & tahun
+            $transactions = Transaction::with('order')->whereIn('order_id', function ($query) use ($month, $year) {
+                $query->select('id')
+                    ->from('orders')
+                    ->whereYear('created_at', $year)
+                    ->whereMonth('created_at', $month);
+            })->get();
+        } elseif ($filterType === 'tahunan') {
+            // Ambil transaksi berdasarkan tahun
+            $transactions = Transaction::with('order')->whereIn('order_id', function ($query) use ($year) {
+                $query->select('id')
+                    ->from('orders')
+                    ->whereYear('created_at', $year);
+            })->get();
+        } else {
+            // Default: harian (atau fallback)
+            $transactions = Transaction::with('order')->whereIn('order_id', function ($query) use ($date) {
+                $query->select('id')
+                    ->from('orders')
+                    ->whereDate('created_at', $date);
+            })->get();
         }
 
-        $transactions = Transaction::whereIn('order_id', function ($query) use ($date) {
-            $query->select('id')
-            ->from('orders')
-            ->whereDate('created_at', $date);
-        })->get();
+        dd(count($transactions), $request->all(), $transactions->pluck('order_id')->toArray());
 
         // Hitung data laporan
         $filteredTransactions = $transactions->whereNotIn('payment_status', ['pending', 'unpaid']);
@@ -100,7 +192,7 @@ class ReportController extends Controller
             'cash_before' => $cashBefore,
             'cash_after' => $cashAfter,
             'cash_difference' => $cashDifference,
-            'created_by' => $request->user()->full_name . ' ('.$request->user()->role.')',
+            'created_by' => $request->user()->full_name . ' (' . $request->user()->role . ')',
             'notes' => $request->input('notes', ''),
         ]);
 

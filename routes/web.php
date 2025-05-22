@@ -59,6 +59,7 @@ Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['a
     Route::resource('products', ProductController::class);
     Route::resource('discounts', DiscountController::class);
     Route::resource('categories', CategoryController::class);
+    Route::get('reports/download', [ReportController::class, 'download'])->name('reports.download');
     Route::resource('reports', ReportController::class);
 
     Route::group(['middleware' => [KasirMiddleware::class], 'prefix' => 'kasir', 'as' => 'kasir.'], function() {
